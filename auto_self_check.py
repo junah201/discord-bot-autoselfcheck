@@ -10,12 +10,12 @@ import os
 
 bot = commands.Bot(command_prefix='?')
 
-start_minute=4
+start_minute=14
 
 @tasks.loop(seconds=60)
 async def auto_self_check():
     print("{}무한루프가 돌아가는 중...".format(datetime.datetime.now()))
-    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
+    if datetime.datetime.now(tzinfo=KST).hour == 7 and datetime.datetime.now(tzinfo=KST).minute == start_minute:
         with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
             user_data=json.load(json_file)
         start_minute=random.randrange(1,16)
@@ -34,9 +34,11 @@ auto_self_check.start()
 
 @bot.event
 async def on_ready():
+    now = datetime.datetime.now(tzinfo=KST)
     print("봇 실행 완료")
     user = await bot.fetch_user(523017072796499968)
     await user.send("봇 실행 완료")
+    await user.send(now)
     
 async def send_DM(data,user_id,start_minute,user_data):
     print("자가진단 준비중...")
@@ -80,7 +82,7 @@ async def 정보등록(ctx,name,birth,area,school_name,school_type,passward):
         json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
 
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(tzinfo=KST)
     
     embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n문의는 디스코드 white201#0201로 주시면 됩니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"]), color=0x62c1cc)
     await ctx.send(embed=embed)
