@@ -35,7 +35,8 @@ auto_self_check.start()
 @bot.event
 async def on_ready():
     print("봇 실행 완료")
-    
+    user = await bot.fetch_user(523017072796499968)
+    await user.send("봇 실행 완료")
 async def send_DM(data,user_id,start_minute):
     print("자가진단 준비중...")
 
