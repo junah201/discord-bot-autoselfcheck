@@ -35,6 +35,7 @@ auto_self_check.start()
 @bot.event
 async def on_ready():
     print("봇 실행 완료")
+    now = datetime.datetime.now()
     user = await bot.fetch_user(523017072796499968)
     await user.send("봇 실행 완료")
     await user.send(now)
