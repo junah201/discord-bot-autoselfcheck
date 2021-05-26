@@ -149,6 +149,5 @@ async def 관리자정보확인(ctx):
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     
    
-
-token = os.environ[BOT_TOKEN]
+token = os.environ["BOT_TOKEN"]
 bot.run(token)
