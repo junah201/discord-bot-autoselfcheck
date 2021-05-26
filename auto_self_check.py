@@ -6,7 +6,7 @@ import time, datetime
 import hcskr
 import random
 import json
-import asyncio
+import os
 
 bot = commands.Bot(command_prefix='?')
 
@@ -111,4 +111,5 @@ async def 정보삭제(ctx):
             user = await bot.fetch_user(523017072796499968)
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
 
-bot.run("ODQ2NjUwNjE4NzAxMjgzMzU5.YKym1Q.rOW8GUfMzK0SrWd5ZNCdruQHRHI")
+token = os.environ["BOT_TOKEN"]
+bot.run(token)
