@@ -134,7 +134,7 @@ async def 관리자정보확인(ctx):
     with open("user_data.json", "r",encoding='UTF-8') as json_file:
         user_data=json.load(json_file)
     if user_data.get(str(ctx.author.id)):
-        embed = discord.Embed(title="관리자 정보 확인", description="개인DM으로 정보를 보냈습니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e)", color=0x62c1cc)
+        embed = discord.Embed(title="관리자 정보 확인", description="개인DM으로 정보를 보냈습니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
         await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
         if user is not None:
