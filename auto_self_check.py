@@ -15,8 +15,8 @@ start_minute=0
 @tasks.loop(seconds=20)
 async def auto_self_check():
     print("{}무한루프가 돌아가는 중...".format(datetime.datetime.now()))
-    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
-        with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
+    if datetime.datetime.now().hour == 0 and datetime.datetime.now().minute == 8:
+        with open("temp_user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
             user_data=json.load(json_file)
         start_minute=random.randrange(1,16)
         for i in user_data.keys():
@@ -28,7 +28,7 @@ async def auto_self_check():
             passward = user_data[i]["passward"]
             print(f"[{name}]님의 자가진단 준비중")
             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-            await send_DM(data,i,start_minute) #i가 유저 id
+            await send_DM(data,i,start_minute,user_data) #i가 유저 id
 
 auto_self_check.start()
 
@@ -37,14 +37,16 @@ async def on_ready():
     print("봇 실행 완료")
     user = await bot.fetch_user(523017072796499968)
     await user.send("봇 실행 완료")
-async def send_DM(data,user_id,start_minute):
+    
+async def send_DM(data,user_id,start_minute,user_data):
     print("자가진단 준비중...")
-
     user = await bot.fetch_user(user_id)
-
     if user is not None:
-        embed = discord.Embed(title="자가 진단 완료", description="{} 부로 {} 님의 자가진단이 실시되었습니다.\n(API 출력메시지 : {}), \n진단 정보는 개인DM을 확인해주세요.\n문의는 디스코드 white201#0201로 주시면 됩니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"]), color=0x62c1cc)
+        now = datetime.datetime.now()
+        embed = discord.Embed(title="자가 진단 완료", description="{} 부로 {} 님의 자가진단이 실시되었습니다.\n(API 출력메시지 : {})\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"]), color=0x62c1cc)
         await user.send(embed=embed)
+        user = await bot.fetch_user(523017072796499968)
+        await user.send("{}님의 자가진단 완료".format(user_data[user_id]["name"]))
     else:
         user = await bot.fetch_user(523017072796499968)
         await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
@@ -148,5 +150,5 @@ async def 관리자정보확인(ctx):
     
    
 
-token = os.environ["BOT_TOKEN"]
+token = "ODQ2NjUwNjE4NzAxMjgzMzU5.YKym1Q.LFJ-53Ka52PgA6rlYDau831erfk"
 bot.run(token)
