@@ -153,19 +153,20 @@ async def 관리자정보확인(ctx):
 
 @bot.command()
 async def 관리자전체자가진단(ctx):
-    with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
+    if str(ctx.author.id) == '523017072796499968':
+        with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
             user_data=json.load(json_file)
-    start_minute=random.randrange(1,16)
-    for i in user_data.keys():
-        name = user_data[i]["name"]
-        birth = user_data[i]["birth"]
-        area = user_data[i]["area"]
-        school_name = user_data[i]["school_name"]
-        school_type = user_data[i]["school_type"]
-        passward = user_data[i]["passward"]
-        print(f"[{name}]님의 자가진단 준비중")
-        data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-        await send_DM(data,i,start_minute,user_data) #i가 유저 id
+        start_minute=random.randrange(1,16)
+        for i in user_data.keys():
+            name = user_data[i]["name"]
+            birth = user_data[i]["birth"]
+            area = user_data[i]["area"]
+            school_name = user_data[i]["school_name"]
+            school_type = user_data[i]["school_type"]
+            passward = user_data[i]["passward"]
+            print(f"[{name}]님의 자가진단 준비중")
+            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+            await send_DM(data,i,start_minute,user_data) #i가 유저 id
 
    
 token = os.environ["BOT_TOKEN"]
