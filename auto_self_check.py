@@ -10,9 +10,9 @@ import os
 
 bot = commands.Bot(command_prefix='?')
 
-start_minute=0
+start_minute=4
 
-@tasks.loop(seconds=20)
+@tasks.loop(seconds=60)
 async def auto_self_check():
     print("{}무한루프가 돌아가는 중...".format(datetime.datetime.now()))
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
