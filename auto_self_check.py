@@ -56,7 +56,7 @@ async def send_DM(data,user_id,start_minute,user_data):
 @bot.command()
 async def 도움말(ctx):
     embed = discord.Embed(title="도움말", description="자동자가진단 봇에 대한 도움말 입니다.",color=0x62c1cc)
-    embed.add_field(name="?정보등록", value="?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입]\n(예 : ?정보등록 홍길동 721027 서울시 길동고 고등학교)\n(예 : ?정보등록 홍길동 050201 충청남도 길동중 중학교)", inline=False)
+    embed.add_field(name="?정보등록", value="?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]\n(예 : ?정보등록 홍길동 721027 서울시 길동고 고등학교 1234)\n(예 : ?정보등록 홍길동 050201 충청남도 길동중 중학교 2580)", inline=False)
     embed.add_field(name="?정보삭제", value="?정보삭제\n※디스코드 아이디를 기준으로 삭제합니다.\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.", inline=False)
     embed.add_field(name="?정보확인", value="?정보확인\n※디스코드 아이디를 기준으로 확인합니다.\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.", inline=False)
     embed.add_field(name="기타",value="자동자가진단은 7시 00분에서 7시 16분 사이에 랜덤하게 작동하며,\n자동자가진단 DM 메시지를 통하여 그 다음날의 작동 시간을 알 수 있습니다.", inline=False)
