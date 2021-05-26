@@ -125,7 +125,9 @@ async def 정보확인(ctx):
         else:
             user = await bot.fetch_user(523017072796499968)
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
-    
+    else:
+        embed = discord.Embed(title="정보 확인 실패",description="디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e)", color=0x62c1cc)
+        await ctx.send(embed=embed)
     
    
 
