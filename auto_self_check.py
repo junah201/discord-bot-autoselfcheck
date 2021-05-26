@@ -150,5 +150,5 @@ async def 관리자정보확인(ctx):
     
    
 
-token = "ODQ2NjUwNjE4NzAxMjgzMzU5.YKym1Q.LFJ-53Ka52PgA6rlYDau831erfk"
+token = os.environ[BOT_TOKEN]
 bot.run(token)
