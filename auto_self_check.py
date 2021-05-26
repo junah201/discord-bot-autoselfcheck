@@ -15,8 +15,8 @@ start_minute=0
 @tasks.loop(seconds=20)
 async def auto_self_check():
     print("{}무한루프가 돌아가는 중...".format(datetime.datetime.now()))
-    if datetime.datetime.now().hour == 0 and datetime.datetime.now().minute == 8:
-        with open("temp_user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
+        with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
             user_data=json.load(json_file)
         start_minute=random.randrange(1,16)
         for i in user_data.keys():
