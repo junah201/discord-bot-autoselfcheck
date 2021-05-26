@@ -10,12 +10,12 @@ import os
 
 bot = commands.Bot(command_prefix='?')
 KST = datetime.timezone(datetime.timedelta(hours=9))
-start_minute=14
+start_minute=26
 
 @tasks.loop(seconds=60)
 async def auto_self_check():
     print("{}무한루프가 돌아가는 중...".format(datetime.datetime.now()))
-    if datetime.datetime.now(tzinfo=KST).hour == 7 and datetime.datetime.now(tzinfo=KST).minute == start_minute:
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now(tzinfo=KST).minute == start_minute:
         with open("user_data.json", "r",encoding='UTF-8') as json_file: #수정필요 temp 제거
             user_data=json.load(json_file)
         start_minute=random.randrange(1,16)
