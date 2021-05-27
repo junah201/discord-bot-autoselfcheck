@@ -182,7 +182,7 @@ async def 관리자정보확인(ctx):
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     else:
         user = await bot.fetch_user(ctx.author.id)
-        await user.send("관리자가 아니며서 해당 명령어를 사용할 수 없습니다.")
+        await user.send("비 관리자는 해당 명령어를 사용할 수 없습니다.")
 
 
 @bot.command()
@@ -203,7 +203,7 @@ async def 관리자전체자가진단(ctx):
             await send_DM(data,i,start_minute,user_data)
     else:
         user = await bot.fetch_user(ctx.author.id)
-        await user.send("관리자가 아니며서 해당 명령어를 사용할 수 없습니다.")
+        await user.send("비 관리자가 해당 명령어를 사용할 수 없습니다.")
    
 token = os.environ("BOT_TOKEN")
 #token = os.environ("BOT_TOKEN")
