@@ -102,7 +102,7 @@ async def 서버목록(ctx):
     for server in servers:
         msg+=f"{server}\n"
     embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}", inline=False)
-    embed.add_field(name=end_msg", inline=False)
+    embed.add_field(name=end_msg, inline=False)
     await ctx.send(embed=embed)
     
 @bot.command()
