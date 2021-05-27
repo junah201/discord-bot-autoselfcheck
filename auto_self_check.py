@@ -100,8 +100,8 @@ async def 서버목록(ctx):
     msg = ''
     for server in servers:
         msg+=f"{server}\n"
-    embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}")
-    embed.add_field(name="정보",value="봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)")
+    embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}", inline=False)
+    embed.add_field(name="정보",value="봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", inline=False)
     await ctx.send(embed=embed)
     
 @bot.command()
