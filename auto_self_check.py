@@ -79,10 +79,8 @@ async def 정보등록(ctx,name,birth,area,school_name,school_type,passward):
         }
     print(user_data[str(ctx.author.id)])
     with open("user_data.json", "w",encoding='UTF-8') as json_file:
-        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+        json.dump(user_data,json_file,ensure_ascii = False, indent=4
 
-
-    
     embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n문의는 디스코드 white201#0201로 주시면 됩니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"]), color=0x62c1cc)
     await ctx.send(embed=embed)
     user = await bot.fetch_user(str(ctx.author.id))
@@ -138,7 +136,7 @@ async def 정보확인(ctx):
 async def 관리자정보확인(ctx):
     with open("user_data.json", "r",encoding='UTF-8') as json_file:
         user_data=json.load(json_file)
-    if user_data.get(str(ctx.author.id)):
+    if str(ctx.author.id)=='523017072796499968':
         embed = discord.Embed(title="관리자 정보 확인", description="개인DM으로 정보를 보냈습니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
         await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
@@ -148,7 +146,9 @@ async def 관리자정보확인(ctx):
         else:
             user = await bot.fetch_user(523017072796499968)
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
-   
+    else:
+        user = await bot.fetch_user(ctx.author.id)
+        await user.send("관리자가 아니며서 해당 명령어를 사용할 수 없습니다.")
 
 
 @bot.command()
