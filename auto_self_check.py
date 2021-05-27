@@ -1,3 +1,4 @@
+  
 #-*- coding:utf-8 -*-
 
 import discord
@@ -109,8 +110,8 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
         print(user_data[str(ctx.author.id)])
         with open("user_data.json", "w",encoding='UTF-8') as json_file:
             json.dump(user_data,json_file,ensure_ascii = False, indent=4)
-
-        embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"]),color=0x62c1cc)
+        now = datetime.datetime.now()
+        embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),ctx.author),color=0x62c1cc)
         await ctx.send(embed=embed)
         user = await bot.fetch_user(ctx.author.id)
         if user is not None:
@@ -205,6 +206,7 @@ async def 관리자전체자가진단(ctx):
         user = await bot.fetch_user(ctx.author.id)
         await user.send("비 관리자가 해당 명령어를 사용할 수 없습니다.")
    
-token = os.environ("BOT_TOKEN")
+token = "ODQ2NjUwNjE4NzAxMjgzMzU5.YKym1Q.CkcGfVuFG9pUjHvecPddxHEawDk"
 #token = os.environ("BOT_TOKEN")
-bot.run(token)
+bot.run(token) 
+
