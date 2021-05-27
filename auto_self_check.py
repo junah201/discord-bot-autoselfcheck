@@ -9,7 +9,7 @@ import json
 import os
 
 bot = commands.Bot(command_prefix='?')
-KST = datetime.timezone(datetime.timedelta(hours=9))
+#KST = datetime.timezone(datetime.timedelta(hours=9))
 start_minute=26
 
 @tasks.loop(seconds=60)
