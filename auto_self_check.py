@@ -95,7 +95,7 @@ async def 명령어(ctx):
     
 @bot.command()
 async def 서버목록(ctx):
-    servers = bot.servers()
+    servers = bot.guilds
     embed = discord.Embed(title="서버목록", description="자동자가진단 봇에 대한 도움말 입니다.",color=0x62c1cc)
     msg = ''
     for server in servers:
