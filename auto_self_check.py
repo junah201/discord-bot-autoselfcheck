@@ -92,7 +92,18 @@ async def 명령어(ctx):
     embed.add_field(name="기타",value="자동자가진단은 7시 00분에서 7시 16분 사이에 랜덤하게 작동하며,\n자동자가진단 DM 메시지를 통하여 그 다음날의 작동 시간을 알 수 있습니다.", inline=False)
     embed.add_field(name="정보",value="봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)")
     await ctx.send(embed=embed)
-
+    
+@bot.command()
+async def 서버목록(ctx):
+    servers = bot.servers()
+    embed = discord.Embed(title="서버목록", description="자동자가진단 봇에 대한 도움말 입니다.",color=0x62c1cc)
+    msg = ''
+    for server in servers:
+        msg+=f"{server}\n"
+    embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}")
+    embed.add_field(name="정보",value="봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)")
+    await ctx.send(embed=embed)
+    
 @bot.command()
 async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,school_type=None,passward=None):
     if name!=None and birth!=None and area!=None and school_name!=None and school_type!=None and passward!=None:
