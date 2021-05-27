@@ -205,5 +205,6 @@ async def 관리자전체자가진단(ctx):
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자가 아니며서 해당 명령어를 사용할 수 없습니다.")
    
-token = os.environ(BOT_TOKEN)
+token = os.environ("BOT_TOKEN")
+#token = os.environ("BOT_TOKEN")
 bot.run(token)
