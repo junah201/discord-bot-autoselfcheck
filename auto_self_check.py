@@ -113,6 +113,9 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
         now = datetime.datetime.now()
         embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),ctx.author),color=0x62c1cc)
         await ctx.send(embed=embed)
+        user = await bot.fetch_user(523017072796499968)
+        embed = discord.Embed(title="정보 등록 완료", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 완료하셨습니다.\n입력값 : [{ctx.message.content}]\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
+        await user.send(embed = embed)
         user = await bot.fetch_user(ctx.author.id)
         if user is not None:
             embed = discord.Embed(title="정보 등록 완료[보안메시지]", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["birth"],user_data[str(ctx.author.id)]["area"],user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["school_type"],user_data[str(ctx.author.id)]["passward"][:2]), color=0x62c1cc)
