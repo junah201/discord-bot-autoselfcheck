@@ -110,9 +110,9 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
         with open("user_data.json", "w",encoding='UTF-8') as json_file:
             json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
-        embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n문의는 디스코드 white201#0201로 주시면 됩니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"]),color=0x62c1cc)
+        embed = discord.Embed(title="정보 등록 완료", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"]),color=0x62c1cc)
         await ctx.send(embed=embed)
-        user = await bot.fetch_user(str(ctx.author.id))
+        user = await bot.fetch_user(ctx.author.id)
         if user is not None:
             embed = discord.Embed(title="정보 등록 완료[보안메시지]", description="{} 부로 {} 님의 정보 등록이 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["birth"],user_data[str(ctx.author.id)]["area"],user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["school_type"],user_data[str(ctx.author.id)]["passward"][:2]), color=0x62c1cc)
             await user.send(embed=embed)
@@ -123,7 +123,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
         embed = discord.Embed(title="정보 등록 실패", description="모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  ?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
         await ctx.send(embed = embed)
         user = await bot.fetch_user(523017072796499968)
-        embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}]에서 정보등록을 실패하셨습니다.\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
+        embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 실패하셨습니다.\n입력값 : [{ctx.message.content}]\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/3DVYrc2T2e) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)", color=0x62c1cc)
         await user.send(embed = embed)
 @bot.command()
 async def 정보삭제(ctx):
