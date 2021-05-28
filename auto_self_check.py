@@ -35,7 +35,6 @@ async def auto_self_check():
     global start_minute
     print("[{}] 무한루프가 돌아가는 중...".format(datetime.datetime.now()))
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
-        await user_data_backup()
         with open(json_file_name, "r",encoding='UTF-8') as json_file:
             user_data=json.load(json_file)
         
@@ -159,7 +158,6 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
             "passward":passward
             }
 
-        print(user_data[str(ctx.author.id)])
         with open(json_file_name, "w",encoding='UTF-8') as json_file:
             json.dump(user_data,json_file,ensure_ascii = False, indent=4)
         now = datetime.datetime.now()
@@ -180,15 +178,13 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
     else:
         embed = discord.Embed(title="정보 등록 실패", description=f"모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  ?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg})", color=0x62c1cc)
         await ctx.send(embed = embed)
-        user = await bot.fetch_user(523017072796499968)
         embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 실패하셨습니다.\n입력값 : ```{ctx.message.content}```{end_msg}",color=0x62c1cc)
-        await user.send(embed = embed)
+        await send_embed_log(log_add_failure_channel,embed)
         
 @bot.command()
 async def 정보삭제(ctx):
     with open(json_file_name, "r",encoding='UTF-8') as json_file:
         user_data=json.load(json_file)
-    print(type(ctx.author.id))
 
     if user_data.get(str(ctx.author.id)):
         data = user_data.pop(str(ctx.author.id))
@@ -200,12 +196,9 @@ async def 정보삭제(ctx):
         embed = discord.Embed(title="정보 삭제 완료", description="{} 부로 {} 님의 정보 삭제가 완료되었습니다.\n구체적인 삭제 정보는 개인DM을 확인해주세요.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],end_msg), color=0x62c1cc)
         await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
-        if user is not None:
-            embed = discord.Embed(title="정보 삭제 완료[보안메시지]", description="{} 부로 {} 님의 정보 삭제가 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],data["name"],data["birth"],data["area"],data["school_name"],data["school_type"],data["passward"][:2],end_msg), color=0x62c1cc)
-            await user.send(embed=embed)
-        else:
-            user = await bot.fetch_user(523017072796499968)
-            await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
+
+        embed = discord.Embed(title="정보 삭제 완료[보안메시지]", description="{} 부로 {} 님의 정보 삭제가 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],data["name"],data["birth"],data["area"],data["school_name"],data["school_type"],data["passward"][:2],end_msg), color=0x62c1cc)
+        await user.send(embed=embed)
 
 @bot.command()
 async def 정보확인(ctx):
@@ -235,7 +228,7 @@ async def 관리자정보확인(ctx):
         await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
         if user is not None:
-            embed = discord.Embed(title="관리자 정보 확인[보안메시지]", description="{}".format(str(user_data)), color=0x62c1cc)
+            embed = discord.Embed(title="관리자 정보 확인[보안메시지]", description="서버 위치 : {}\n\n```{}```".format(host_name,str(user_data)), color=0x62c1cc)
             await user.send(embed=embed)
         else:
             user = await bot.fetch_user(523017072796499968)
