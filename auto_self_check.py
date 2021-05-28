@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='?')
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
 start_minute=0
-end_msg = "\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)"
+end_msg = "\n\n봇 : 자동자가진단#4767 | 개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot"
 
 @tasks.loop(seconds=60)
 async def auto_self_check():
