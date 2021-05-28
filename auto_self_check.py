@@ -35,6 +35,7 @@ async def auto_self_check():
     global start_minute
     print("[{}] 무한루프가 돌아가는 중...".format(datetime.datetime.now()))
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
+        await user_data_backup()
         with open(json_file_name, "r",encoding='UTF-8') as json_file:
             user_data=json.load(json_file)
         
