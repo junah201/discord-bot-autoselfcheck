@@ -270,3 +270,6 @@ async def 관리자전체공지(ctx,*,msg):
     else:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+
+token = os.environ["BOT_TOKEN"]
+bot.run(token)
