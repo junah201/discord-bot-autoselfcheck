@@ -15,6 +15,7 @@ bot = commands.Bot(command_prefix='?')
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
 start_minute=0
+last_day = ""
 #start_minute=datetime.datetime.now().minute
 
 end_msg = "\n\n개발자 : white#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)"
@@ -34,12 +35,12 @@ log_json_backup_channel = "847830055916404766"
 async def auto_self_check():
     global start_minute
     print("[{}] 무한루프가 돌아가는 중...".format(datetime.datetime.now()))
-    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute:
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d'):
         with open(json_file_name, "r",encoding='UTF-8') as json_file:
             user_data=json.load(json_file)
         
         start_minute=random.randrange(1,16)
-
+        last_day = datetime.datetime.now().strftime('%Y-%m-%d')
         for user_id in user_data.keys():
             name = user_data[user_id]["name"]
             birth = user_data[user_id]["birth"]
@@ -96,7 +97,7 @@ async def send_DM(data,user_id,start_minute,user_data):
     if erorr != "erorr":
         if data["code"]=="SUCCESS":
             now = datetime.datetime.now()
-            embed = discord.Embed(title="자가 진단 완료", description="[{}] 부로 {} 님의 자가진단이 성공적으로 실시되었습니다.\n(API 출력메시지 : {}){}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"],end_msg), color=0x62c1cc)
+            embed = discord.Embed(title="자가 진단 완료", description="[{}] 부로 {} 님의 자가진단이 성공적으로 실시되었습니다.\n(API 출력메시지 : {})\n다음 자동자가진단은 7시 {}분에 실시될 예정입니다.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"],start_minute,end_msg), color=0x62c1cc)
             await user.send(embed=embed)
             await send_log(log_auto_self_check_success_channel,"[{}]{}님의 자가진단 완료".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
             print("자가진단 성공 후 메시지 발송 완료...")
@@ -269,7 +270,3 @@ async def 관리자전체공지(ctx,*,msg):
     else:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
-
-token = os.environ["BOT_TOKEN"]
-bot.run(token)
-
