@@ -34,6 +34,7 @@ log_json_backup_channel = "847830055916404766"
 @tasks.loop(seconds=60)
 async def auto_self_check():
     global start_minute
+    global last_day
     print("[{}] 무한루프가 돌아가는 중...".format(datetime.datetime.now()))
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d'):
         with open(json_file_name, "r",encoding='UTF-8') as json_file:
