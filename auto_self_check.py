@@ -201,7 +201,10 @@ async def 정보삭제(ctx):
 
         embed = discord.Embed(title="정보 삭제 완료[보안메시지]", description="{} 부로 {} 님의 정보 삭제가 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],data["name"],data["birth"],data["area"],data["school_name"],data["school_type"],data["passward"][:2],end_msg), color=0x62c1cc)
         await user.send(embed=embed)
-
+    else:
+        embed = discord.Embed(title="정보 삭제 실패", description="[{}] 에  [{}] 님의 정보 삭제를 실패하셨습니다.\n디스코드 아이디[{}]로 등록된 정보가 없습니다.\n구체적인 문의는 관리자[white201#0201]님께 문의 부탁드립니다.".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],ctx.author.id,end_msg), color=0x62c1cc)
+        await ctx.send(embed=embed)
+        
 @bot.command()
 async def 정보확인(ctx):
     with open(json_file_name, "r",encoding='UTF-8') as json_file:
@@ -218,7 +221,7 @@ async def 정보확인(ctx):
             user = await bot.fetch_user(523017072796499968)
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     else:
-        embed = discord.Embed(title="정보 확인 실패",description=f"디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.{end_msg})", color=0x62c1cc)
+        embed = discord.Embed(title="정보 확인 실패",description=f"디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.{end_msg}", color=0x62c1cc)
         await ctx.send(embed=embed)
   
 @bot.command()
