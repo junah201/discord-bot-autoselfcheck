@@ -14,7 +14,7 @@ host_name = socket.gethostbyaddr(socket.gethostname())[0]
 bot = commands.Bot(command_prefix='?')
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
-start_minute=0
+start_minute=9
 last_day = ""
 #start_minute=datetime.datetime.now().minute
 
