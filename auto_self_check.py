@@ -10,6 +10,8 @@ import os, sys
 import socket
 import asyncio
 
+import school_data
+
 host_name = socket.gethostbyaddr(socket.gethostname())[0]
 
 bot = commands.Bot(command_prefix='?')
@@ -19,10 +21,11 @@ start_minute=2
 last_day = "2021-05-29"
 #start_minute=datetime.datetime.now().minute
 
-end_msg = "\n\n개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=0&scope=bot)"
+end_msg = "\n\n개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=8&scope=bot)"
 #end_msg = "\n\n봇 : 자동자가진단#4767 | 개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359?permissions=0?scope=bot)"
 json_file_name = "user_data.json"
 last_notice = []
+last_personal_notice = ""
 
 log_add_success_channel = "847490299638186054"
 log_add_failure_channel = "847731541915467797"
@@ -33,6 +36,7 @@ log_auto_self_check_after_send_failure_channel ="847738621972578315"
 log_json_backup_channel = "847830055916404766"
 log_server_join = "848948171408539678"
 log_server_remove = "848950238059560990"
+log_today = "852145484239732756"
 
 area_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']
 back_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']
@@ -49,6 +53,9 @@ async def auto_self_check():
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
 
+        success_user = 0
+        failure_user = 0
+
         start_minute=random.randrange(1,16)
         last_day = datetime.datetime.now().strftime('%Y-%m-%d')
         for user_id in user_data.keys():
@@ -62,6 +69,11 @@ async def auto_self_check():
             print(f"[{name}]님의 자가진단 준비중")
             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
             await send_DM(data,user_id,start_minute,user_data)
+            if data["code"]=="SUCCESS":
+                success_user += 1
+            else:
+                failure_user += 1
+        await send_log(log_today, f"{len(bot.guilds)}개의 서버에서 {success_user+failure_user}번의 자가진단이 실시되었습니다.\n(성공 : {success_user}명, 실패 : {failure_user}명)")
 
 @bot.event
 async def on_ready():
@@ -82,7 +94,7 @@ async def on_error(event, *args, **kwargs):
 
 @bot.event
 async def on_guild_join(guild):
-    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 부로 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
+    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 부로 `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
 
 @bot.event
 async def on_guild_remove(guild):
@@ -115,21 +127,22 @@ async def send_DM(data,user_id,start_minute,user_data):
     except:
         erorr = "erorr"
         pass
-
     if erorr != "erorr":
         if data["code"]=="SUCCESS":
             now = datetime.datetime.now()
             embed = discord.Embed(title="자가 진단 완료", description="[{}] 부로 `{}` 님의 자가진단이 성공적으로 실시되었습니다.\n(API 출력메시지 : {})\n다음 자동자가진단은 `7시 {}분`에 실시될 예정입니다.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"],start_minute,end_msg), color=0x62c1cc)
-            await user.send(embed=embed)
+            
             await send_log(log_auto_self_check_success_channel,"[{}]{}님의 자가진단 완료".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
             print("자가진단 성공 후 메시지 발송 완료...")
         else:
             now = datetime.datetime.now()
             embed = discord.Embed(title="자가 진단 실패", description="[{}] 부로 [{}] 님의\n자가진단이 실시되었습니다만 자가진단에 실패하셨습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n\n{}{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_data[user_id]["name"],user_data[user_id]["birth"],user_data[user_id]["area"],user_data[user_id]["school_name"],user_data[user_id]["school_type"],user_data[user_id]["passward"][:2],data["message"],end_msg), color=0x62c1cc)
-            await user.send(embed=embed)
-            embed = discord.Embed(title="자가 진단 실패",description="[{}]\n<@{}>님의 자가진단 실패\n{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_id,data["message"]), color=0x62c1cc)
-            await send_embed_log(log_auto_self_check_failure_channel,embed)
+            
+            log_embed = discord.Embed(title="자가 진단 실패",description="[{}]\n{}[{}]님의 자가진단 실패\n{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_id,data["message"]), color=0x62c1cc)
+            await send_embed_log(log_auto_self_check_failure_channel,log_embed)
             print("자가진단 실패 후 메시지 발송 완료...")
+        embed.add_field(name="학사 정보",value=f"dsf")
+        await user.send(embed=embed)
     else:
         print("자가 진단 후 메시지 전송 실패...")
         now = datetime.datetime.now()
@@ -178,12 +191,12 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
             embed.add_field(name="입력 형식",value=f"?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg}", inline=False)
             await ctx.send(embed=embed)
         else:
+            #모든 입력 값이 정상일 경우
             with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
                 user_data=json.load(json_file)
+
             user_data[str(ctx.author.id)] = {"uesr_id":str(ctx.author.id),"name":name,"birth":birth,"area":area,"school_name":school_name,"school_type":school_type,"passward":passward}
 
-            with open(json_file_name, "w",encoding='UTF-8') as json_file:
-                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
             now = datetime.datetime.now()
             if str(ctx.guild)!="None":
                 embed = discord.Embed(title="정보 등록 완료", description="[{}] 에 `{}` 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),ctx.author,end_msg),color=0x62c1cc)
@@ -193,11 +206,16 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
             #embed.add_field(name="입력값",value=f"```{ctx.message.content}```{end_msg}")
             await send_embed_log(log_add_success_channel,embed)
 
+            user_data[str(ctx.author.id)]["area_code"] = await school_data.get_area_code(user_data[str(ctx.author.id)]["area"])
+            user_data[str(ctx.author.id)]["school_code"] = await school_data.get_school_code(user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["area_code"])
+            
+            with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+
             user = await bot.fetch_user(ctx.author.id)
             if user is not None:
                 embed = discord.Embed(title="정보 등록 완료[보안메시지]", description="[{}] 부로 `{}` 님의 정보 등록이 완료되었습니다.\n```이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**```{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["birth"],user_data[str(ctx.author.id)]["area"],user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["school_type"],user_data[str(ctx.author.id)]["passward"][:2],end_msg), color=0x62c1cc)
                 await user.send(embed=embed)
-
             else:
                 user = await bot.fetch_user(523017072796499968)
                 await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
@@ -208,7 +226,11 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
         await send_embed_log(log_add_failure_channel,embed)
     #등록 후 서버일 경우  등록 채팅 삭제
     if str(ctx.guild) != "None":
-        msg = await ctx.send("유저 개인정보 보호를 위해 `3초` 후 삭제합니다.")
+        msg = await ctx.send("유저 개인정보 보호를 위해 `5초` 후 삭제합니다.")
+        await asyncio.sleep(1)
+        await msg.edit(content="유저 개인정보 보호를 위해 `4초` 후 삭제합니다.")
+        await asyncio.sleep(1)
+        await msg.edit(content="유저 개인정보 보호를 위해 `3초` 후 삭제합니다.")
         await asyncio.sleep(1)
         await msg.edit(content="유저 개인정보 보호를 위해 `2초` 후 삭제합니다.")
         await asyncio.sleep(1)
@@ -246,11 +268,12 @@ async def 정보확인(ctx):
         user_data=json.load(json_file)
 
     if user_data.get(str(ctx.author.id)):
-        embed = discord.Embed(title="정보 확인", description=f"개인DM으로 정보를 보냈습니다.{end_msg})", color=0x62c1cc)
-        await ctx.send(embed=embed)
+        if str(ctx.guild) != "None":
+            embed = discord.Embed(title="정보 확인", description=f"개인DM으로 정보를 보냈습니다.{end_msg})", color=0x62c1cc)
+            await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
         if user is not None:
-            embed = discord.Embed(title="정보 확인[보안메시지]", description="이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n정보수정을 원하신다면 ?정보등록으로 새로 등록해주시기 바랍니다.\n이미 등록된 데이터가 있어도 새로 등록한 데이터를 기준으로 작동합니다.{}".format(user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["birth"],user_data[str(ctx.author.id)]["area"],user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["school_type"],user_data[str(ctx.author.id)]["passward"][:2],end_msg), color=0x62c1cc)
+            embed = discord.Embed(title="정보 확인[보안메시지]", description="```이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**```\n※정보수정을 원하신다면 `?정보등록`으로 새로 등록해주시기 바랍니다.\n※이미 등록된 데이터가 있어도 새로 등록한 데이터를 기준으로 작동합니다.{}".format(user_data[str(ctx.author.id)]["name"],user_data[str(ctx.author.id)]["birth"],user_data[str(ctx.author.id)]["area"],user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["school_type"],user_data[str(ctx.author.id)]["passward"][:2],end_msg), color=0x62c1cc)
             await user.send(embed=embed)
         else:
             user = await bot.fetch_user(523017072796499968)
@@ -320,15 +343,175 @@ async def 관리자전체공지수정(ctx,*,msg):
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
 
 @bot.command()
-async def 수정(ctx,*,msg):
-    await ctx.send("3초 후 삭제합니다.")
-    await asyncio.sleep(3)
-    await ctx.message.delete()
+async def 관리자개인공지(ctx,name,birth,*,msg):
+    if str(ctx.author.id) == '523017072796499968':
+        global last_personal_notice
+        with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+            user_data=json.load(json_file)
+        user=None
+        for i in user_data.keys():
+            if user_data[i]["name"] == name and user_data[i]["birth"] == birth:
+                user=i
+                break
+
+        if user!=None:
+            embed = discord.Embed(title="관리자 개인 메시지",description=f"{msg}\n\n발신인 : 관리자[{ctx.author}]", color=0x62c1cc)
+            user = await bot.fetch_user(int(user))
+            last_personal_notice = await user.send(embed=embed)
+            await ctx.send("전송 완료!")
+        else:
+            await ctx.send("해당 유저가 없습니다.")
+    else:
+        user = await bot.fetch_user(ctx.author.id)
+        await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+
+@bot.command()
+async def Ping(ctx):
+    await ctx.send(f"현재 핑은 `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}` 기준으로 `{str(round(bot.latency*1000))}ms` 입니다.")
+
+@bot.command()
+async def 관리자종료(ctx):
+    if str(ctx.author.id) == '523017072796499968':
+        await ctx.bot.logout()
+    else:
+        user = await bot.fetch_user(ctx.author.id)
+        await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+
+@bot.command()
+async def 급식(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),user: discord.User=None):
+    if user==None:
+        user = str(ctx.author.id)
+    else:
+        user = str(user.id)
+
+    if len(day) == 8 and day.isdigit():
+        with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+            user_data=json.load(json_file)
+
+        user_data_keys = user_data[user].keys()
+
+        if user in user_data:
+            if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
+                user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
+                user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                with open(json_file_name, "w",encoding='UTF-8') as json_file:
+                    json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+                
+            cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
+
+            if cafeteria != None:
+                embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
+                msg = ""
+                for i in cafeteria:
+                    msg += f"{i}\n"
+                msg = msg[:-2]
+
+                embed.add_field(name="급식",value=f"`{msg}`{end_msg}", inline=False)
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(f"`{day}`의 급식 정보가 없습니다.")   
+        else:
+            await ctx.send("해당 유저의 데이터가 없습니다. `?정보등록`으로 유저 데이터를 입력해주십시오.")
+    else:
+        await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
+        
+@bot.command()
+async def 학년반정보입력(ctx, school_grade:str=None, school_class:str=None):
+    if school_grade == None or school_class == None:
+        await ctx.send("`?학년반정보입력 [학년] [반]`의 형식으로 입력해주십시오. (예 : `?학년반정보입력 1 3`)")
+    else:
+        print(f"grade : {school_grade}, class : {school_class}")
+        if school_grade.isdigit() and school_class.isdigit() and int(school_grade) < 7 and int(school_class) < 40:
+            with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+                user_data=json.load(json_file)
+
+            user_data[str(ctx.author.id)]["school_grade"] = school_grade
+            user_data[str(ctx.author.id)]["school_class"] = school_class
+
+            with open(json_file_name, "w",encoding='UTF-8') as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+
+            embed = discord.Embed(title="정보 입력 완료",description=f"학년 : `{school_grade}` \n반 : `{school_class}`{end_msg})", color=0x62c1cc)
+            await ctx.send(embed = embed)
+
+@bot.command()
+async def 학교코드(ctx):
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+    for i in user_data.keys():
+        print(user_data[i]["name"])
+        user_data[i]["area_code"] = await school_data.get_area_code(user_data[i]["area"])
+        user_data[i]["school_code"] = await school_data.get_school_code(user_data[i]["school_name"],user_data[i]["area_code"])
+        print("name : {},area_code : {}, school_code : {}".format(user_data[i]["name"],user_data[i]["area_code"],user_data[i]["school_code"]))
+    with open(json_file_name, "w",encoding='UTF-8') as json_file:
+        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
 
 
+@bot.command()
+async def 시간표(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),user: discord.User=None):
+    if user==None:
+        user = str(ctx.author.id)
+    else:
+        user = str(user.id)
+
+    if len(day) == 8 and day.isdigit():
+        with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+            user_data=json.load(json_file)
+
+        user_data_keys = user_data[user].keys()
+
+        if user in user_data:
+            if "school_grade" not in user_data_keys and "school_class" not in user_data_keys:
+                await ctx.send("입력된 학년반 데이터가 없습니다. `?학년반정보입력` 으로 입력해주십시오.")
+            else:
+                if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
+                    user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
+                    user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                    with open(json_file_name, "w",encoding='UTF-8') as json_file:
+                        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+
+                timetable = await school_data.get_school_timetable(user_data[user]["school_code"],user_data[user]["area_code"],day,user_data[user]["school_type"],user_data[user]["school_grade"],user_data[user]["school_class"])
+                print(f"time : {timetable}")
+                msg = ""
+                if timetable != None:
+                    for i in range(len(timetable)):
+                        msg += f"{i+1}교시 : {timetable[i]}\n"
+                else:
+                    msg = "시간표 데이터가 없습니다."
+                embed = discord.Embed(title="시간표",description=f"일시 : `{day}`\n\n{msg}{end_msg})", color=0x62c1cc)
+                #\n학년 : `{user_data[user]["school_grade"]}` 반 : `{user_data[user]["school_class"]}
+                await ctx.send(embed= embed)
+    else:
+        await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
+
+@bot.command()
+async def 학사일정(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),user: discord.User=None):
+    if user==None:
+        user = str(ctx.author.id)
+    else:
+        user = str(user.id)
+
+    if len(day) == 8 and day.isdigit():
+        with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+            user_data=json.load(json_file)
+
+        user_data_keys = user_data[user].keys()
+
+        if user in user_data:
+            if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
+                user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
+                user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                with open(json_file_name, "w",encoding='UTF-8') as json_file:
+                    json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+            schedule = await school_data.get_school_schedule(user_data[user]["school_code"],user_data[user]["area_code"],day)
+            await ctx.send(f"일시 : `{day}`\n일정 : {schedule}")
+    else:
+        await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
 
 
-token = 'ODQ2NjUwNjE4NzAxMjgzMzU5.YKym1Q.O1KtKTGHRJszDSVJKZ71Kq0QYuM'
-#token = 'Nzk4NDI0NTk5NDk4MDYzODky.X_002g.Wgrp8Mr_gfpJrhBbd4UQHAUkVVo'
+with open("option.json", "r",encoding='UTF-8') as json_file:
+    option=json.load(json_file)
+
+token = option["token"]
 bot.run(token)
