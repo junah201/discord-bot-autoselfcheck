@@ -6,7 +6,11 @@
         "area": "서울",
         "school_name": "중동고",
         "school_type": "고등학교",
-        "passward": "0201"
+        "passward": "0201",
+        "area_code": "B10",
+        "school_code": "7010238",
+        "school_grade": "1",
+        "school_class": "8"
     },
     "418022156438601738": {
         "uesr_id": "418022156438601738",
@@ -15,6 +19,8 @@
         "area": "서울시",
         "school_name": "중산고",
         "school_type": "고등학교",
-        "passward": "1023"
+        "passward": "1023",
+        "area_code": "B10",
+        "school_code": "7010239"
     }
 }
