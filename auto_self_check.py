@@ -17,13 +17,13 @@ host_name = socket.gethostbyaddr(socket.gethostname())[0]
 bot = commands.Bot(command_prefix='?')
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
-start_minute=2
+start_minute=13
 last_day = "2021-05-29"
 #start_minute=datetime.datetime.now().minute
 
 end_msg = "\n\n개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359&permissions=8&scope=bot)"
 #end_msg = "\n\n봇 : 자동자가진단#4767 | 개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/api/oauth2/authorize?client_id=846650618701283359?permissions=0?scope=bot)"
-json_file_name = "temp_user_data.json"
+
 last_notice = []
 last_personal_notice = ""
 
@@ -48,11 +48,8 @@ async def auto_self_check():
     global start_minute
     global last_day
 
-    
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
-    if datetime.datetime.now().hour == 13:
-        print(1)
-    #if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
@@ -140,16 +137,7 @@ async def send_DM(data,user_id,start_minute,user_data):
     print("school_code" in user_data[user_id].keys())
     if erorr != "erorr":
         if data["code"]=="SUCCESS":
-            now = datetime.datetime.now()
-            embed = discord.Embed(title="자가 진단 완료", description="[{}] 부로 `{}` 님의 자가진단이 성공적으로 실시되었습니다.\n(API 출력메시지 : {})\n다음 자동자가진단은 `7시 {}분`에 실시될 예정입니다.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],data["message"],start_minute,end_msg), color=0x62c1cc)
-            
-            print(f"school_code in user_data.keys() and area_code in user_data.keys() :")
-            print("school_code" in user_data.keys() and "area_code" in user_data.keys())
-            print(f"school_grade in user_data.keys() and school_class in user_data.keys() :")
-            print("school_grade" in user_data.keys() and "school_class" in user_data.keys())
-            print(f"school_code in user_data.keys() and area_code in user_data.keys() :")
-            print("school_code" in user_data.keys() and "area_code" in user_data.keys())
-
+            embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.\n다음 자동자가진단은 `7시 {start_minute}분`에 실시될 예정입니다.", color=0x62c1cc)
             #학사일정 전송을 위해 학교코드, 지역코드가 있는지 확인 후 전송
             if "school_code" in user_data[user_id].keys() and "area_code" in user_data[user_id].keys() and str(user_data[user_id]["school_code"]) != "Null":
                 schedule = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
@@ -157,7 +145,7 @@ async def send_DM(data,user_id,start_minute,user_data):
                     msg = schedule
                 else:
                     msg = "X"
-                embed.add_field(name = "오늘의 학사일정",value = f"일시 : `{datetime.datetime.now().strftime('%Y%m%d')}`\n일정 : {msg}")
+                embed.add_field(name = "오늘의 학사일정",value = f"\n일정 : `{msg}`")
 
             #시간표 정보 전송을 위해 학년반 정보가 있는지 확인 후 전송
             if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
@@ -166,10 +154,11 @@ async def send_DM(data,user_id,start_minute,user_data):
                     msg = ""
                     for i in range(len(timetable)):
                         msg += f"{i+1}교시 : {timetable[i]}\n"
-                    embed.add_field(name = "오늘의 시간표",value = f"일시 : `{datetime.datetime.now().strftime('%Y%m%d')}`\n{msg}")
+                    embed.add_field(name = "오늘의 시간표",value = f">>> {msg}")
+            #학년반정보가 등록되지 않아서 시간표 정보 출력이 불가능 할 경우
             else:
                 msg = "학년반 정보가 없습니다. `?학년반정보입력`으로 입력해주십시오."
-                embed.add_field(name = "오늘의 시간표",value = f"일시 : `{msg}")
+                embed.add_field(name = "오늘의 시간표",value = f"`{msg}")
 
             #급식 정보 전송을 위해 학교코드, 지역코드가 있는지 확인 후 전송
             if "school_code" in user_data[user_id].keys() and "area_code" in user_data[user_id].keys() and str(user_data[user_id]["school_code"]) != "Null":
@@ -177,27 +166,25 @@ async def send_DM(data,user_id,start_minute,user_data):
                 if cafeteria != None:
                     msg = ""
                     for i in cafeteria:
-                        msg += f"{i}\n"
-                    msg = msg[:-2]
-                    embed.add_field(name = "오늘의 급식",value=f"`{msg}`")
-            
+                        msg += f"> {i}\n"
+                    msg = msg[:-1]
+
+                    embed.add_field(name = "오늘의 급식",value=f"{msg}")
             
             await user.send(embed=embed)
-            await send_log(log_auto_self_check_success_channel,"[{}]{}님의 자가진단 완료".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
+            await send_log(log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
             print("자가진단 성공 후 메시지 발송 완료...")
+        #자가진단을 실패하였을 경우
         else:
-            now = datetime.datetime.now()
             embed = discord.Embed(title="자가 진단 실패", description="[{}] 부로 [{}] 님의\n자가진단이 실시되었습니다만 자가진단에 실패하셨습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n\n{}{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_data[user_id]["name"],user_data[user_id]["birth"],user_data[user_id]["area"],user_data[user_id]["school_name"],user_data[user_id]["school_type"],user_data[user_id]["passward"][:2],data["message"],end_msg), color=0x62c1cc)
-            
-            log_embed = discord.Embed(title="자가 진단 실패",description="[{}]\n{}[{}]님의 자가진단 실패\n{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_id,data["message"]), color=0x62c1cc)
+            await user.send(embed=embed)
+            log_embed = discord.Embed(title="자가 진단 실패",description="[{}]\n{}[{}]님의 자가진단 실패\n{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_id,data["message"]), color=0x62c1cc)
             await send_embed_log(log_auto_self_check_failure_channel,log_embed)
             print("자가진단 실패 후 메시지 발송 완료...")
-
-        
+    #유저 id를 찾지 못하여 discord user 오브젝트를 못 얻었을 경우
     else:
         print("자가 진단 후 메시지 전송 실패...")
-        now = datetime.datetime.now()
-        embed = discord.Embed(title="자가 진단 후 메시지 전송 실패",description=f"[{now.strftime('%Y-%m-%d %H:%M:%S')}] 에 {user_data[user_id]['name']}(<@{user_id}>) 님의 자가진단이 실시되었습니다만 확인 메시지가 전송되지 않았습니다.\n자가진단결과 : {data['message']}", color=0x62c1cc)
+        embed = discord.Embed(title="자가 진단 후 메시지 전송 실패",description=f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 에 {user_data[user_id]['name']}(<@{user_id}>) 님의 자가진단이 실시되었습니다만 확인 메시지가 전송되지 않았습니다.\n자가진단결과 : {data['message']}", color=0x62c1cc)
         await send_embed_log(log_auto_self_check_after_send_failure_channel,embed)
 
 @bot.command()
@@ -206,6 +193,7 @@ async def 명령어(ctx):
     embed.add_field(name="?정보등록", value="?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]```?정보등록 홍길동 721027 서울시 길동고 고등학교 1234``````?정보등록 홍길동 050201 충청남도 길동중 중학교 2580```※정보등록은 `개인DM`으로 하는 것을 보안상 추천 드립니다.", inline=False)
     embed.add_field(name="?정보삭제", value="?정보삭제\n※디스코드 아이디를 기준으로 삭제합니다.\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.", inline=False)
     embed.add_field(name="?정보확인", value="?정보확인\n※디스코드 아이디를 기준으로 확인합니다.\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.", inline=False)
+    embed.add_field(name="기타명령어",value="`?반번호정보입력 [반] [번호]`\n`?급식`\n`?시간표`\n`?학사일정`", inline=False)
     embed.add_field(name="기타",value="자동자가진단은 7시 00분에서 7시 16분 사이에 랜덤하게 작동하며,\n자동자가진단 DM 메시지를 통하여 그 다음날의 작동 시간을 알 수 있습니다.", inline=False)
     embed.add_field(name="정보",value=end_msg)
     await ctx.send(embed=embed)
@@ -253,7 +241,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                 embed = discord.Embed(title="정보 등록 완료", description="[{}] 에 `{}` 님의 정보 등록이 완료되었습니다.\n구체적인 등록 정보는 개인DM을 확인해주세요.{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),ctx.author,end_msg),color=0x62c1cc)
                 await ctx.send(embed=embed)
 
-            embed = discord.Embed(title="정보 등록 완료", description=f"이름 : [{ctx.author}]\n서버 : [{ctx.guild}]\n채널 : [{ctx.channel}]\n입력값 : ```{ctx.message.content}```{end_msg}", color=0x62c1cc)
+            embed = discord.Embed(title="정보 등록 완료", description=f"이름 : [{ctx.author}]\n서버 : [{ctx.guild}]\n채널 : [{ctx.channel}]\n입력값 : ```{ctx.message.content}```", color=0x62c1cc)
             #embed.add_field(name="입력값",value=f"```{ctx.message.content}```{end_msg}")
             await send_embed_log(log_add_success_channel,embed)
 
@@ -273,7 +261,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
     else:
         embed = discord.Embed(title="정보 등록 실패", description=f"모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  ?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg})", color=0x62c1cc)
         await ctx.send(embed = embed)
-        embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 실패하셨습니다.\n입력값 : ```{ctx.message.content}```{end_msg}",color=0x62c1cc)
+        embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 실패하셨습니다.\n입력값 : ```{ctx.message.content}```",color=0x62c1cc)
         await send_embed_log(log_add_failure_channel,embed)
     #등록 후 서버일 경우  등록 채팅 삭제
     if str(ctx.guild) != "None":
@@ -439,9 +427,8 @@ async def 급식(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),us
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
 
-        user_data_keys = user_data[user].keys()
-
         if user in user_data:
+            user_data_keys = user_data[user].keys()
             if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
                 user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
                 user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
@@ -455,9 +442,8 @@ async def 급식(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),us
                 msg = ""
                 for i in cafeteria:
                     msg += f"{i}\n"
-                msg = msg[:-2]
 
-                embed.add_field(name="급식",value=f"`{msg}`{end_msg}", inline=False)
+                embed.add_field(name="급식",value=f">>> {msg}", inline=False)
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(f"`{day}`의 급식 정보가 없습니다.")   
@@ -501,6 +487,7 @@ async def 학교코드(ctx):
 
 @bot.command()
 async def 시간표(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d')),user: discord.User=None):
+    print(day)
     if user==None:
         user = str(ctx.author.id)
     else:
@@ -560,9 +547,24 @@ async def 학사일정(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d
     else:
         await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
 
+@bot.command()
+async def 시간(ctx):
+    await ctx.send(f"{datetime.datetime.now().strftime('%Y%m%d')}")
+
+@bot.command()
+async def 재시작(ctx):
+    bot.logout()
+    bot.run(token)
+
+@bot.command()
+async def test(ctx):
+    embed = discord.Embed(title="test",description=f"<:greencheck:847787187192725516>", color=0x62c1cc)
+    await ctx.send(embed=embed)
 
 with open("option.json", "r",encoding='UTF-8') as json_file:
     option=json.load(json_file)
-
+    
+json_file_name = option["json_file"]
+print(json_file_name)
 token = option["token"]
 bot.run(token)
