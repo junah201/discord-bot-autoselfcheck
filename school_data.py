@@ -117,6 +117,7 @@ async def get_area_code(school_area:str):
 async def get_school_cafeteria(school_code, area_code,day):
     try:
         url = f'https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&MLSV_YMD={day}'
+        print(url)
         response = requests.get(url)
         school_data=json.loads(response.text)
 
