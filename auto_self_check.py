@@ -68,10 +68,14 @@ async def auto_self_check():
             user_id = user_data[user_id]["uesr_id"]
             print(f"[{name}]님의 자가진단 준비중")
             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-            await send_DM(data,user_id,start_minute,user_data)
-            if data["code"]=="SUCCESS":
-                success_user += 1
-            else:
+            try:
+                await send_DM(data,user_id,start_minute,user_data)
+                if data["code"]=="SUCCESS":
+                    success_user += 1
+                else:
+                    failure_user += 1
+            except:
+                print("send_DM 실패")
                 failure_user += 1
         await send_log(log_today, f"{len(bot.guilds)}개의 서버에서 {success_user+failure_user}번의 자가진단이 실시되었습니다.\n(성공 : {success_user}명, 실패 : {failure_user}명)")
 
@@ -539,7 +543,42 @@ async def 내일급식(ctx,user: discord.User=None):
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
             
         cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
-        
+
+        if cafeteria != None:
+            embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
+            msg = ""
+            for i in cafeteria:
+                msg += f"{i}\n"
+
+            embed.add_field(name="급식",value=f">>> {msg}", inline=False)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"`{day}`의 급식 정보가 없습니다.")   
+    else:
+        await ctx.send("해당 유저의 데이터가 없습니다. `?정보등록`으로 유저 데이터를 입력해주십시오.")
+
+@bot.command()
+async def 어제급식(ctx,user: discord.User=None): 
+    day=datetime.datetime.now() - datetime.timedelta(days=1)
+    day = day.strftime('%Y%m%d')
+    if user==None:
+        user = str(ctx.author.id)
+    else:
+        user = str(user.id)
+    print(day)
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+
+    if user in user_data:
+        user_data_keys = user_data[user].keys()
+        if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
+            user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
+            user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+            with open(json_file_name, "w",encoding='UTF-8') as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+            
+        cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
+
         if cafeteria != None:
             embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
             msg = ""
