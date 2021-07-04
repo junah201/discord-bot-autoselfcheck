@@ -701,10 +701,10 @@ async def test(ctx):
     embed = discord.Embed(title="test",description=f"<:greencheck:847787187192725516>", color=0x62c1cc)
     await ctx.send(embed=embed)
 
-with open("option.json", "r",encoding='UTF-8') as json_file:
-    option=json.load(json_file)
+with open("config.json", "r",encoding='UTF-8') as json_file:
+    config=json.load(json_file)
     
-json_file_name = option["json_file"]
+json_file_name = config["json_file"]
 print(json_file_name)
-token = option["token"]
+token = config["token"]
 bot.run(token)
