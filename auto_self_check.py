@@ -83,7 +83,7 @@ async def auto_self_check():
 async def on_ready():
     print("봇 실행 완료")
     now = datetime.datetime.now()
-    game = discord.Game("?명령어 | 노동 ")
+    game = discord.Game(" ?명령어 | 노동  ")
     await bot.change_presence(status=discord.Status.online, activity=game)
     embed = discord.Embed(title="봇 실행 완료", description=f"[{now}] 에 [{host_name}] 에서 봇이 실행되었습니다.", color=0x62c1cc)
     await send_log(log_bot_start_channel,f"`[{now}] [{host_name}] 에서 봇이 실행되었습니다.`")
@@ -283,7 +283,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                 user = await bot.fetch_user(523017072796499968)
                 await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     else:
-        embed = discord.Embed(title="정보 등록 실패", description=f"모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  ?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg})", color=0x62c1cc)
+        embed = discord.Embed(title="정보 등록 실패", description=f"모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  ?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg}", color=0x62c1cc)
         await ctx.send(embed = embed)
         embed = discord.Embed(title="정보 등록 실패", description=f"[{ctx.author}]님이 [{ctx.guild}] 서버 - [{ctx.channel}] 채널에서 정보등록을 실패하셨습니다.\n입력값 : ```{ctx.message.content}```",color=0x62c1cc)
         await send_embed_log(log_add_failure_channel,embed)
@@ -332,7 +332,7 @@ async def 정보확인(ctx):
 
     if user_data.get(str(ctx.author.id)):
         if str(ctx.guild) != "None":
-            embed = discord.Embed(title="정보 확인", description=f"개인DM으로 정보를 보냈습니다.{end_msg})", color=0x62c1cc)
+            embed = discord.Embed(title="정보 확인", description=f"개인DM으로 정보를 보냈습니다.{end_msg}", color=0x62c1cc)
             await ctx.send(embed=embed)
         user = await bot.fetch_user(str(ctx.author.id))
         if user is not None:
@@ -342,7 +342,7 @@ async def 정보확인(ctx):
             user = await bot.fetch_user(523017072796499968)
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     else:
-        embed = discord.Embed(title="정보 확인 실패",description=f"디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.{end_msg})", color=0x62c1cc)
+        embed = discord.Embed(title="정보 확인 실패",description=f"디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.{end_msg}", color=0x62c1cc)
         await ctx.send(embed=embed)
 
 @bot.command()
@@ -608,7 +608,7 @@ async def 학년반정보입력(ctx, school_grade:str=None, school_class:str=Non
             with open(json_file_name, "w",encoding='UTF-8') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
-            embed = discord.Embed(title="정보 입력 완료",description=f"학년 : `{school_grade}` \n반 : `{school_class}`{end_msg})", color=0x62c1cc)
+            embed = discord.Embed(title="정보 입력 완료",description=f"학년 : `{school_grade}` \n반 : `{school_class}`{end_msg}", color=0x62c1cc)
             await ctx.send(embed = embed)
 
 @bot.command()
@@ -657,7 +657,7 @@ async def 시간표(ctx, day:str=str(datetime.datetime.now().strftime('%Y%m%d'))
                         msg += f"{i+1}교시 : {timetable[i]}\n"
                 else:
                     msg = "시간표 데이터가 없습니다."
-                embed = discord.Embed(title="시간표",description=f"일시 : `{day}`\n\n{msg}{end_msg})", color=0x62c1cc)
+                embed = discord.Embed(title="시간표",description=f"일시 : `{day}`\n\n{msg}{end_msg}", color=0x62c1cc)
                 #\n학년 : `{user_data[user]["school_grade"]}` 반 : `{user_data[user]["school_class"]}
                 await ctx.send(embed= embed)
     else:
