@@ -9,6 +9,8 @@ import json
 import os, sys
 import socket
 import asyncio
+
+#여기서 부터 직접 만든 라이브러리
 import school_data
 
 host_name = socket.gethostbyaddr(socket.gethostname())[0]
