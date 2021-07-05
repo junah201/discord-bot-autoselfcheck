@@ -131,6 +131,10 @@ async def get_school_cafeteria(school_code, area_code,day):
                 else:
                     temp_item += j
             if temp_item != "":
+                if temp_item[0] == "-":
+                    temp_item = temp_item[1:]
+                if temp_item[-1] == "*":
+                    temp_item = temp_item[:-1]
                 school_cafeteria.append(temp_item)
                 temp_item = ""
 
@@ -144,10 +148,6 @@ async def get_school_timetable(school_code, area_code,day,school_type,school_gra
     school_type_elementary = ['초등학교', '초','초등']
     school_type_special = ['특수학교', '특','특수','특별']
     try:
-        print(school_type)
-        print(school_type in school_type_high)
-        print(school_type in school_type_middle)
-        print(school_type in school_type_elementary)
         if school_type in school_type_high:
             url = f"https://open.neis.go.kr/hub/hisTimetable?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
             temp = "hisTimetable"
@@ -167,7 +167,11 @@ async def get_school_timetable(school_code, area_code,day,school_type,school_gra
         timetable_list = [0 for i in range(len(timetable_data[temp][1]['row']))]
 
         for i in timetable_data[temp][1]['row']:
-            timetable_list[int(i['PERIO'])-1] = i['ITRT_CNTNT']
+            #시간표 맨 앞에 - 제거
+            if i['ITRT_CNTNT'][0] == "-":
+                timetable_list[int(i['PERIO'])-1] = str(i['ITRT_CNTNT'])[1:]
+            else:
+                timetable_list[int(i['PERIO'])-1] = i['ITRT_CNTNT']
 
         return timetable_list
     except:
