@@ -9,8 +9,6 @@ import json
 import os, sys
 import socket
 import asyncio
-
-#여기서 부터 직접 만든 라이브러리
 import school_data
 
 host_name = socket.gethostbyaddr(socket.gethostname())[0]
@@ -121,11 +119,11 @@ async def on_guild_join(guild):
 
     channel = bot.get_channel(int(system_channel))
     await channel.send(embed = embed)
-    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 부로 `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
+    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
 
 @bot.event
 async def on_guild_remove(guild):
-    await send_log(log_server_remove,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 부로 [{guild}] 서버에 자가진단 봇이 삭제되었습니다.")
+    await send_log(log_server_remove,f"`[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [{guild}] 서버에 자가진단 봇이 삭제되었습니다.`")
 
 async def user_data_backup():
     channel = bot.get_channel(int(log_json_backup_channel))
@@ -135,8 +133,6 @@ async def user_data_backup():
     await channel.send(file=file)
     file = discord.File("auto_self_check.py")
     await channel.send(file=file)
-
-
 
 async def send_embed_log(channel,embed):
     channel = bot.get_channel(int(channel))
@@ -703,10 +699,10 @@ async def test(ctx):
     embed = discord.Embed(title="test",description=f"<:greencheck:847787187192725516>", color=0x62c1cc)
     await ctx.send(embed=embed)
 
-with open("config.json", "r",encoding='UTF-8') as json_file:
-    config=json.load(json_file)
+with open("option.json", "r",encoding='UTF-8') as json_file:
+    option=json.load(json_file)
     
-json_file_name = config["json_file"]
+json_file_name = option["json_file"]
 print(json_file_name)
-token = config["token"]
+token = option["token"]
 bot.run(token)
