@@ -1,0 +1,2 @@
+python auto_self_check.py
+pause

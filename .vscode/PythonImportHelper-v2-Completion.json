@@ -1,0 +1,781 @@
+[
+    {
+        "label": "discord",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "discord",
+        "description": "discord",
+        "detail": "discord",
+        "documentation": {}
+    },
+    {
+        "label": "commands",
+        "importPath": "discord.ext",
+        "description": "discord.ext",
+        "isExtraImport": true,
+        "detail": "discord.ext",
+        "documentation": {}
+    },
+    {
+        "label": "tasks",
+        "importPath": "discord.ext",
+        "description": "discord.ext",
+        "isExtraImport": true,
+        "detail": "discord.ext",
+        "documentation": {}
+    },
+    {
+        "label": "time,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time.",
+        "description": "time.",
+        "detail": "time.",
+        "documentation": {}
+    },
+    {
+        "label": "hcskr",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "hcskr",
+        "description": "hcskr",
+        "detail": "hcskr",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "os,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os.",
+        "description": "os.",
+        "detail": "os.",
+        "documentation": {}
+    },
+    {
+        "label": "socket",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socket",
+        "description": "socket",
+        "detail": "socket",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "school_data",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "school_data",
+        "description": "school_data",
+        "detail": "school_data",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "embed.help_embed",
+        "description": "embed.help_embed",
+        "isExtraImport": true,
+        "detail": "embed.help_embed",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "isExtraImport": true,
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "log_add_success_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_add_success_channel = \"863573994070343720\"\nlog_add_failure_channel = \"863574076533375006\"\nlog_bot_start_channel = \"863573975225073684\"\nlog_auto_self_check_failure_channel = \"863574173631643688\"\nlog_auto_self_check_success_channel = \"863574136545345597\"\nlog_auto_self_check_after_send_failure_channel =\"863574200102682684\"\nlog_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_add_failure_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_add_failure_channel = \"863574076533375006\"\nlog_bot_start_channel = \"863573975225073684\"\nlog_auto_self_check_failure_channel = \"863574173631643688\"\nlog_auto_self_check_success_channel = \"863574136545345597\"\nlog_auto_self_check_after_send_failure_channel =\"863574200102682684\"\nlog_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_bot_start_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_bot_start_channel = \"863573975225073684\"\nlog_auto_self_check_failure_channel = \"863574173631643688\"\nlog_auto_self_check_success_channel = \"863574136545345597\"\nlog_auto_self_check_after_send_failure_channel =\"863574200102682684\"\nlog_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_auto_self_check_failure_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_auto_self_check_failure_channel = \"863574173631643688\"\nlog_auto_self_check_success_channel = \"863574136545345597\"\nlog_auto_self_check_after_send_failure_channel =\"863574200102682684\"\nlog_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_auto_self_check_success_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_auto_self_check_success_channel = \"863574136545345597\"\nlog_auto_self_check_after_send_failure_channel =\"863574200102682684\"\nlog_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_json_backup_channel",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_json_backup_channel = \"863574329966067722\"\nlog_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_server_join",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_server_join = \"863574271661441024\"\nlog_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_server_remove",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_server_remove = \"863574297594953779\"\nlog_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_add_remove",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_add_remove = \"863576001912504340\"\nlog_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_today",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_today = \"852145484239732756\"\nlog_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_today_total",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_today_total = \"863004820965163038\"\nlog_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_today_success",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_today_success = \"863004820965163038\"\nlog_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "log_today_failure",
+        "kind": 5,
+        "importPath": "channels.log_channels",
+        "description": "channels.log_channels",
+        "peekOfCode": "log_today_failure = \"863004789839495169\"",
+        "detail": "channels.log_channels",
+        "documentation": {}
+    },
+    {
+        "label": "end_msg",
+        "kind": 5,
+        "importPath": "embed.help_embed",
+        "description": "embed.help_embed",
+        "peekOfCode": "end_msg = \"\\n\\n개발자 : white201#0201 | [개발자 서버](https://discord.gg/bhJEbEgHED) | [초대링크](https://discord.com/oauth2/authorize?client_id=863013480709750805&permissions=2184571456&scope=bot)\"\nhelp_embed = discord.Embed(title=\"명령어\", description=\"자동자가진단 봇에 대한 도움말 입니다. ?명령어 로 확인 가능합니다.\\n평일날에만 자가진단이 작동하며, 공휴일 제외 기능을 추가할 예정입니다.\",color=0x62c1cc)\nhelp_embed.add_field(name=\"?정보등록\", value=\"?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]```?정보등록 홍길동 721027 서울시 길동고 고등학교 1234``````?정보등록 홍길동 050201 충청남도 길동중 중학교 2580```※정보등록은 `개인DM`으로 하는 것을 보안상 추천 드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?정보삭제\", value=\"※디스코드 아이디를 기준으로 삭제합니다.\\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?정보확인\", value=\"※디스코드 아이디를 기준으로 확인합니다.\\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?진단참여\", value=\"수동으로 자가진단을 실시합니다.\", inline=False)\nhelp_embed.add_field(name=\"?자가진단실시\", value=\"중지되었던 자동자가진단을 다시 실시합니다.\", inline=False)\nhelp_embed.add_field(name=\"?자가진단중지\", value=\"이제부터 자동자가진단이 작동되지않습니다.\", inline=False)\nhelp_embed.add_field(name=\"?급식\", value=\"?급식\\n?급식 <날짜> <태그>의 형식으로 타인의 급식도 볼 수 있습니다.\", inline=False)\nhelp_embed.add_field(name=\"기타명령어\",value=\"`?학년반정보입력 [반] [번호]`\\n`?급식`, `?내일급식`, `?어제급식`\\n`?시간표`\\n`?학사일정`\", inline=False)",
+        "detail": "embed.help_embed",
+        "documentation": {}
+    },
+    {
+        "label": "help_embed",
+        "kind": 5,
+        "importPath": "embed.help_embed",
+        "description": "embed.help_embed",
+        "peekOfCode": "help_embed = discord.Embed(title=\"명령어\", description=\"자동자가진단 봇에 대한 도움말 입니다. ?명령어 로 확인 가능합니다.\\n평일날에만 자가진단이 작동하며, 공휴일 제외 기능을 추가할 예정입니다.\",color=0x62c1cc)\nhelp_embed.add_field(name=\"?정보등록\", value=\"?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]```?정보등록 홍길동 721027 서울시 길동고 고등학교 1234``````?정보등록 홍길동 050201 충청남도 길동중 중학교 2580```※정보등록은 `개인DM`으로 하는 것을 보안상 추천 드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?정보삭제\", value=\"※디스코드 아이디를 기준으로 삭제합니다.\\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?정보확인\", value=\"※디스코드 아이디를 기준으로 확인합니다.\\n※만약 디스코드 계정이 바뀌었을 경우 white201#0201 님께 문의 부탁드립니다.\", inline=False)\nhelp_embed.add_field(name=\"?진단참여\", value=\"수동으로 자가진단을 실시합니다.\", inline=False)\nhelp_embed.add_field(name=\"?자가진단실시\", value=\"중지되었던 자동자가진단을 다시 실시합니다.\", inline=False)\nhelp_embed.add_field(name=\"?자가진단중지\", value=\"이제부터 자동자가진단이 작동되지않습니다.\", inline=False)\nhelp_embed.add_field(name=\"?급식\", value=\"?급식\\n?급식 <날짜> <태그>의 형식으로 타인의 급식도 볼 수 있습니다.\", inline=False)\nhelp_embed.add_field(name=\"기타명령어\",value=\"`?학년반정보입력 [반] [번호]`\\n`?급식`, `?내일급식`, `?어제급식`\\n`?시간표`\\n`?학사일정`\", inline=False)\nhelp_embed.add_field(name=\"기타\",value=\"자동자가진단은 7시 00분에서 7시 16분 사이에 랜덤하게 작동하며,\\n자동자가진단 DM 메시지를 통하여 그 다음날의 작동 시간을 알 수 있습니다.\", inline=False)",
+        "detail": "embed.help_embed",
+        "documentation": {}
+    },
+    {
+        "label": "json_file_name",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "json_file_name = config[\"json_file\"]\nprint(f\"json_file_name : {json_file_name}\")\ntoken = config[\"token\"]\nprint(f\"token : {token}\")\nhost_name = socket.gethostbyaddr(socket.gethostname())[0]\nprint(f\"host_name : {host_name}\")\nprint(f\"prefix : {config['prefix']}\")\nbot = commands.Bot(command_prefix=config[\"prefix\"])\n#KST = datetime.timezone(datetime.timedelta(hours=9))\nstart_minute=1",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "token",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "token = config[\"token\"]\nprint(f\"token : {token}\")\nhost_name = socket.gethostbyaddr(socket.gethostname())[0]\nprint(f\"host_name : {host_name}\")\nprint(f\"prefix : {config['prefix']}\")\nbot = commands.Bot(command_prefix=config[\"prefix\"])\n#KST = datetime.timezone(datetime.timedelta(hours=9))\nstart_minute=1\nlast_day = \"2021-05-29\"\n#start_minute=datetime.datetime.now().minute",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "host_name",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "host_name = socket.gethostbyaddr(socket.gethostname())[0]\nprint(f\"host_name : {host_name}\")\nprint(f\"prefix : {config['prefix']}\")\nbot = commands.Bot(command_prefix=config[\"prefix\"])\n#KST = datetime.timezone(datetime.timedelta(hours=9))\nstart_minute=1\nlast_day = \"2021-05-29\"\n#start_minute=datetime.datetime.now().minute\nlast_notice = []\nlast_personal_notice = \"\"",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "bot",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "bot = commands.Bot(command_prefix=config[\"prefix\"])\n#KST = datetime.timezone(datetime.timedelta(hours=9))\nstart_minute=1\nlast_day = \"2021-05-29\"\n#start_minute=datetime.datetime.now().minute\nlast_notice = []\nlast_personal_notice = \"\"\narea_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "#KST",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "#KST = datetime.timezone(datetime.timedelta(hours=9))\nstart_minute=1\nlast_day = \"2021-05-29\"\n#start_minute=datetime.datetime.now().minute\nlast_notice = []\nlast_personal_notice = \"\"\narea_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "last_day",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "last_day = \"2021-05-29\"\n#start_minute=datetime.datetime.now().minute\nlast_notice = []\nlast_personal_notice = \"\"\narea_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "last_notice",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "last_notice = []\nlast_personal_notice = \"\"\narea_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "last_personal_notice",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "last_personal_notice = \"\"\narea_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day\n    print(f\"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...\")",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "area_list",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "area_list = ['서울시','부산시','대구시','인천시','광주시','대전시','울산시','세종시','경기도','강원도','충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','제주도','제주특별자치도']\nback_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day\n    print(f\"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...\")\n    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "back_area_list",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "back_area_list = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시','부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청','대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청','인천', '인천광역시', '인천시', '인천교육청', '인천광역시교육청','광주', '광주광역시', '광주시', '광주교육청', '광주광역시교육청','대전', '대전광역시', '대전시', '대전교육청', '대전광역시교육청','울산', '울산광역시', '울산시', '울산교육청', '울산광역시교육청','세종', '세종특별시', '세종시', '세종교육청', '세종특별자치시', '세종특별자치시교육청','경기', '경기도', '경기교육청', '경기도교육청','강원', '강원도', '강원교육청', '강원도교육청','충북', '충청북도', '충북교육청', '충청북도교육청','충남', '충청남도', '충남교육청', '충청남도교육청','전북', '전라북도', '전북교육청', '전라북도교육청','전남', '전라남도', '전남교육청', '전라남도교육청','경북', '경상북도', '경북교육청', '경상북도교육청','경남', '경상남도', '경남교육청', '경상남도교육청','제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']\nback_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day\n    print(f\"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...\")\n    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:\n        await user_data_backup()",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "back_school_type_list",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "back_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']\nschool_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day\n    print(f\"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...\")\n    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:\n        await user_data_backup()\n        with open(json_file_name, \"r\",encoding='utf-8-sig') as json_file:",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "school_type_list",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "school_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']\n@tasks.loop(seconds=60)\nasync def auto_self_check():\n    global start_minute\n    global last_day\n    print(f\"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...\")\n    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:\n        await user_data_backup()\n        with open(json_file_name, \"r\",encoding='utf-8-sig') as json_file:\n            user_data=json.load(json_file)",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "current",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "current =  datetime.datetime.now()\n# 1시간 후\none_hour_later = current + datetime.timedelta(hours=1)\n# 1시간 전\none_hour_ago = current - datetime.timedelta(hours=1)\n# 내일 시간\ntomorrow = current  + datetime.timedelta(days=1)\n# 어제 시간\nyesterday = current - datetime.timedelta(days=1)\n# 10분 후",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "one_hour_later",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "one_hour_later = current + datetime.timedelta(hours=1)\n# 1시간 전\none_hour_ago = current - datetime.timedelta(hours=1)\n# 내일 시간\ntomorrow = current  + datetime.timedelta(days=1)\n# 어제 시간\nyesterday = current - datetime.timedelta(days=1)\n# 10분 후\nten_minutes_later = current + datetime.timedelta(minutes=10)\n# 10분 전",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "one_hour_ago",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "one_hour_ago = current - datetime.timedelta(hours=1)\n# 내일 시간\ntomorrow = current  + datetime.timedelta(days=1)\n# 어제 시간\nyesterday = current - datetime.timedelta(days=1)\n# 10분 후\nten_minutes_later = current + datetime.timedelta(minutes=10)\n# 10분 전\nten_minutes_later = current - datetime.timedelta(minutes=10)\n'''",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "tomorrow",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "tomorrow = current  + datetime.timedelta(days=1)\n# 어제 시간\nyesterday = current - datetime.timedelta(days=1)\n# 10분 후\nten_minutes_later = current + datetime.timedelta(minutes=10)\n# 10분 전\nten_minutes_later = current - datetime.timedelta(minutes=10)\n'''\n@bot.command()\nasync def 내일급식(ctx,user: discord.User=None): ",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "yesterday",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "yesterday = current - datetime.timedelta(days=1)\n# 10분 후\nten_minutes_later = current + datetime.timedelta(minutes=10)\n# 10분 전\nten_minutes_later = current - datetime.timedelta(minutes=10)\n'''\n@bot.command()\nasync def 내일급식(ctx,user: discord.User=None): \n    day=datetime.datetime.now() + datetime.timedelta(days=1)\n    day = day.strftime('%Y%m%d')",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "ten_minutes_later",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "ten_minutes_later = current + datetime.timedelta(minutes=10)\n# 10분 전\nten_minutes_later = current - datetime.timedelta(minutes=10)\n'''\n@bot.command()\nasync def 내일급식(ctx,user: discord.User=None): \n    day=datetime.datetime.now() + datetime.timedelta(days=1)\n    day = day.strftime('%Y%m%d')\n    if user==None:\n        user = str(ctx.author.id)",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "ten_minutes_later",
+        "kind": 5,
+        "importPath": "auto_self_check",
+        "description": "auto_self_check",
+        "peekOfCode": "ten_minutes_later = current - datetime.timedelta(minutes=10)\n'''\n@bot.command()\nasync def 내일급식(ctx,user: discord.User=None): \n    day=datetime.datetime.now() + datetime.timedelta(days=1)\n    day = day.strftime('%Y%m%d')\n    if user==None:\n        user = str(ctx.author.id)\n    else:\n        user = str(user.id)",
+        "detail": "auto_self_check",
+        "documentation": {}
+    },
+    {
+        "label": "findwin",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx\n        global tempint\n        copyboard = board[:]\n\tif count==3:\n        for i in range(temppos, 10):\n            copyboard[i] = COMPUTER_STONE\n\t\t\tif findisWinner(copyboard, COMPUTER_STONE):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "findisWinner",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def findisWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:\n\t\tif board[i] == stone and board[i + 1] == stone and board[i + 2] == stone:\n\t\t\treturn True\n\t#세로 세 열 확인\n\tfor i in [1, 2, 3]:\n\t\tif board[i] == stone and board[i + 3] == stone and board[i + 6] == stone:\n\t\t\treturn True\n\t#대각선(오른쪽 위에서 왼쪽 아래)",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "printInfo",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def printInfo():\n\tprint(\"[Player-Computer Version]\")\n\tprint(\"틱택토(tic-tac-toe) 두 명이 번갈아가며 'O'와 'X'를 3×3 판에 써서 같은 글자를 가로, 세로, 혹은 대각선 상에 놓이도록 하는 놀이입니다.\")\n\tprint(\"플레이어는 'O', 컴퓨터는 'X'를 사용합니다.\")\n\tprint(\"위치 선택은 아래와 같이 키보드의 숫자 키패드를 이용하세요.\")\n\tprint(\"---------\")\n\tprint(\"| 7 8 9 |\")\n\tprint(\"| 4 5 6 |\")\n\tprint(\"| 1 2 3 |\")\n\tprint(\"---------\")",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "drawBoard",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def drawBoard(board):\n\tprint(\"---------\")\n\tprint(\"|\", board[7], board[8], board[9], \"|\")\n\tprint(\"|\", board[4], board[5], board[6], \"|\")\n\tprint(\"|\", board[1], board[2], board[3], \"|\")\n\tprint(\"---------\")  \n#누가 먼저 시작할지 랜덤하게 정하고, 정해진 순서('O' 또는 'X')를 리턴한다.\ndef whoIsFirst():\n\tfirst = random.choice(['O', 'X'])\n\tif first == PLAYER_STONE:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "whoIsFirst",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def whoIsFirst():\n\tfirst = random.choice(['O', 'X'])\n\tif first == PLAYER_STONE:\n\t\tprint(\"플레이어부터 시작합니다.\")\n\telse:\n\t\tprint(\"컴퓨터부터 시작합니다.\")\n\treturn first\n#플레이어로부터 위치를 입력받는다.\ndef getPlayerMove(board, stone):\n\twhile True:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "getPlayerMove",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def getPlayerMove(board, stone):\n\twhile True:\n\t\tinData = input('위치를 선택하세요. ')\n\t\tif len(inData) == 1 and '1' <= inData <= '9':\n\t\t\tpos = int(inData)  \n\t\t\tif board[pos] == '-':\n\t\t\t\tboard[pos] = stone\n\t\t\t\tbreak\n\t\tprint('잘못 선택하셨습니다. 비어있는 칸을 숫자로 입력하세요.')\n#컴퓨터가 위치를 선택하게 한다.",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "getComputerMove",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def getComputerMove(board, stone):\n\tprint('컴퓨터가 둡니다.')\n\t#컴퓨터가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = COMPUTER_STONE\n\t\t\tif isWinner(copyBoard, COMPUTER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "numberOfStone",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def numberOfStone(board):\n\tn = 0\n\tfor c in board:\n\t\tif c != '-':\n\t\t\tn = n + 1\n\treturn n\n#보드에서 stone('O' 또는 'X')가 연속해서 3개 놓여졌는지 여부(True 또는 False)를 리턴한다.\ndef isWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "isWinner",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def isWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:\n\t\tif board[i] == stone and board[i + 1] == stone and board[i + 2] == stone:\n\t\t\treturn True\n\t#세로 세 열 확인\n\tfor i in [1, 2, 3]:\n\t\tif board[i] == stone and board[i + 3] == stone and board[i + 6] == stone:\n\t\t\treturn True\n\t#대각선(오른쪽 위에서 왼쪽 아래)",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "ticTacToe",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def ticTacToe():\n\t#빈 틱택토 보드를 표현하기 위해서 '-'로 10개의 요소를 채운 리스트를 만듭니다.\n\t#위치 정보와 리스트의 인덱스를 일치시키기 위해 10개의 요소를 채우고, 이후에 맨 앞(인덱스 0) 요소는 사용하지 않습니다.\n\ttttBoard = ['-'] * 10\n\tdrawBoard(tttBoard)\n\tcurrentStone = whoIsFirst()\n\twhile True:\n\t\tif currentStone == PLAYER_STONE:\n\t\t\tgetPlayerMove(tttBoard, PLAYER_STONE)  \n\t\t\tdrawBoard(tttBoard)",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "PLAYER_STONE",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "PLAYER_STONE = 'O'\nCOMPUTER_STONE = 'X'\nmx = 0\ncpos = 0\ntempmx = 0\ntempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "COMPUTER_STONE",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "COMPUTER_STONE = 'X'\nmx = 0\ncpos = 0\ntempmx = 0\ntempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "mx",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "mx = 0\ncpos = 0\ntempmx = 0\ntempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "cpos",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "cpos = 0\ntempmx = 0\ntempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx\n        global tempint",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "tempmx",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "tempmx = 0\ntempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx\n        global tempint\n        copyboard = board[:]",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "tempint",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "tempint = 0\nstartpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx\n        global tempint\n        copyboard = board[:]\n\tif count==3:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "startpos",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "startpos = 0\n#i번째 위치에 두었을 때 이길 수 있는 최대 경우의 수 찾기\ndef findwin(board, count, temppos, tempstart):\n        global mx\n        global cpos\n        global tempmx\n        global tempint\n        copyboard = board[:]\n\tif count==3:\n        for i in range(temppos, 10):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyboard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyboard[i] = COMPUTER_STONE\n\t\t\tfindwin(copyboard, count+1, i, startpos)\n\t\t\tcopyboard[i] = '_'\n        if mx < tempmx : \n                cpos = tempint\n        tempmx = 0\n        tempint = 0\n#findwin 전용 위치찾기\ndef findisWinner(board, stone):\n\t#가로 세 행 확인",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyboard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyboard[i] = '_'\n        if mx < tempmx : \n                cpos = tempint\n        tempmx = 0\n        tempint = 0\n#findwin 전용 위치찾기\ndef findisWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:\n\t\tif board[i] == stone and board[i + 1] == stone and board[i + 2] == stone:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\tfirst",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\tfirst = random.choice(['O', 'X'])\n\tif first == PLAYER_STONE:\n\t\tprint(\"플레이어부터 시작합니다.\")\n\telse:\n\t\tprint(\"컴퓨터부터 시작합니다.\")\n\treturn first\n#플레이어로부터 위치를 입력받는다.\ndef getPlayerMove(board, stone):\n\twhile True:\n\t\tinData = input('위치를 선택하세요. ')",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tinData",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\tinData = input('위치를 선택하세요. ')\n\t\tif len(inData) == 1 and '1' <= inData <= '9':\n\t\t\tpos = int(inData)  \n\t\t\tif board[pos] == '-':\n\t\t\t\tboard[pos] = stone\n\t\t\t\tbreak\n\t\tprint('잘못 선택하셨습니다. 비어있는 칸을 숫자로 입력하세요.')\n#컴퓨터가 위치를 선택하게 한다.\ndef getComputerMove(board, stone):\n\tprint('컴퓨터가 둡니다.')",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tpos",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tpos = int(inData)  \n\t\t\tif board[pos] == '-':\n\t\t\t\tboard[pos] = stone\n\t\t\t\tbreak\n\t\tprint('잘못 선택하셨습니다. 비어있는 칸을 숫자로 입력하세요.')\n#컴퓨터가 위치를 선택하게 한다.\ndef getComputerMove(board, stone):\n\tprint('컴퓨터가 둡니다.')\n\t#컴퓨터가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\t\tboard[pos]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\t\tboard[pos] = stone\n\t\t\t\tbreak\n\t\tprint('잘못 선택하셨습니다. 비어있는 칸을 숫자로 입력하세요.')\n#컴퓨터가 위치를 선택하게 한다.\ndef getComputerMove(board, stone):\n\tprint('컴퓨터가 둡니다.')\n\t#컴퓨터가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tcopyBoard = board[:]",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyBoard",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = COMPUTER_STONE\n\t\t\tif isWinner(copyBoard, COMPUTER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#플레이어가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = PLAYER_STONE",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyBoard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyBoard[i] = COMPUTER_STONE\n\t\t\tif isWinner(copyBoard, COMPUTER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#플레이어가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = PLAYER_STONE\n\t\t\tif isWinner(copyBoard, PLAYER_STONE):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\t\tboard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#플레이어가 두면 이길 위치를 찾아둔다.\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = PLAYER_STONE\n\t\t\tif isWinner(copyBoard, PLAYER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyBoard",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyBoard = board[:]\n\t\t\tcopyBoard[i] = PLAYER_STONE\n\t\t\tif isWinner(copyBoard, PLAYER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#앞에서부터 빈자리를 찾아 둡니다.\n\tif board[5] == '-' :\n\t\tboard[5] = stone\n\t\treturn\n\tfor i in range(1, 10):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcopyBoard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcopyBoard[i] = PLAYER_STONE\n\t\t\tif isWinner(copyBoard, PLAYER_STONE):\n\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#앞에서부터 빈자리를 찾아 둡니다.\n\tif board[5] == '-' :\n\t\tboard[5] = stone\n\t\treturn\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\t\tboard[i]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\t\tboard[i] = COMPUTER_STONE\n\t\t\t\treturn\n\t#앞에서부터 빈자리를 찾아 둡니다.\n\tif board[5] == '-' :\n\t\tboard[5] = stone\n\t\treturn\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tfindwin(copyBoard, 0, 1, 1)\n\t\t\tbreak",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tboard[5]",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\tboard[5] = stone\n\t\treturn\n\tfor i in range(1, 10):\n\t\tif board[i] == '-':\n\t\t\tfindwin(copyBoard, 0, 1, 1)\n\t\t\tbreak\n#보드에 놓여진 돌의 개수를 리턴한다.\ndef numberOfStone(board):\n\tn = 0\n\tfor c in board:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\tn",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\tn = 0\n\tfor c in board:\n\t\tif c != '-':\n\t\t\tn = n + 1\n\treturn n\n#보드에서 stone('O' 또는 'X')가 연속해서 3개 놓여졌는지 여부(True 또는 False)를 리턴한다.\ndef isWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:\n\t\tif board[i] == stone and board[i + 1] == stone and board[i + 2] == stone:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tn",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tn = n + 1\n\treturn n\n#보드에서 stone('O' 또는 'X')가 연속해서 3개 놓여졌는지 여부(True 또는 False)를 리턴한다.\ndef isWinner(board, stone):\n\t#가로 세 행 확인\n\tfor i in [1, 4, 7]:\n\t\tif board[i] == stone and board[i + 1] == stone and board[i + 2] == stone:\n\t\t\treturn True\n\t#세로 세 열 확인\n\tfor i in [1, 2, 3]:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\ttttBoard",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\ttttBoard = ['-'] * 10\n\tdrawBoard(tttBoard)\n\tcurrentStone = whoIsFirst()\n\twhile True:\n\t\tif currentStone == PLAYER_STONE:\n\t\t\tgetPlayerMove(tttBoard, PLAYER_STONE)  \n\t\t\tdrawBoard(tttBoard)\n\t\t\tif isWinner(tttBoard, PLAYER_STONE):\n\t\t\t\tprint(\"축하합니다. 당신이 이겼어요!\")\n\t\t\t\treturn PLAYER_STONE",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\tcurrentStone",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\tcurrentStone = whoIsFirst()\n\twhile True:\n\t\tif currentStone == PLAYER_STONE:\n\t\t\tgetPlayerMove(tttBoard, PLAYER_STONE)  \n\t\t\tdrawBoard(tttBoard)\n\t\t\tif isWinner(tttBoard, PLAYER_STONE):\n\t\t\t\tprint(\"축하합니다. 당신이 이겼어요!\")\n\t\t\t\treturn PLAYER_STONE\n\t\t\tcurrentStone = COMPUTER_STONE\n\t\telse:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcurrentStone",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcurrentStone = COMPUTER_STONE\n\t\telse:\n\t\t\tgetComputerMove(tttBoard, COMPUTER_STONE)  \n\t\t\tdrawBoard(tttBoard)\n\t\t\tif isWinner(tttBoard, COMPUTER_STONE):\n\t\t\t\tprint(\"아쉽군요. 컴퓨터가 이겼습니다.\")\n\t\t\t\treturn COMPUTER_STONE\n\t\t\tcurrentStone = PLAYER_STONE\n\t\tif numberOfStone(tttBoard) >= 9:\n\t\t\tprint(\"비겼습니다.\")",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcurrentStone",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\t\t\tcurrentStone = PLAYER_STONE\n\t\tif numberOfStone(tttBoard) >= 9:\n\t\t\tprint(\"비겼습니다.\")\n\t\t\treturn '-'\nprintInfo()\nresultList = []\nwhile True:\n\tresult = ticTacToe()\n\tresultList.append(result)\n\tisContinued = input(\"한 게임 더 진행할까요?(y/n) \")",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "resultList",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "resultList = []\nwhile True:\n\tresult = ticTacToe()\n\tresultList.append(result)\n\tisContinued = input(\"한 게임 더 진행할까요?(y/n) \")\n\tif isContinued == 'n':\n\t\tbreak\nprint('\\n[게임 전적]')\nprint(resultList.count(PLAYER_STONE), '승 ', resultList.count('-'), '무 ', resultList.count(COMPUTER_STONE), '패', sep = '')",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\tresult",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\tresult = ticTacToe()\n\tresultList.append(result)\n\tisContinued = input(\"한 게임 더 진행할까요?(y/n) \")\n\tif isContinued == 'n':\n\t\tbreak\nprint('\\n[게임 전적]')\nprint(resultList.count(PLAYER_STONE), '승 ', resultList.count('-'), '무 ', resultList.count(COMPUTER_STONE), '패', sep = '')",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "\tisContinued",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "\tisContinued = input(\"한 게임 더 진행할까요?(y/n) \")\n\tif isContinued == 'n':\n\t\tbreak\nprint('\\n[게임 전적]')\nprint(resultList.count(PLAYER_STONE), '승 ', resultList.count('-'), '무 ', resultList.count(COMPUTER_STONE), '패', sep = '')",
+        "detail": "test",
+        "documentation": {}
+    }
+]
