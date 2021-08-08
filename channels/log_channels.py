@@ -14,3 +14,5 @@ log_today = "852145484239732756"
 log_today_total = "863004820965163038"
 log_today_success = "863004820965163038"
 log_today_failure = "863004789839495169"
+
+log_send_failure = "865381227136417792"
