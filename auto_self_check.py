@@ -14,7 +14,6 @@ import school_data
 from embed.help_embed import *
 from channels.log_channels import *
 
-#시작시 출력
 with open("config.json", "r",encoding='UTF-8') as json_file:
     config=json.load(json_file)
 
@@ -31,12 +30,10 @@ print(f"prefix : {config['prefix']}")
 
 
 bot = commands.Bot(command_prefix=config["prefix"])
-
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
 start_minute=1
 last_day = "2021-05-29"
-#start_minute=datetime.datetime.now().minute
 
 last_notice = []
 last_personal_notice = ""
@@ -48,13 +45,16 @@ back_school_type_list = ['유치원', '유','유치','초등학교', '초','초�
 school_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']
 
 
+
 @tasks.loop(seconds=60)
 async def auto_self_check():
     global start_minute
     global last_day
 
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
+    #자가진단 실행 if문
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
+        print("실행")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
@@ -80,9 +80,7 @@ async def auto_self_check():
                     success_user += 1
                 else:
                     failure_user += 1
-                #except:
-                    #print("send_DM 실패")
-                    #failure_user += 1
+
         print("완료")
         #채널
         await send_log(log_today, f"{len(bot.guilds)}개의 서버에서 {success_user+failure_user}번의 자가진단이 실시되었습니다.\n(성공 : {success_user}명, 실패 : {failure_user}명)")
@@ -98,7 +96,39 @@ async def auto_self_check():
         channel = bot.get_channel(int(log_today_failure))
         msg = str(f"실패 : {failure_user}")
         await channel.edit(name=msg)
-        
+
+    #정보 수집 if문
+    if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
+        await user_data_backup()
+        with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+            user_data=json.load(json_file)
+        for user_id in user_data.keys():
+            #기본값 설정
+            user_data[user_id]["schedule"] = None
+            user_data[user_id]["cafeteria"] = None
+            user_data[user_id]["timetable"] = None
+            try:
+                #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
+                user_data[user_id]["schedule"] = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                if "방학" in user_data[user_id]["schedule"]:
+                    user_data[user_id]["possible"] = False
+                elif "개학" in user_data[user_id]["schedule"]:
+                    user_data[user_id]["possible"] = True
+                    user = await bot.fetch_user(int(user_id))
+                    await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨))")
+                #급식정보 수집
+                user_data[user_id]["cafeteria"] = await school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
+                if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
+                    user_data[user_id]["timetable"] = await school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
+                else:
+                    user_data[user_id]["timetable"] = "No information entered"
+            except Exception as ex:
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f'데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+            with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+
 @bot.event
 async def on_ready():  
     print("봇 실행 완료")
@@ -110,33 +140,31 @@ async def on_ready():
     embed = discord.Embed(title="봇 실행 완료", description=f"[{now}] 에 [{host_name}] 에서 봇이 실행되었습니다.", color=0x62c1cc)
     await send_log(log_bot_start_channel,f"`[{now}] [{host_name}] 에서 봇이 실행되었습니다.`")
     await user_data_backup()
-    auto_self_check.start() #무한루프 실행
+    auto_self_check.start()
 
 @bot.event
 async def on_error(event, *args, **kwargs):
-    user = await bot.fetch_user(523017072796499968)
     exc = sys.exc_info() #sys를 활용해서 에러를 확인합니다.
+    user = await bot.fetch_user(523017072796499968)
     await user.send(f"에러 발생 : {event} : {str(exc[0].__name__)} : {str(exc[1])}")
 
 @bot.event
 async def on_guild_join(guild):
     channels = guild.channels
-    system_channel = guild.system_channel.id
-
+    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
     global help_embed
-
-    #해당 리스트에 있는 단어가 채널이름에 있을 경우 도움말 표시
-    channel_list = ["채팅","챗","수다","chat","Chat"]
-
-    for i in channels:
-        if i.id != system_channel and str(i.type) == "text":
-            if i.name in channel_list:
-                channel = bot.get_channel(int(i.id))
-                await channel.send(embed = help_embed)
-
+    system_channel = guild.system_channel.id
     channel = bot.get_channel(int(system_channel))
     await channel.send(embed = help_embed)
-    await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
+    #해당 리스트에 있는 단어가 채널이름에 있을 경우 도움말 표시
+    try:
+        for i in channels:
+            if i.id != system_channel and str(i.type) == "text":
+                if i.name in ["채팅","챗","수다","chat","Chat"]:
+                    channel = bot.get_channel(int(i.id))
+                    await channel.send(embed = help_embed)
+    except:
+        pass
 
 @bot.event
 async def on_guild_remove(guild):
@@ -168,9 +196,7 @@ async def send_DM(data,user_id,start_minute,user_data):
     except:
         erorr = "erorr"
         pass
-
     user_id = str(user_id)
-
     print(user_data[user_id])
     print(user_data[user_id].keys())
     print("school_code" in user_data[user_id].keys())
@@ -178,43 +204,27 @@ async def send_DM(data,user_id,start_minute,user_data):
         if erorr != "erorr":
             if data["code"]=="SUCCESS":
                 embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.\n다음 자동자가진단은 `7시 {start_minute}분`에 실시될 예정입니다.", color=0x62c1cc)
-                #학사일정 전송을 위해 학교코드, 지역코드가 있는지 확인 후 전송
-                if "school_code" in user_data[user_id].keys() and "area_code" in user_data[user_id].keys() and str(user_data[user_id]["school_code"]) != "Null":
-                    schedule = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-                    if schedule != None:
-                        if "방학" in schedule:
-                            user_data[user_id]["possible"] = False
-                            with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
-                                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
-                        msg = schedule
-                    else:
-                        msg = "X"
-                    embed.add_field(name = "오늘의 학사일정",value = f"\n일정 : `{msg}`")
-
+                #학사일정 전송
+                if user_data[user_id]["schedule"] != None and str(user_data[user_id]["schedule"]) != "null":
+                    embed.add_field(name = "오늘의 학사일정",value = f"\n일정 : `{user_data[user_id]['schedule']}`")
                 #시간표 정보 전송을 위해 학년반 정보가 있는지 확인 후 전송
-                if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
-                    timetable = await school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
-                    if timetable != None:
-                        msg = ""
-                        for i in range(len(timetable)):
-                            msg += f"{i+1}교시 : {timetable[i]}\n"
-                        embed.add_field(name = "오늘의 시간표",value = f">>> {msg}")
-                        
+                if user_data[user_id]["timetable"] != None and str(user_data[user_id]["timetable"]) != "null" and user_data[user_id]["timetable"] != "No information entered":
+                    timetable = user_data[user_id]["timetable"]
+                    msg = ""
+                    for i in range(len(timetable)):
+                        msg += f"{i+1}교시 : {timetable[i]}\n"
+                    embed.add_field(name = "오늘의 시간표",value = f">>> {msg}")
                 #학년반정보가 등록되지 않아서 시간표 정보 출력이 불가능 할 경우
                 else:
-                    msg = "학년반 정보가 없습니다. `?학년반정보입력`으로 입력해주십시오."
-                    embed.add_field(name = "오늘의 시간표",value = f"`{msg}")
+                    embed.add_field(name = "오늘의 시간표",value = f"학년반 정보가 없습니다. `?학년반정보입력`으로 입력해주십시오.")
+                #급식 정보 전송
+                if user_data[user_id]["cafeteria"] != None and str(user_data[user_id]["cafeteria"]) != "null":
+                    msg = ""
+                    for i in user_data[user_id]["cafeteria"]:
+                        msg += f"> {i}\n"
+                    msg = msg[:-1]
+                    embed.add_field(name = "오늘의 급식",value=f"{msg}")
 
-                #급식 정보 전송을 위해 학교코드, 지역코드가 있는지 확인 후 전송
-                if "school_code" in user_data[user_id].keys() and "area_code" in user_data[user_id].keys() and str(user_data[user_id]["school_code"]) != "Null":
-                    cafeteria = await school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-                    if cafeteria != None:
-                        msg = ""
-                        for i in cafeteria:
-                            msg += f"> {i}\n"
-                        msg = msg[:-1]
-                        embed.add_field(name = "오늘의 급식",value=f"{msg}")
-                
                 await user.send(embed=embed)
                 await send_log(log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
                 print("자가진단 성공 후 메시지 발송 완료...")
@@ -231,12 +241,9 @@ async def send_DM(data,user_id,start_minute,user_data):
             embed = discord.Embed(title="자가 진단 후 메시지 전송 실패",description=f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 에 {user_data[user_id]['name']}(<@{user_id}>) 님의 자가진단이 실시되었습니다만 확인 메시지가 전송되지 않았습니다.\n자가진단결과 : {data['message']}", color=0x62c1cc)
             await send_embed_log(log_auto_self_check_after_send_failure_channel,embed)
     except Exception as ex:
-        user = await bot.fetch_user(523017072796499968)
-        await user.send(f'에러가 발생 했습니다 {ex}')
         print(f'에러가 발생 했습니다 {ex}')
         print("자가 진단 후 메시지 전송 실패...")
-        embed = discord.Embed(title="자가 진단 후 메시지 전송 실패",description=f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 에 {user_data[user_id]['name']}(<@{user_id}>) 님의 자가진단이 실시되었습니다만 확인 메시지가 전송되지 않았습니다.\n자가진단결과 : {data['message']}\n{ex}", color=0x62c1cc)
-        await send_embed_log(log_auto_self_check_after_send_failure_channel,embed)
+        await send_log(log_send_failure,f"`{user_data[user_id]['name'][0]}*{user_data[user_id]['name'][2]}`님의 자가진단 후 메시지 전송 실패\n{data['message']}\n{ex}\n")
 
 @bot.command()
 async def 명령어(ctx):
@@ -258,7 +265,7 @@ async def 서버목록(ctx):
     embed = discord.Embed(title="서버목록", description="자동자가진단 봇에 대한 도움말 입니다.",color=0x62c1cc)
     msg = ''
     for server in servers:
-        msg+=f"{server}\n"
+        msg+=f"{server} : {server.member_count}\n"
     embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}", inline=False)
     await ctx.send(embed=embed)
 
@@ -430,8 +437,8 @@ async def 관리자전체공지(ctx,*,msg):
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
         for user_id in user_data.keys():
-            user = await bot.fetch_user(user_id)
             try:
+                user = await bot.fetch_user(user_id)
                 temp_msg = await user.send(msg)
                 last_notice.append(temp_msg)
             except Exception as ex:
@@ -441,7 +448,7 @@ async def 관리자전체공지(ctx,*,msg):
                 print("자가 진단 후 메시지 전송 실패...")
                 print(f"{user_id}님의 공지전송이 실패하였습니다.")
 
-        ctx.send(f"공지 전송 완료\n{msg}")
+        ctx.send(f"공지 전송 완료\n`{msg}`")
     else:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
@@ -495,26 +502,6 @@ async def Ping(ctx):
         await ctx.send(f"현재 핑은 `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}` 기준으로 `{str(round(bot.latency*1000))}ms` 입니다.")
 
 @bot.command()
-async def 관리자종료(ctx):
-    if str(ctx.author.id) == '523017072796499968':
-        await ctx.bot.logout()
-    else:
-        user = await bot.fetch_user(ctx.author.id)
-        await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
-
-'''
-            if "school_code" in user_data[user_id].keys() and "area_code" in user_data[user_id].keys() and str(user_data[user_id]["school_code"]) != "Null":
-                cafeteria = await school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-                if cafeteria != None:
-                    msg = ""
-                    for i in cafeteria:
-                        msg += f"> {i}\n"
-                    msg = msg[:-1]
-
-                    embed.add_field(name = "오늘의 급식",value=f"{msg}")
-'''
-
-@bot.command()
 async def 급식(ctx, day=None,user: discord.User=None):
     if day == None:
         day = str(datetime.datetime.now().strftime('%Y%m%d'))
@@ -551,26 +538,6 @@ async def 급식(ctx, day=None,user: discord.User=None):
             await ctx.send("해당 유저의 데이터가 없습니다. `?정보등록`으로 유저 데이터를 입력해주십시오.")
     else:
         await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
-
-'''
-# 현재 시간 가져오기
-current =  datetime.datetime.now()
-
-# 1시간 후
-one_hour_later = current + datetime.timedelta(hours=1)
-# 1시간 전
-one_hour_ago = current - datetime.timedelta(hours=1)
-
-# 내일 시간
-tomorrow = current  + datetime.timedelta(days=1)
-# 어제 시간
-yesterday = current - datetime.timedelta(days=1)
-
-# 10분 후
-ten_minutes_later = current + datetime.timedelta(minutes=10)
-# 10분 전
-ten_minutes_later = current - datetime.timedelta(minutes=10)
-'''
 
 
 @bot.command()
@@ -763,7 +730,7 @@ async def 진단참여(ctx):
         else:
             await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 실패!")
     else:
-        ctx.send("유저 데이터에 등록된 정보가 없습니다. `?정보등록`으로 등록해주십시오.")
+        await ctx.send("유저 데이터에 등록된 정보가 없습니다. `?정보등록`으로 등록해주십시오.")
         
 @bot.command()
 async def 자가진단실시(ctx):
@@ -796,7 +763,36 @@ async def test(ctx):
     await ctx.send("Hello World!")
 
 @bot.command()
-async def 예약(ctx):
-    await ctx.send("Hello World!")
+async def 관리자오류처리(ctx):
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+    for user in user_data.keys():
+        if "possible" not in user_data[user]:
+            user_data[user]["possible"] = True
+            print(user_data[user]["name"])
+    with open(json_file_name, "w",encoding='UTF-8') as json_file:
+        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+    
+@bot.command()
+async def 관리자오류처리2(ctx):
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+    with open('temp.txt', 'r') as f:
+        list_file = f.readlines()
+    list_file = [line.rstrip('\n') for line in list_file] 
+    for user in user_data.keys():
+        if user_data[user]["name"] in list_file:
+            user_data[user]["possible"] = False
+            print(user_data[user]["name"])
+    with open(json_file_name, "w",encoding='UTF-8') as json_file:
+        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+        
+@bot.command()
+async def 관리자오류처리3(ctx):
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+    for user in user_data.keys():
+        if "possible" not in user_data[user]:
+            print(user_data[user]["name"])
 
 bot.run(token)
