@@ -116,7 +116,7 @@ async def auto_self_check():
                 elif "개학" in user_data[user_id]["schedule"]:
                     user_data[user_id]["possible"] = True
                     user = await bot.fetch_user(int(user_id))
-                    await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨))")
+                    await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
                 #급식정보 수집
                 user_data[user_id]["cafeteria"] = await school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
@@ -169,7 +169,7 @@ async def on_guild_join(guild):
 
 @bot.event
 async def on_guild_remove(guild):
-    await send_log(log_server_remove,f"`[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [{guild}] 서버에 자가진단 봇이 삭제되었습니다.`")
+    await send_log(log_server_remove,f"`[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {guild.member_count}명이 있는 [{guild}] 서버에 자가진단 봇이 삭제되었습니다.`")
 
 async def user_data_backup():
     channel = bot.get_channel(int(log_json_backup_channel))
@@ -771,5 +771,5 @@ async def 자가진단중지(ctx):
 @bot.command()
 async def test(ctx):
     await ctx.send("Hello World!")
- 
+    
 bot.run(token)
