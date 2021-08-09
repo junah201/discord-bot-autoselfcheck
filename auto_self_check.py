@@ -111,7 +111,8 @@ async def auto_self_check():
                 #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
                 user_data[user_id]["schedule"] = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 if "방학" in user_data[user_id]["schedule"]:
-                    user_data[user_id]["possible"] = False
+                    #user_data[user_id]["possible"] = False
+                    pass
                 elif "개학" in user_data[user_id]["schedule"]:
                     user_data[user_id]["possible"] = True
                     user = await bot.fetch_user(int(user_id))
@@ -262,12 +263,21 @@ async def 도움말(ctx):
 @bot.command()
 async def 서버목록(ctx):
     servers = bot.guilds
-    embed = discord.Embed(title="서버목록", description="자동자가진단 봇에 대한 도움말 입니다.",color=0x62c1cc)
-    msg = ''
+    await ctx.send(f"현재 {len(servers)}개의 서버에서 실행 중 입니다.")
+    msg = ""
+    members = [0,0,0,0,0,0,0,0,0,0,0]
     for server in servers:
-        msg+=f"{server} : {server.member_count}\n"
-    embed.add_field(name=f"현재 {len(servers)}개의 서버에서 실행 중 입니다.",value=f"{msg}", inline=False)
-    await ctx.send(embed=embed)
+        msg += f"{server} : {server.member_count}\n"
+        print(f"{server.member_count} : {int(server.member_count/10)}")
+        if server.member_count>100:
+            members[10] += 1
+        else:
+            members[int(server.member_count/10)] += 1
+    await ctx.send(msg)
+    msg = ""
+    for i in range(len(members)):
+        msg += f"{i*10}대 서버 {members[i]}\n"
+    await ctx.send(msg)
 
 @bot.command()
 async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,school_type=None,passward=None):
@@ -761,38 +771,5 @@ async def 자가진단중지(ctx):
 @bot.command()
 async def test(ctx):
     await ctx.send("Hello World!")
-
-@bot.command()
-async def 관리자오류처리(ctx):
-    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
-        user_data=json.load(json_file)
-    for user in user_data.keys():
-        if "possible" not in user_data[user]:
-            user_data[user]["possible"] = True
-            print(user_data[user]["name"])
-    with open(json_file_name, "w",encoding='UTF-8') as json_file:
-        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
-    
-@bot.command()
-async def 관리자오류처리2(ctx):
-    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
-        user_data=json.load(json_file)
-    with open('temp.txt', 'r') as f:
-        list_file = f.readlines()
-    list_file = [line.rstrip('\n') for line in list_file] 
-    for user in user_data.keys():
-        if user_data[user]["name"] in list_file:
-            user_data[user]["possible"] = False
-            print(user_data[user]["name"])
-    with open(json_file_name, "w",encoding='UTF-8') as json_file:
-        json.dump(user_data,json_file,ensure_ascii = False, indent=4)
-        
-@bot.command()
-async def 관리자오류처리3(ctx):
-    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
-        user_data=json.load(json_file)
-    for user in user_data.keys():
-        if "possible" not in user_data[user]:
-            print(user_data[user]["name"])
-
+ 
 bot.run(token)
