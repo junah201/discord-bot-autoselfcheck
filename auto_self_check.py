@@ -244,7 +244,7 @@ async def send_DM(data,user_id,start_minute,user_data):
     except Exception as ex:
         print(f'에러가 발생 했습니다 {ex}')
         print("자가 진단 후 메시지 전송 실패...")
-        await send_log(log_send_failure,f"`{user_data[user_id]['name'][0]}*{user_data[user_id]['name'][2]}`님의 자가진단 후 메시지 전송 실패\n{data['message']}\n{ex}\n")
+        await send_log(log_send_failure,f"<@{user_id}>`{user_data[user_id]['name'][0]}*{user_data[user_id]['name'][2]}`님의 자가진단 후 메시지 전송 실패\n{data['message']}\n{ex}\n")
 
 @bot.command()
 async def 명령어(ctx):
