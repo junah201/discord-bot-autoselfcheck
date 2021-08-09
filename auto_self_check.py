@@ -9,7 +9,7 @@ import json
 import os, sys
 import socket
 import asyncio
-import school_data
+import get_school_data
 
 from embed.help_embed import *
 from channels.log_channels import *
@@ -109,7 +109,7 @@ async def auto_self_check():
             user_data[user_id]["timetable"] = None
             try:
                 #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
-                user_data[user_id]["schedule"] = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                user_data[user_id]["schedule"] = await get_school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 if "방학" in user_data[user_id]["schedule"]:
                     #user_data[user_id]["possible"] = False
                     #user = await bot.fetch_user(int(user_id))
@@ -120,10 +120,10 @@ async def auto_self_check():
                     user = await bot.fetch_user(int(user_id))
                     await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
                 #급식정보 수집
-                user_data[user_id]["cafeteria"] = await school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
                 if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
-                    user_data[user_id]["timetable"] = await school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
+                    user_data[user_id]["timetable"] = await get_school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
                 else:
                     user_data[user_id]["timetable"] = "No information entered"
             except Exception as ex:
@@ -327,8 +327,8 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                 #embed.add_field(name="입력값",value=f"```{ctx.message.content}```{end_msg}")
                 await send_embed_log(log_add_success_channel,embed)
 
-                user_data[str(ctx.author.id)]["area_code"] = await school_data.get_area_code(user_data[str(ctx.author.id)]["area"])
-                user_data[str(ctx.author.id)]["school_code"] = await school_data.get_school_code(user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["area_code"])
+                user_data[str(ctx.author.id)]["area_code"] = await get_school_data.get_area_code(user_data[str(ctx.author.id)]["area"])
+                user_data[str(ctx.author.id)]["school_code"] = await get_school_data.get_school_code(user_data[str(ctx.author.id)]["school_name"],user_data[str(ctx.author.id)]["area_code"])
                 
                 with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
@@ -529,12 +529,12 @@ async def 급식(ctx, day=None,user: discord.User=None):
         if user in user_data:
             user_data_keys = user_data[user].keys()
             if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
-                user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
-                user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
+                user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
                 with open(json_file_name, "w",encoding='UTF-8') as json_file:
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
                 
-            cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
+            cafeteria = await get_school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
 
             if cafeteria != None:
                 embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
@@ -567,12 +567,12 @@ async def 내일급식(ctx,user: discord.User=None):
     if user in user_data:
         user_data_keys = user_data[user].keys()
         if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
-            user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
-            user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+            user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
+            user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
             with open(json_file_name, "w",encoding='UTF-8') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
             
-        cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
+        cafeteria = await get_school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
 
         if cafeteria != None:
             embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
@@ -602,12 +602,12 @@ async def 어제급식(ctx,user: discord.User=None):
     if user in user_data:
         user_data_keys = user_data[user].keys()
         if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
-            user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
-            user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+            user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
+            user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
             with open(json_file_name, "w",encoding='UTF-8') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
             
-        cafeteria = await school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
+        cafeteria = await get_school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
 
         if cafeteria != None:
             embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
@@ -647,8 +647,8 @@ async def 학교코드(ctx):
         user_data=json.load(json_file)
     for i in user_data.keys():
         print(user_data[i]["name"])
-        user_data[i]["area_code"] = await school_data.get_area_code(user_data[i]["area"])
-        user_data[i]["school_code"] = await school_data.get_school_code(user_data[i]["school_name"],user_data[i]["area_code"])
+        user_data[i]["area_code"] = await get_school_data.get_area_code(user_data[i]["area"])
+        user_data[i]["school_code"] = await get_school_data.get_school_code(user_data[i]["school_name"],user_data[i]["area_code"])
         print("name : {},area_code : {}, school_code : {}".format(user_data[i]["name"],user_data[i]["area_code"],user_data[i]["school_code"]))
     with open(json_file_name, "w",encoding='UTF-8') as json_file:
         json.dump(user_data,json_file,ensure_ascii = False, indent=4)
@@ -674,12 +674,12 @@ async def 시간표(ctx, day=None,user: discord.User=None):
                 await ctx.send("입력된 학년반 데이터가 없습니다. `?학년반정보입력` 으로 입력해주십시오.")
             else:
                 if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
-                    user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
-                    user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                    user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
+                    user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
                     with open(json_file_name, "w",encoding='UTF-8') as json_file:
                         json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
-                timetable = await school_data.get_school_timetable(user_data[user]["school_code"],user_data[user]["area_code"],day,user_data[user]["school_type"],user_data[user]["school_grade"],user_data[user]["school_class"])
+                timetable = await get_school_data.get_school_timetable(user_data[user]["school_code"],user_data[user]["area_code"],day,user_data[user]["school_type"],user_data[user]["school_grade"],user_data[user]["school_class"])
                 print(f"time : {timetable}")
                 msg = ""
                 if timetable != None:
@@ -710,11 +710,11 @@ async def 학사일정(ctx, day=None,user: discord.User=None):
 
         if user in user_data:
             if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
-                user_data[user]["area_code"] = await school_data.get_area_code(user_data[user]["area"])
-                user_data[user]["school_code"] = await school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
+                user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
+                user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
                 with open(json_file_name, "w",encoding='UTF-8') as json_file:
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
-            schedule = await school_data.get_school_schedule(user_data[user]["school_code"],user_data[user]["area_code"],day)
+            schedule = await get_school_data.get_school_schedule(user_data[user]["school_code"],user_data[user]["area_code"],day)
             await ctx.send(f"일시 : `{day}`\n일정 : {schedule}")
     else:
         await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
