@@ -112,6 +112,8 @@ async def auto_self_check():
                 user_data[user_id]["schedule"] = await school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 if "방학" in user_data[user_id]["schedule"]:
                     #user_data[user_id]["possible"] = False
+                    #user = await bot.fetch_user(int(user_id))
+                    #await user.send(f"오늘부터 자가진단이 실시되지 않을 예정입니다.\n(사유 : 학사일정에 방학식이 확인됨)")
                     pass
                 elif "개학" in user_data[user_id]["schedule"]:
                     user_data[user_id]["possible"] = True
