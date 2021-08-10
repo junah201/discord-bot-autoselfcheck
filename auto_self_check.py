@@ -725,6 +725,10 @@ async def 시간(ctx):
     await ctx.send(f"{datetime.datetime.now().strftime('%Y%m%d')}")
 
 @bot.command()
+async def 자가진단(ctx):
+    ctx.send(f"수동자가진단은 `{config['prefix']}진단참여` 명령어를 이용해주시기 바랍니다.")
+
+@bot.command()
 async def 진단참여(ctx):
     user = str(ctx.author.id)
     with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
