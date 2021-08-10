@@ -24,35 +24,7 @@ async def get_school_code(school_name:str,area_code:str):
         else:
             return None
             pass
-'''
-async def get_school_ATPT_OFCDC_SC_CODE(school_name:str=None):
-    if school_name==None:
-        return None
-        pass
-    else:
-        try:
-            url = f'https://open.neis.go.kr/hub/schoolInfo?KEY=f20a483f903d4dabb871d08683910077&Type=json&pIndex=1&pSize=100&SCHUL_NM={school_name}'
-            response = requests.get(url)
-            school_data=json.loads(response.text)
 
-            #검색해서 나온 학교가 하나 밖에 없으면 그 학교의 코드를 반환
-            if len(school_data['schoolInfo'][1]["row"])==1:
-                #시도교육청코드
-                school_ATPT_OFCDC_SC_CODE = school_data['schoolInfo'][1]["row"][0]['ATPT_OFCDC_SC_CODE']
-                return school_ATPT_OFCDC_SC_CODE
-            else:
-
-                school_codes = {}
-                for i in school_data['schoolInfo'][1]["row"]:
-                    school_codes[i['SCHUL_NM']]=(i['SD_SCHUL_CODE'])
-                return school_codes
-
-                return None
-                pass
-        except:
-            return None
-            pass
-'''
 async def get_area_code(school_area:str):
 
     Souel = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시']

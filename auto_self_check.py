@@ -2,17 +2,20 @@
 
 import discord
 from discord.ext import commands, tasks
-import time, datetime
+import datetime
 import hcskr
 import random
 import json
 import os, sys
 import socket
 import asyncio
+
 import get_school_data
+import get_covid19_data
 
 from embed.help_embed import *
 from channels.log_channels import *
+from get_covid19_data import get_covid19_decide
 
 with open("config.json", "r",encoding='UTF-8') as json_file:
     config=json.load(json_file)
@@ -27,7 +30,6 @@ host_name = socket.gethostbyaddr(socket.gethostname())[0]
 print(f"host_name : {host_name}")
 
 print(f"prefix : {config['prefix']}")
-
 
 bot = commands.Bot(command_prefix=config["prefix"])
 #KST = datetime.timezone(datetime.timedelta(hours=9))
@@ -103,6 +105,12 @@ async def auto_self_check():
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
+        #코로나19 확진자 수 수집
+        with open("covid19_data.json", "r",encoding='utf-8-sig') as json_file:
+            covid19_data=json.load(json_file)
+        #전국 데이터
+        covid19_data[datetime.datetime.now().strftime('%Y%m%d')] = await get_covid19_data.get_covid19_decide()
+        
         for user_id in user_data.keys():
             #기본값 설정
             user_data[user_id]["schedule"] = None
@@ -778,5 +786,9 @@ async def 자가진단중지(ctx):
 @bot.command()
 async def test(ctx):
     await ctx.send("Hello World!")
+
+@bot.command()
+async def 코로나(ctx):
+    await ctx.send(await get_covid19_data.get_covid19_decide())
     
 bot.run(token)
