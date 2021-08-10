@@ -1,1 +1,17 @@
-﻿
+﻿{
+    "523017072796499968": {
+        "uesr_id": "523017072796499968",
+        "name": "김준아",
+        "birth": "050201",
+        "area": "서울시",
+        "school_name": "중동고",
+        "school_type": "고등학교",
+        "passward": "0201",
+        "possible": true,
+        "area_code": "B10",
+        "school_code": "7010238",
+        "schedule": "여름방학",
+        "cafeteria": null,
+        "timetable": "No information entered"
+    }
+}

@@ -99,6 +99,7 @@ async def auto_self_check():
 
     #정보 수집 if문
     if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
+        print("정보 수집 시작")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
@@ -306,7 +307,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                 await ctx.send(embed = embed)
             elif school_type not in back_school_type_list:
                 embed = discord.Embed(title="정보 등록 실패", description=f"학교 타입은 아래 항목 중 하나로 입력해주셔야 합니다.\n(입력값 : {school_type})")
-                embed.add_field(name="지역 리스트",value=f"```{school_type_list}```", inline=False)
+                embed.add_field(name="학교 타입 리스트",value=f"```{school_type_list}```", inline=False)
                 embed.add_field(name="입력 형식",value=f"?정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg}", inline=False)
                 await ctx.send(embed=embed)
                 embed = discord.Embed(title="입력값",description=f"이름 : {name}\n생년월일 : {birth}\n지역 : {area}\n학교 이름 : {school_name}\n학교 타입 : {school_type}\n비밀번호 : {passward}")
