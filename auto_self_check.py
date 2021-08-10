@@ -726,7 +726,7 @@ async def 시간(ctx):
 
 @bot.command()
 async def 자가진단(ctx):
-    ctx.send(f"수동자가진단은 `{config['prefix']}진단참여` 명령어를 이용해주시기 바랍니다.")
+    ctx.send(f"수동자가진단은 `{config['prefix']}진단참여`을 이용해주시기 바랍니다.")
 
 @bot.command()
 async def 진단참여(ctx):
