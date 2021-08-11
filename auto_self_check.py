@@ -54,8 +54,7 @@ async def auto_self_check():
 
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
     #자가진단 실행 if문
-    #if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
-    if True:
+    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
         print("실행")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
