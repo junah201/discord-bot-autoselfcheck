@@ -15,7 +15,6 @@ import get_covid19_data
 
 from embed.help_embed import *
 from channels.log_channels import *
-from get_covid19_data import get_covid19_decide
 
 with open("config.json", "r",encoding='UTF-8') as json_file:
     config=json.load(json_file)
@@ -55,7 +54,8 @@ async def auto_self_check():
 
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
     #자가진단 실행 if문
-    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
+    #if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
+    if True:
         print("실행")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
@@ -106,8 +106,10 @@ async def auto_self_check():
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
         #코로나19 확진자 수 수집
-        with open("covid19_data.json", "r",encoding='utf-8-sig') as json_file:
-            covid19_data=json.load(json_file)
+        covid19_data = await get_covid19_data.get_covid19_decide()
+        with open("area_code.json", "r",encoding='utf-8-sig') as json_file:
+            area_code=json.load(json_file)
+    
         #전국 데이터
         covid19_data[datetime.datetime.now().strftime('%Y%m%d')] = await get_covid19_data.get_covid19_decide()
         
@@ -116,6 +118,8 @@ async def auto_self_check():
             user_data[user_id]["schedule"] = None
             user_data[user_id]["cafeteria"] = None
             user_data[user_id]["timetable"] = None
+            user_data[user_id]['area_covid19_decide'] = None
+            user_data[user_id]['all_covid19_decide'] = None
             try:
                 #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
                 user_data[user_id]["schedule"] = await get_school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
@@ -128,8 +132,17 @@ async def auto_self_check():
                     user_data[user_id]["possible"] = True
                     user = await bot.fetch_user(int(user_id))
                     await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
+            except Exception as ex:
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f'학사일정 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+            try:    
                 #급식정보 수집
                 user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+            except Exception as ex:
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f'급식 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+
+            try:    
                 #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
                 if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
                     user_data[user_id]["timetable"] = await get_school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
@@ -137,9 +150,19 @@ async def auto_self_check():
                     user_data[user_id]["timetable"] = "No information entered"
             except Exception as ex:
                 user = await bot.fetch_user(523017072796499968)
-                await user.send(f'데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+                await user.send(f'시간표 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+
+            try:
+                #전체 코로나 정보에서 해당 지역의 코로나 정보만 수집
+                user_data[user_id]['area_covid19_decide'] = covid19_data[area_code[user_data[user_id]["area_code"]]]
+                user_data[user_id]['all_covid19_decide'] = covid19_data['합계']
+            except Exception as ex:
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f'지역 코로나 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
             with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+
+    print("정보 수집 완료")
 
 @bot.event
 async def on_ready():  
@@ -212,6 +235,8 @@ async def send_DM(data,user_id,start_minute,user_data):
     print(user_data[user_id])
     print(user_data[user_id].keys())
     print("school_code" in user_data[user_id].keys())
+    with open("area_code.json", "r",encoding='utf-8-sig') as json_file:
+        area_code=json.load(json_file)
     try:
         if erorr != "erorr":
             if data["code"]=="SUCCESS":
@@ -236,7 +261,10 @@ async def send_DM(data,user_id,start_minute,user_data):
                         msg += f"> {i}\n"
                     msg = msg[:-1]
                     embed.add_field(name = "오늘의 급식",value=f"{msg}")
-
+                #코로나 확진자 수 전송
+                if user_data[user_id]['all_covid19_decide'] !=None and user_data[user_id]['area_covid19_decide'] != None:
+                    embed.add_field(name = "코로나 확진자",value=f"전국 : {user_data[user_id]['all_covid19_decide']}명, {area_code[user_data[user_id]['area_code']]} : {user_data[user_id]['area_covid19_decide']}명")
+                #최종 전송 및 로그 전송
                 await user.send(embed=embed)
                 await send_log(log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
                 print("자가진단 성공 후 메시지 발송 완료...")
@@ -789,6 +817,13 @@ async def test(ctx):
 
 @bot.command()
 async def 코로나(ctx):
-    await ctx.send(await get_covid19_data.get_covid19_decide())
+    covid19_data = await get_covid19_data.get_covid19_decide()
+    await ctx.send(covid19_data)
+    with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
+        user_data=json.load(json_file)
+    with open("area_code.json", "r",encoding='utf-8-sig') as json_file:
+        area_code=json.load(json_file)
+    
+    await ctx.send(covid19_data[area_code[user_data[str(ctx.author.id)]["area_code"]]])
     
 bot.run(token)
