@@ -86,17 +86,21 @@ async def auto_self_check():
         #채널
         await send_log(log_today, f"{len(bot.guilds)}개의 서버에서 {success_user+failure_user}번의 자가진단이 실시되었습니다.\n(성공 : {success_user}명, 실패 : {failure_user}명)")
         #합계
+        '''
         channel = bot.get_channel(int(log_today_total))
         msg = str(f"합계 : {success_user+failure_user}")
         await channel.edit(name=msg)
+        '''
         #성공
         channel = bot.get_channel(int(log_today_success))
         msg = str(f"성공 : {success_user}")
         await channel.edit(name=msg)
         #실패
+        '''
         channel = bot.get_channel(int(log_today_failure))
         msg = str(f"실패 : {failure_user}")
         await channel.edit(name=msg)
+        '''
 
     #정보 수집 if문
     if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
@@ -161,7 +165,7 @@ async def auto_self_check():
             with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
-    print("정보 수집 완료")
+        print("정보 수집 완료")
 
 @bot.event
 async def on_ready():  
@@ -262,7 +266,7 @@ async def send_DM(data,user_id,start_minute,user_data):
                     embed.add_field(name = "오늘의 급식",value=f"{msg}")
                 #코로나 확진자 수 전송
                 if user_data[user_id]['all_covid19_decide'] !=None and user_data[user_id]['area_covid19_decide'] != None:
-                    embed.add_field(name = "코로나 확진자",value=f"전국 : {user_data[user_id]['all_covid19_decide']}명, {area_code[user_data[user_id]['area_code']]} : {user_data[user_id]['area_covid19_decide']}명")
+                    embed.add_field(name = "코로나 확진자",value=f"전국 : {user_data[user_id]['all_covid19_decide']}명, {area_code[user_data[user_id]['area_code']]} : {user_data[user_id]['area_covid19_decide']}명\n※{(datetime.datetime.now()-datetime.timedelta(days=1)).strftime('%Y%m%d')} 0시 기준")
                 #최종 전송 및 로그 전송
                 await user.send(embed=embed)
                 await send_log(log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"]))
@@ -288,10 +292,6 @@ async def send_DM(data,user_id,start_minute,user_data):
 async def 명령어(ctx):
     global help_embed
     await ctx.send(embed=help_embed)
-
-@bot.command()
-async def 채널(ctx):
-    await ctx.send(f"{ctx.channel.id} and {type(ctx.channel.id)}")
 
 @bot.command()
 async def 도움말(ctx):
@@ -546,8 +546,7 @@ async def 관리자개인공지(ctx,name,birth,*,msg):
 
 @bot.command()
 async def Ping(ctx):
-    for i in range(5):
-        await ctx.send(f"현재 핑은 `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}` 기준으로 `{str(round(bot.latency*1000))}ms` 입니다.")
+    await ctx.send(f"현재 핑은 `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}` 기준으로 `{str(round(bot.latency*1000))}ms` 입니다.")
 
 @bot.command()
 async def 급식(ctx, day=None,user: discord.User=None):
@@ -823,6 +822,6 @@ async def 코로나(ctx):
     with open("area_code.json", "r",encoding='utf-8-sig') as json_file:
         area_code=json.load(json_file)
     
-    await ctx.send(covid19_data[area_code[user_data[str(ctx.author.id)]["area_code"]]])
-    
+    await ctx.send(f"{area_code[user_data[str(ctx.author.id)]['area_code']]} : {covid19_data[area_code[user_data[str(ctx.author.id)]['area_code']]]}")
+
 bot.run(token)
