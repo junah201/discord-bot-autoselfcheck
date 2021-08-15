@@ -9,6 +9,7 @@ import json
 import os, sys
 import socket
 import asyncio
+import koreanbots
 
 import get_school_data
 import get_covid19_data
@@ -45,7 +46,8 @@ back_area_list = ['서울', '서울시', '서울교육청', '서울시교육청'
 back_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']
 school_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']
 
-
+kb = koreanbots.Koreanbots(bot, config['KOR_TOKEN'], run_task=True)
+print(kb)
 
 @tasks.loop(seconds=60)
 async def auto_self_check():
@@ -169,7 +171,7 @@ async def auto_self_check():
 
 @bot.event
 async def on_ready():  
-    print("봇 실행 완료")
+    print(f"{bot.user} 실행 완료")
     now = datetime.datetime.now()
     with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
         user_data=json.load(json_file)
@@ -702,9 +704,8 @@ async def 시간표(ctx, day=None,user: discord.User=None):
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
 
-        user_data_keys = user_data[user].keys()
-
         if user in user_data:
+            user_data_keys = user_data[user].keys()
             if "school_grade" not in user_data_keys and "school_class" not in user_data_keys:
                 await ctx.send("입력된 학년반 데이터가 없습니다. `?학년반정보입력` 으로 입력해주십시오.")
             else:
@@ -743,9 +744,8 @@ async def 학사일정(ctx, day=None,user: discord.User=None):
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
 
-        user_data_keys = user_data[user].keys()
-
         if user in user_data:
+            user_data_keys = user_data[user].keys()
             if "school_code" not in user_data_keys and "area_code" not in user_data_keys:
                 user_data[user]["area_code"] = await get_school_data.get_area_code(user_data[user]["area"])
                 user_data[user]["school_code"] = await get_school_data.get_school_code(user_data[user]["school_name"],user_data[user]["area_code"])
