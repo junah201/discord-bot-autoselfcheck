@@ -725,6 +725,8 @@ async def 시간표(ctx, day=None,user: discord.User=None):
                 embed = discord.Embed(title="시간표",description=f"일시 : `{day}`\n\n{msg}{end_msg}", color=0x62c1cc)
                 #\n학년 : `{user_data[user]["school_grade"]}` 반 : `{user_data[user]["school_class"]}
                 await ctx.send(embed= embed)
+        else:
+            await ctx.send("해당 유저의 데이터가 없습니다. `?정보등록`으로 유저 데이터를 입력해주십시오.")
     else:
         await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
 
@@ -751,6 +753,8 @@ async def 학사일정(ctx, day=None,user: discord.User=None):
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
             schedule = await get_school_data.get_school_schedule(user_data[user]["school_code"],user_data[user]["area_code"],day)
             await ctx.send(f"일시 : `{day}`\n일정 : {schedule}")
+        else:
+            await ctx.send("해당 유저의 데이터가 없습니다. `?정보등록`으로 유저 데이터를 입력해주십시오.")
     else:
         await ctx.send("날짜는 숫자로 이루어진 8글자 형식으로 입력해주십시오. (예 : `20210612`)")
 
