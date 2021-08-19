@@ -10,6 +10,6 @@ help_embed.add_field(name="?진단참여", value="수동으로 자가진단을 �
 help_embed.add_field(name="?자가진단실시", value="중지되었던 자동자가진단을 다시 실시합니다.\n?진단참여 명령어를 통한 수동자가진단은 정상적으로작동합니다.", inline=False)
 help_embed.add_field(name="?자가진단중지", value="이제부터 자동자가진단이 작동되지않습니다.\n?진단참여 명령어를 통한 수동자가진단은 정상적으로작동합니다.", inline=False)
 help_embed.add_field(name="?급식", value="?급식\n?급식 <날짜> <태그>의 형식으로 타인의 급식도 볼 수 있습니다.", inline=False)
-help_embed.add_field(name="기타명령어",value="`?학년반정보입력 [반] [번호]`\n`?급식`, `?내일급식`, `?어제급식`\n`?시간표`\n`?학사일정`", inline=False)
+help_embed.add_field(name="기타명령어",value="`?학년반정보입력 [학년] [반]`\n`?급식`, `?내일급식`, `?어제급식`\n`?시간표`\n`?학사일정`", inline=False)
 help_embed.add_field(name="기타",value="자동자가진단은 7시 00분에서 7시 16분 사이에 랜덤하게 작동하며,\n자동자가진단 DM 메시지를 통하여 그 다음날의 작동 시간을 알 수 있습니다.", inline=False)
 help_embed.add_field(name="정보",value=end_msg)
