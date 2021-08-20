@@ -164,6 +164,16 @@ async def auto_self_check():
             except Exception as ex:
                 user = await bot.fetch_user(523017072796499968)
                 await user.send(f'지역 코로나 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+            try:
+                if "failure" in user_data[user_id].keys():
+                    if user_data[user_id]["failure"] >= 5:
+                        user_data.pop(str(user_id))
+                        user = await bot.fetch_user(int(user_id))
+                        await user.send(f'5회 이상 자가진단에 실패하여, 유저 정보가 삭제되었습니다.')
+            except Exception as ex:
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f'failure 측정 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+
             with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
@@ -245,6 +255,7 @@ async def send_DM(data,user_id,start_minute,user_data):
     try:
         if erorr != "erorr":
             if data["code"]=="SUCCESS":
+                user_data[user_id]["failure"] = 0
                 embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.\n다음 자동자가진단은 `7시 {start_minute}분`에 실시될 예정입니다.", color=0x62c1cc)
                 #학사일정 전송
                 if user_data[user_id]["schedule"] != None and str(user_data[user_id]["schedule"]) != "null":
@@ -280,6 +291,15 @@ async def send_DM(data,user_id,start_minute,user_data):
                 log_embed = discord.Embed(title="자가 진단 실패",description="[{}]\n{}[{}]님의 자가진단 실패\n{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]["name"],user_id,data["message"]), color=0x62c1cc)
                 await send_embed_log(log_auto_self_check_failure_channel,log_embed)
                 print("자가진단 실패 후 메시지 발송 완료...")
+                #자가진단 실패시 유저데이터의 failure 값 증가
+                if "failure" in user_data[user_id].keys():
+                    user_data[user_id]["failure"] += 1
+                else:
+                    user_data[user_id]["failure"] = 1
+                    
+            with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+                
         #유저 id를 찾지 못하여 discord user 오브젝트를 못 얻었을 경우
         else:
             print("자가 진단 후 메시지 전송 실패...")
