@@ -431,13 +431,12 @@ async def 정보삭제(ctx):
             await ctx.send(embed=embed)
 
         user = await bot.fetch_user(str(ctx.author.id))
-        embed = discord.Embed(title="정보 삭제 완료[보안메시지]", description="[{}] 부로 {} 님의 정보 삭제가 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**{}".format(now.strftime('%Y-%m-%d %H:%M:%S'),data["name"],data["name"],data["birth"],data["area"],data["school_name"],data["school_type"],data["passward"][:2],end_msg), color=0x62c1cc)
+        embed = discord.Embed(title="정보 삭제 완료[보안메시지]", description="[{}] 부로 {} 님의 정보 삭제가 완료되었습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),data["name"],data["name"],data["birth"],data["area"],data["school_name"],data["school_type"],data["passward"][:2],end_msg), color=0x62c1cc)
         await user.send(embed=embed)
 
         await send_log(log_add_remove,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {data['name']}님의 정보 삭제 완료!")
     else:
-        now = datetime.datetime.now()
-        embed = discord.Embed(title="정보 삭제 실패", description="[{}] 에  <@{}> 님의 정보 삭제를 실패하셨습니다.\n디스코드 아이디[{}]로 등록된 정보가 없습니다.\n구체적인 문의는 관리자[white201#0201]님께 문의 부탁드립니다.".format(now.strftime('%Y-%m-%d %H:%M:%S'),ctx.author.id,ctx.author.id,end_msg), color=0x62c1cc)
+        embed = discord.Embed(title="정보 삭제 실패", description="[{}] 에  <@{}> 님의 정보 삭제를 실패하셨습니다.\n디스코드 아이디[{}]로 등록된 정보가 없습니다.\n구체적인 문의는 관리자[white201#0201]님께 문의 부탁드립니다.".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ctx.author.id,ctx.author.id,end_msg), color=0x62c1cc)
         await ctx.send(embed=embed)
 
 @bot.command()
