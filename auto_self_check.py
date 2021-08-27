@@ -56,6 +56,7 @@ async def auto_self_check():
 
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
     #자가진단 실행 if문
+    #if True:
     if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
         print("실행")
         await user_data_backup()
@@ -105,7 +106,8 @@ async def auto_self_check():
         '''
 
     #정보 수집 if문
-    if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
+    if True:
+    #if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
         print("정보 수집 시작")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
@@ -117,65 +119,70 @@ async def auto_self_check():
     
         #전국 데이터
         covid19_data[datetime.datetime.now().strftime('%Y%m%d')] = await get_covid19_data.get_covid19_decide()
-        
         for user_id in user_data.keys():
+            
             #기본값 설정
             user_data[user_id]["schedule"] = None
             user_data[user_id]["cafeteria"] = None
             user_data[user_id]["timetable"] = None
             user_data[user_id]['area_covid19_decide'] = None
             user_data[user_id]['all_covid19_decide'] = None
-            try:
-                #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
-                user_data[user_id]["schedule"] = await get_school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-                if "방학" in user_data[user_id]["schedule"]:
-                    #user_data[user_id]["possible"] = False
-                    #user = await bot.fetch_user(int(user_id))
-                    #await user.send(f"오늘부터 자가진단이 실시되지 않을 예정입니다.\n(사유 : 학사일정에 방학식이 확인됨)")
-                    pass
-                elif "개학" in user_data[user_id]["schedule"]:
-                    user_data[user_id]["possible"] = True
-                    user = await bot.fetch_user(int(user_id))
-                    await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
-            except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f'학사일정 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
-            try:    
-                #급식정보 수집
-                user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-            except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f'급식 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
 
-            try:    
-                #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
-                if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
-                    user_data[user_id]["timetable"] = await get_school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
-                else:
-                    user_data[user_id]["timetable"] = "No information entered"
-            except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f'시간표 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
-
-            try:
-                #전체 코로나 정보에서 해당 지역의 코로나 정보만 수집
-                user_data[user_id]['area_covid19_decide'] = covid19_data[area_code[user_data[user_id]["area_code"]]]
-                user_data[user_id]['all_covid19_decide'] = covid19_data['합계']
-            except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f'지역 코로나 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
-            try:
-                if "failure" in user_data[user_id].keys():
-                    if user_data[user_id]["failure"] >= 5:
-                        user_data.pop(str(user_id))
+            #possible이 True 일때만 데이터 수집
+            if user_data[user_id]["possible"] == True:
+                try:
+                    #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
+                    user_data[user_id]["schedule"] = await get_school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                    if "방학" in user_data[user_id]["schedule"]:
+                        #user_data[user_id]["possible"] = False
+                        #user = await bot.fetch_user(int(user_id))
+                        #await user.send(f"오늘부터 자가진단이 실시되지 않을 예정입니다.\n(사유 : 학사일정에 방학식이 확인됨)")
+                        pass
+                    elif "개학" in user_data[user_id]["schedule"]:
+                        user_data[user_id]["possible"] = True
                         user = await bot.fetch_user(int(user_id))
-                        await user.send(f'5회 이상 자가진단에 실패하여, 유저 정보가 삭제되었습니다.')
-            except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f'failure 측정 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+                        await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
+                except Exception as ex:
+                    print(f"{user_data[user_id]['name']} : {ex}")
 
-            with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
-                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
+                try:    
+                    #급식정보 수집
+                    user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
+                except Exception as ex:
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f'급식 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+
+                try:    
+                    #시간표 정보 수집 전 학년 반 정보가 입력되었는지 확인
+                    if "school_grade" in user_data[user_id].keys() and "school_class" in user_data[user_id].keys():
+                        user_data[user_id]["timetable"] = await get_school_data.get_school_timetable(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'),user_data[user_id]["school_type"],user_data[user_id]["school_grade"],user_data[user_id]["school_class"])
+                    else:
+                        user_data[user_id]["timetable"] = "No information entered"
+                except Exception as ex:
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f'시간표 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+
+                try:
+                    #전체 코로나 정보에서 해당 지역의 코로나 정보만 수집
+                    user_data[user_id]['area_covid19_decide'] = covid19_data[area_code[user_data[user_id]["area_code"]]]
+                    user_data[user_id]['all_covid19_decide'] = covid19_data['합계']
+                except Exception as ex:
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f'지역 코로나 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+                
+                try:
+                    #failure의 값이 5 이상이면 정보 삭제
+                    if "failure" in user_data[user_id].keys():
+                        if user_data[user_id]["failure"] >= 5:
+                            user_data[user_id]['possible'] = False
+                            user = await bot.fetch_user(int(user_id))
+                            await user.send(f'5회 이상 자가진단에 실패하여, 자동자가진단이 중지 상태로 변경되었습니다.')
+
+                except Exception as ex:
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f'failure 측정 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]["name"]}')
+                with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
+                    json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
         print("정보 수집 완료")
 
@@ -257,7 +264,7 @@ async def send_DM(data,user_id,start_minute,user_data):
             if data["code"]=="SUCCESS":
                 user_data[user_id]["failure"] = 0
                 embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.\n다음 자동자가진단은 `7시 {start_minute}분`에 실시될 예정입니다.", color=0x62c1cc)
-                #학사일정 전송
+                #학사일정 정보 전송을 위해 학사일정 정보가 있는지 확인 후 전송
                 if user_data[user_id]["schedule"] != None and str(user_data[user_id]["schedule"]) != "null":
                     embed.add_field(name = "오늘의 학사일정",value = f"\n일정 : `{user_data[user_id]['schedule']}`")
                 #시간표 정보 전송을 위해 학년반 정보가 있는지 확인 후 전송
@@ -296,7 +303,7 @@ async def send_DM(data,user_id,start_minute,user_data):
                     user_data[user_id]["failure"] += 1
                 else:
                     user_data[user_id]["failure"] = 1
-                    
+            
             with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
                 
@@ -377,7 +384,17 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                 with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
                     user_data=json.load(json_file)
 
-                user_data[str(ctx.author.id)] = {"uesr_id":str(ctx.author.id),"name":name,"birth":birth,"area":area,"school_name":school_name,"school_type":school_type,"passward":passward,"possible":True}
+                user_data[str(ctx.author.id)] = {
+                    "uesr_id" : str(ctx.author.id),
+                    "name" : name,
+                    "birth" : birth,
+                    "area" : area,
+                    "school_name" : school_name,
+                    "school_type" : school_type,
+                    "passward" : passward,
+                    "possible" : True,
+                    "failure" : 0
+                    }
 
                 now = datetime.datetime.now()
                 if str(ctx.guild)!="None":

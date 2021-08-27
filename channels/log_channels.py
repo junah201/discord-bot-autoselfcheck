@@ -8,6 +8,7 @@ log_json_backup_channel = "863574329966067722"
 log_server_join = "863574271661441024"
 log_server_remove = "863574297594953779"
 log_add_remove = "863576001912504340"
+log_auto_add_remove = "880596491863998465"
 
 log_today = "852145484239732756"
 
