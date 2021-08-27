@@ -106,8 +106,8 @@ async def auto_self_check():
         '''
 
     #정보 수집 if문
-    if True:
-    #if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
+    #if True:
+    if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
         print("정보 수집 시작")
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
@@ -120,7 +120,7 @@ async def auto_self_check():
         #전국 데이터
         covid19_data[datetime.datetime.now().strftime('%Y%m%d')] = await get_covid19_data.get_covid19_decide()
         for user_id in user_data.keys():
-            
+
             #기본값 설정
             user_data[user_id]["schedule"] = None
             user_data[user_id]["cafeteria"] = None
