@@ -78,8 +78,35 @@ async def auto_self_check():
                 passward = user_data[user_id]["passward"]
                 user_id = user_data[user_id]["uesr_id"]
                 print(f"자동자가진단 : [{name}]님의 자가진단 준비중")
-                data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                await send_DM(data,user_id,start_minute,user_data)
+
+                try:
+                    data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                    await send_DM(data,user_id,start_minute,user_data)
+                except Exception as ex:
+                    print("무지성 트라이 1트")
+                    print(f"{user_data[user_id]['name']}:{ex}")
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f"{user_data[user_id]['name']}::{ex}")
+                    try:
+                        data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                        await send_DM(data,user_id,start_minute,user_data)
+                    except Exception as ex:
+                        print("무지성 트라이 2트")
+                        print(f"{user_data[user_id]['name']}:{ex}")
+                        user = await bot.fetch_user(523017072796499968)
+                        await user.send(f"{user_data[user_id]['name']}::{ex}")
+                        try:
+                            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                            await send_DM(data,user_id,start_minute,user_data)
+                        except Exception as ex:
+                            print("무지성 트라이 3트 후 포기")
+                            print(f"{user_data[user_id]['name']}:{ex}")
+                            user = await bot.fetch_user(523017072796499968)
+                            await user.send(f"{user_data[user_id]['name']}::{ex}")
+                            data = {}
+                            data["code"]="ERROR"
+                            pass
+
                 if data["code"]=="SUCCESS":
                     success_user += 1
                 else:
@@ -108,7 +135,8 @@ async def auto_self_check():
     #정보 수집 if문
     #if True:
     if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
-        print("정보 수집 시작")
+        print("===정보 수집 시작===")
+        
         await user_data_backup()
         with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
             user_data=json.load(json_file)
@@ -116,11 +144,8 @@ async def auto_self_check():
         covid19_data = await get_covid19_data.get_covid19_decide()
         with open("area_code.json", "r",encoding='utf-8-sig') as json_file:
             area_code=json.load(json_file)
-    
-        #전국 데이터
-        covid19_data[datetime.datetime.now().strftime('%Y%m%d')] = await get_covid19_data.get_covid19_decide()
-        for user_id in user_data.keys():
 
+        for user_id in user_data.keys():
             #기본값 설정
             user_data[user_id]["schedule"] = None
             user_data[user_id]["cafeteria"] = None
@@ -184,7 +209,7 @@ async def auto_self_check():
                 with open(json_file_name, "w",encoding='utf-8-sig') as json_file:
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
-        print("정보 수집 완료")
+        print("===정보 수집 완료===")
 
 @bot.event
 async def on_ready():  
@@ -334,20 +359,6 @@ async def 도움말(ctx):
 async def 서버목록(ctx):
     servers = bot.guilds
     await ctx.send(f"현재 {len(servers)}개의 서버에서 실행 중 입니다.")
-    msg = ""
-    members = [0,0,0,0,0,0,0,0,0,0,0]
-    for server in servers:
-        msg += f"{server} : {server.member_count}\n"
-        print(f"{server.member_count} : {int(server.member_count/10)}")
-        if server.member_count>100:
-            members[10] += 1
-        else:
-            members[int(server.member_count/10)] += 1
-    await ctx.send(msg)
-    msg = ""
-    for i in range(len(members)):
-        msg += f"{i*10}대 서버 {members[i]}\n"
-    await ctx.send(msg)
 
 @bot.command()
 async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,school_type=None,passward=None):
@@ -393,7 +404,12 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                     "school_type" : school_type,
                     "passward" : passward,
                     "possible" : True,
-                    "failure" : 0
+                    "failure" : 0,
+                    "schedule": None,
+                    "cafeteria": None,
+                    "timetable": None,
+                    "area_covid19_decide": None,
+                    "all_covid19_decide": None
                     }
 
                 now = datetime.datetime.now()
@@ -507,15 +523,35 @@ async def 관리자전체자가진단(ctx):
                     school_type = user_data[i]["school_type"]
                     passward = user_data[i]["passward"]
                     print(f"관리자전체자가진단 : [{name}]님의 자가진단 준비중")
-                    data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+
+                    #무지성 try ON!!!!
+                    try:
+                        data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                    except Exception as ex:
+                        print(f"{user_data[i]['name']}:{ex}")
+                        user = await bot.fetch_user(523017072796499968)
+                        await user.send(f"{user_data[i]['name']}::{ex}")
+                        try:
+                            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                        except Exception as ex:
+                            print(f"{user_data[i]['name']}:{ex}")
+                            user = await bot.fetch_user(523017072796499968)
+                            await user.send(f"{user_data[i]['name']}::{ex}")
+                            try:
+                                data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                            except Exception as ex:
+                                print(f"{user_data[i]['name']}:{ex}")
+                                user = await bot.fetch_user(523017072796499968)
+                                await user.send(f"{user_data[i]['name']}::{ex}")
+                                pass
+
                     await send_DM(data,i,start_minute,user_data)
-            else:
-                user = await bot.fetch_user(ctx.author.id)
-                await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+        else:
+            await ctx.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
     except Exception as ex:
-        print(f"{name}:{ex}")
+        print(f"{user_data[i]['name']}:{ex}")
         user = await bot.fetch_user(523017072796499968)
-        await user.send(f"{name}:{ex}")
+        await user.send(f"{user_data[i]['name']}::{ex}")
 
 @bot.command()
 async def 관리자전체공지(ctx,*,msg):
@@ -529,14 +565,14 @@ async def 관리자전체공지(ctx,*,msg):
                 user = await bot.fetch_user(user_id)
                 temp_msg = await user.send(msg)
                 last_notice.append(temp_msg)
+                print(f"{user_id}전송성공")
             except Exception as ex:
                 user = await bot.fetch_user(523017072796499968)
                 await user.send(f'에러가 발생 했습니다 {ex}')
                 print(f'{user_id} : 에러가 발생 했습니다 {ex}')
-                print("자가 진단 후 메시지 전송 실패...")
                 print(f"{user_id}님의 공지전송이 실패하였습니다.")
 
-        ctx.send(f"공지 전송 완료\n`{msg}`")
+        await ctx.send(f"공지 전송 완료\n`{msg}`")
     else:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
@@ -806,22 +842,47 @@ async def 자가진단(ctx):
 
 @bot.command()
 async def 진단참여(ctx):
-    user = str(ctx.author.id)
+    user_id = str(ctx.author.id)
     with open(json_file_name, "r",encoding='utf-8-sig') as json_file:
         user_data=json.load(json_file)
-    if user in user_data.keys():
-        name = user_data[user]["name"]
-        birth = user_data[user]["birth"]
-        area = user_data[user]["area"]
-        school_name = user_data[user]["school_name"]
-        school_type = user_data[user]["school_type"]
-        passward = user_data[user]["passward"]
+    if user_id in user_data.keys():
+        name = user_data[user_id]["name"]
+        birth = user_data[user_id]["birth"]
+        area = user_data[user_id]["area"]
+        school_name = user_data[user_id]["school_name"]
+        school_type = user_data[user_id]["school_type"]
+        passward = user_data[user_id]["passward"]
         print(f"수동진단참여 :[{name}]님의 자가진단 준비중")
-        data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+        try:
+            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+        except Exception as ex:
+            print("무지성 트라이 1트")
+            print(f"{user_data[user_id]['name']}:{ex}")
+            user = await bot.fetch_user(523017072796499968)
+            await user.send(f"{user_data[user_id]['name']}::{ex}")
+            try:
+                data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+            except Exception as ex:
+                print("무지성 트라이 2트")
+                print(f"{user_data[user_id]['name']}:{ex}")
+                user = await bot.fetch_user(523017072796499968)
+                await user.send(f"{user_data[user_id]['name']}::{ex}")
+                try:
+                    data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                except Exception as ex:
+                    print("무지성 트라이 3트 후 포기")
+                    print(f"{user_data[user_id]['name']}:{ex}")
+                    user = await bot.fetch_user(523017072796499968)
+                    await user.send(f"{user_data[user_id]['name']}::{ex}")
+                    data = {}
+                    data["code"]="ERROR"
+                    data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"
+                    pass
+
         if data["code"]=="SUCCESS":
             await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 완료!")
         else:
-            await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 실패!")
+            await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 실패!\n{data['message']}")
     else:
         await ctx.send("유저 데이터에 등록된 정보가 없습니다. `?정보등록`으로 등록해주십시오.")
         
