@@ -87,30 +87,28 @@ async def auto_self_check():
 
                 try:
                     data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                    await send_DM(data,user_id,start_minute,user_data)
                 except Exception as ex:
                     print("무지성 트라이 1트")
                     print(f"{user_data[user_id]['name']}:{ex}")
-                    user = await bot.fetch_user(523017072796499968)
-                    await user.send(f"{user_data[user_id]['name']}::{ex}")
+                    user = await bot.fetch_user(int(ADMIN_ID))
+                    await user.send(f"무지성 트라이 1트 : {user_data[user_id]['name']}::{ex}")
                     try:
                         data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                        await send_DM(data,user_id,start_minute,user_data)
                     except Exception as ex:
                         print("무지성 트라이 2트")
                         print(f"{user_data[user_id]['name']}:{ex}")
-                        user = await bot.fetch_user(523017072796499968)
-                        await user.send(f"{user_data[user_id]['name']}::{ex}")
+                        user = await bot.fetch_user(int(ADMIN_ID))
+                        await user.send(f"무지성 트라이 2트 : {user_data[user_id]['name']}::{ex}")
                         try:
                             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                            await send_DM(data,user_id,start_minute,user_data)
                         except Exception as ex:
                             print("무지성 트라이 3트 후 포기")
                             print(f"{user_data[user_id]['name']}:{ex}")
-                            user = await bot.fetch_user(523017072796499968)
-                            await user.send(f"{user_data[user_id]['name']}::{ex}")
+                            user = await bot.fetch_user(int(ADMIN_ID))
+                            await user.send(f"무지성 트라이 3트 : {user_data[user_id]['name']}::{ex}")
                             data = {}
                             data["code"]="ERROR"
+                            data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"
                             pass
 
                 if data["code"]=="SUCCESS":
@@ -180,7 +178,7 @@ async def auto_self_check():
                     #급식정보 수집
                     user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                 except Exception as ex:
-                    user = await bot.fetch_user(523017072796499968)
+                    user = await bot.fetch_user(int(ADMIN_ID))
                     await user.send(f"급식 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
 
                 try:
@@ -190,7 +188,7 @@ async def auto_self_check():
                     else:
                         user_data[user_id]["timetable"] = "No information entered"
                 except Exception as ex:
-                    user = await bot.fetch_user(523017072796499968)
+                    user = await bot.fetch_user(int(ADMIN_ID))
                     await user.send(f"시간표 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
 
                 try:
@@ -198,7 +196,7 @@ async def auto_self_check():
                     user_data[user_id]['area_covid19_decide'] = covid19_data[area_code[user_data[user_id]["area_code"]]]
                     user_data[user_id]['all_covid19_decide'] = covid19_data['합계']
                 except Exception as ex:
-                    user = await bot.fetch_user(523017072796499968)
+                    user = await bot.fetch_user(int(ADMIN_ID))
                     await user.send(f"지역 코로나 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
                 
                 try:
@@ -210,7 +208,7 @@ async def auto_self_check():
                             await user.send(f'5회 이상 자가진단에 실패하여, 자동자가진단이 중지 상태로 변경되었습니다.')
 
                 except Exception as ex:
-                    user = await bot.fetch_user(523017072796499968)
+                    user = await bot.fetch_user(int(ADMIN_ID))
                     await user.send(f"failure 측정 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
                 with open(JSON_FILE_NAME, "w",encoding="utf-8-sig") as json_file:
                     json.dump(user_data,json_file,ensure_ascii = False, indent=4)
@@ -222,7 +220,7 @@ async def on_ready():
     print(f"{bot.user} 실행 완료")
     with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
         user_data=json.load(json_file)
-    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 중 ")
+    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
     await bot.change_presence(status=discord.Status.online, activity=game)
     embed = discord.Embed(title="봇 실행 완료", description=f"[{datetime.datetime.now()}] 에 [{host_name}] 에서 봇이 실행되었습니다.", color=0x62c1cc)
     await send_log(log_bot_start_channel,f"`[{datetime.datetime.now()}] [{host_name}] 에서 봇이 실행되었습니다.`")
@@ -232,7 +230,7 @@ async def on_ready():
 @bot.event
 async def on_error(event, *args, **kwargs):
     exc = sys.exc_info() #sys를 활용해서 에러를 확인합니다.
-    user = await bot.fetch_user(523017072796499968)
+    user = await bot.fetch_user(int(ADMIN_ID))
     await user.send(f"에러 발생 : {event} : {str(exc[0].__name__)} : {str(exc[1])}")
 
 @bot.event
@@ -367,6 +365,7 @@ async def 서버목록(ctx):
 
 @bot.command()
 async def 서버갱신(ctx):
+    await ctx.send("https://koreanbots.dev/bots/863013480709750805")
     kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
     print(f"서버 갱신 완료 : {kb}")
     await ctx.send("https://koreanbots.dev/bots/863013480709750805")
@@ -375,8 +374,9 @@ async def 서버갱신(ctx):
 async def 유저수갱신(ctx):
     with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
         user_data=json.load(json_file)
-    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 중 ")
+    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
     await bot.change_presence(status=discord.Status.online, activity=game)
+    await ctx.send(f"{len(user_data.keys())}명으로 갱신 완료.")
     
 
 @bot.command()
@@ -450,7 +450,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
                     embed = discord.Embed(title="정보 등록 완료[보안메시지]", description=f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 부로 \`{user_data[str(ctx.author.id)]['name']}` 님의 정보 등록이 완료되었습니다.\n```이름 : {user_data[str(ctx.author.id)]['name']}\n생년월일 : {user_data[str(ctx.author.id)]['birth']}\n지역 : {user_data[str(ctx.author.id)]['area']}\n학교 이름 : {user_data[str(ctx.author.id)]['school_name']}\n학교 타입 : {user_data[str(ctx.author.id)]['school_type']}\n비밀번호 : {user_data[str(ctx.author.id)]['passward'][:2]}**```{end_msg}",color=0x62c1cc)
                     await user.send(embed=embed)
                 else:
-                    user = await bot.fetch_user(523017072796499968)
+                    user = await bot.fetch_user(int(ADMIN_ID))
                     await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
         else:
             embed = discord.Embed(title="정보 등록 실패", description=f"모든 값이 들어오지 않았습니다.\n다시 한번 입력해주시기 바랍니다.\n형식  :  {PREFIX}정보등록 [이름] [생년월일] [지역] [학교이름] [학교타입] [비밀번호]{end_msg}", color=0x62c1cc)
@@ -464,7 +464,7 @@ async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,schoo
     #정보등록 후 상태 메시지 변경 (유저 수 갱신)
     with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
         user_data=json.load(json_file)
-    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 중 ")
+    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
     await bot.change_presence(status=discord.Status.online, activity=game)
 
 @bot.command()
@@ -489,7 +489,7 @@ async def 정보삭제(ctx):
         #정보등록 후 상태 메시지 변경 (유저 수 갱신)
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
             user_data=json.load(json_file)
-        game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 중 ")
+        game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
         await bot.change_presence(status=discord.Status.online, activity=game)
     else:
         embed = discord.Embed(title="정보 삭제 실패", description="[{}] 에  <@{}> 님의 정보 삭제를 실패하셨습니다.\n디스코드 아이디[{}]로 등록된 정보가 없습니다.\n구체적인 문의는 관리자[white201#0201]님께 문의 부탁드립니다.".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),ctx.author.id,ctx.author.id,end_msg), color=0x62c1cc)
@@ -509,7 +509,7 @@ async def 정보확인(ctx):
             embed = discord.Embed(title="정보 확인[보안메시지]", description=f"```이름 : {user_data[str(ctx.author.id)]['name']}\n생년월일 : {user_data[str(ctx.author.id)]['birth']}\n지역 : {user_data[str(ctx.author.id)]['area']}\n학교 이름 : {user_data[str(ctx.author.id)]['school_name']}\n학교 타입 : {user_data[str(ctx.author.id)]['school_type']}\n비밀번호 : {user_data[str(ctx.author.id)]['passward'][:2]}**```\n※정보수정을 원하신다면 `{PREFIX}정보등록`으로 새로 등록해주시기 바랍니다.\n※이미 등록된 데이터가 있어도 새로 등록한 데이터를 기준으로 작동합니다.{end_msg}", color=0x62c1cc)
             await user.send(embed=embed)
         else:
-            user = await bot.fetch_user(523017072796499968)
+            user = await bot.fetch_user(int(ADMIN_ID))
             await user.send("DM 보내기가 정상적으로 처리되지 않아서 관리자에게 로그 DM을 보냈습니다.")
     else:
         embed = discord.Embed(title="정보 확인 실패",description=f"디스코드 아이디에 해당하는 데이터가 없습니다. 관리자에게 문의 부탁드립니다.{end_msg}", color=0x62c1cc)
@@ -517,7 +517,7 @@ async def 정보확인(ctx):
 
 @bot.command()
 async def 관리자정보확인(ctx):
-    if str(ctx.author.id) == '523017072796499968':
+    if str(ctx.author.id) == ADMIN_ID:
         global JSON_FILE_NAME
         await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d')}]\nhost name : {host_name}\njson file name : {JSON_FILE_NAME}")
         file = discord.File("user_data.json")
@@ -532,7 +532,7 @@ async def 관리자정보확인(ctx):
 @bot.command()
 async def 관리자전체자가진단(ctx):
     try:
-        if str(ctx.author.id) == '523017072796499968':
+        if str(ctx.author.id) == ADMIN_ID:
             with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
                 user_data=json.load(json_file)
             global start_minute
@@ -552,19 +552,19 @@ async def 관리자전체자가진단(ctx):
                         data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
                     except Exception as ex:
                         print(f"{user_data[i]['name']}:{ex}")
-                        user = await bot.fetch_user(523017072796499968)
+                        user = await bot.fetch_user(int(ADMIN_ID))
                         await user.send(f"{user_data[i]['name']}::{ex}")
                         try:
                             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
                         except Exception as ex:
                             print(f"{user_data[i]['name']}:{ex}")
-                            user = await bot.fetch_user(523017072796499968)
+                            user = await bot.fetch_user(int(ADMIN_ID))
                             await user.send(f"{user_data[i]['name']}::{ex}")
                             try:
                                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
                             except Exception as ex:
                                 print(f"{user_data[i]['name']}:{ex}")
-                                user = await bot.fetch_user(523017072796499968)
+                                user = await bot.fetch_user(int(ADMIN_ID))
                                 await user.send(f"{user_data[i]['name']}::{ex}")
                                 pass
 
@@ -573,12 +573,12 @@ async def 관리자전체자가진단(ctx):
             await ctx.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
     except Exception as ex:
         print(f"{user_data[i]['name']}:{ex}")
-        user = await bot.fetch_user(523017072796499968)
+        user = await bot.fetch_user(int(ADMIN_ID))
         await user.send(f"{user_data[i]['name']}::{ex}")
 
 @bot.command()
 async def 관리자전체공지(ctx,*,msg):
-    if str(ctx.author.id) == '523017072796499968':
+    if str(ctx.author.id) == ADMIN_ID:
         global last_notice
         last_notice = []
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
@@ -590,7 +590,7 @@ async def 관리자전체공지(ctx,*,msg):
                 last_notice.append(temp_msg)
                 print(f"{user_id}전송성공")
             except Exception as ex:
-                user = await bot.fetch_user(523017072796499968)
+                user = await bot.fetch_user(int(ADMIN_ID))
                 await user.send(f'에러가 발생 했습니다 {ex}')
                 print(f'{user_id} : 에러가 발생 했습니다 {ex}')
                 print(f"{user_id}님의 공지전송이 실패하였습니다.")
@@ -602,7 +602,7 @@ async def 관리자전체공지(ctx,*,msg):
 
 @bot.command()
 async def 관리자전체공지수정(ctx,*,msg):
-    if str(ctx.author.id) == '523017072796499968':
+    if str(ctx.author.id) == ADMIN_ID:
         global last_notice
         for last_msg in last_notice:
             await last_msg.edit(content=str(msg))
@@ -612,7 +612,7 @@ async def 관리자전체공지수정(ctx,*,msg):
 
 @bot.command()
 async def 관리자전체공지삭제(ctx,*,msg):
-    if str(ctx.author.id) == '523017072796499968':
+    if str(ctx.author.id) == ADMIN_ID:
         global last_notice
         for last_msg in last_notice:
             await last_msg.delete()
@@ -622,7 +622,7 @@ async def 관리자전체공지삭제(ctx,*,msg):
 
 @bot.command()
 async def 관리자개인공지(ctx,name,birth,*,msg):
-    if str(ctx.author.id) == '523017072796499968':
+    if str(ctx.author.id) == ADMIN_ID:
         global last_personal_notice
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
             user_data=json.load(json_file)
@@ -881,22 +881,22 @@ async def 진단참여(ctx):
         except Exception as ex:
             print("무지성 트라이 1트")
             print(f"{user_data[user_id]['name']}:{ex}")
-            user = await bot.fetch_user(523017072796499968)
-            await user.send(f"{user_data[user_id]['name']}::{ex}")
+            user = await bot.fetch_user(int(ADMIN_ID))
+            await user.send(f"무지성 트라이 1트 : {user_data[user_id]['name']}::{ex}")
             try:
                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
             except Exception as ex:
                 print("무지성 트라이 2트")
                 print(f"{user_data[user_id]['name']}:{ex}")
-                user = await bot.fetch_user(523017072796499968)
-                await user.send(f"{user_data[user_id]['name']}::{ex}")
+                user = await bot.fetch_user(int(ADMIN_ID))
+                await user.send(f"무지성 트라이 2트 : {user_data[user_id]['name']}::{ex}")
                 try:
                     data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
                 except Exception as ex:
                     print("무지성 트라이 3트 후 포기")
                     print(f"{user_data[user_id]['name']}:{ex}")
-                    user = await bot.fetch_user(523017072796499968)
-                    await user.send(f"{user_data[user_id]['name']}::{ex}")
+                    user = await bot.fetch_user(int(ADMIN_ID))
+                    await user.send(f"무지성 트라이 3트 : {user_data[user_id]['name']}::{ex}")
                     data = {}
                     data["code"]="ERROR"
                     data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"

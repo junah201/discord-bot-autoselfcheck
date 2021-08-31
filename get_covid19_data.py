@@ -22,6 +22,7 @@ async def get_covid19_decide():
     else:
         return None
 '''
+
 async def get_covid19_decide():
     day = (datetime.datetime.now()-datetime.timedelta(days=1)).strftime('%Y%m%d')
     url = f"http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey={covid19_api_key}&pageNo=1&numOfRows=10&startCreateDt={day}&endCreateDt={day}"
