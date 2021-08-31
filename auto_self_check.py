@@ -111,6 +111,8 @@ async def auto_self_check():
                             data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"
                             pass
 
+                await send_DM(data,user_id,start_minute,user_data)                         
+
                 if data["code"]=="SUCCESS":
                     success_user += 1
                 else:
@@ -603,9 +605,12 @@ async def 관리자전체공지(ctx,*,msg):
 @bot.command()
 async def 관리자전체공지수정(ctx,*,msg):
     if str(ctx.author.id) == ADMIN_ID:
+        print("관리자전체공지 수정 시작")
         global last_notice
         for last_msg in last_notice:
+            print("관리자전체공지 수정 중")
             await last_msg.edit(content=str(msg))
+        print("관리자전체공지 수정 끝")
     else:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
@@ -885,6 +890,7 @@ async def 진단참여(ctx):
             await user.send(f"무지성 트라이 1트 : {user_data[user_id]['name']}::{ex}")
             try:
                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                print("무지성 트라이 2트 성공")
             except Exception as ex:
                 print("무지성 트라이 2트")
                 print(f"{user_data[user_id]['name']}:{ex}")
@@ -892,6 +898,7 @@ async def 진단참여(ctx):
                 await user.send(f"무지성 트라이 2트 : {user_data[user_id]['name']}::{ex}")
                 try:
                     data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                    print("무지성 트라이 2트 성공")
                 except Exception as ex:
                     print("무지성 트라이 3트 후 포기")
                     print(f"{user_data[user_id]['name']}:{ex}")
