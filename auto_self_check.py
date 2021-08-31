@@ -361,6 +361,12 @@ async def 서버목록(ctx):
     await ctx.send(f"현재 {len(servers)}개의 서버에서 실행 중 입니다.")
 
 @bot.command()
+async def 서버갱신(ctx):
+    kb = koreanbots.Koreanbots(bot, config['KOR_TOKEN'], run_task=True)
+    print(f"서버 갱신 완료 : {kb}")
+    await ctx.send("https://koreanbots.dev/bots/863013480709750805")
+
+@bot.command()
 async def 정보등록(ctx,name=None,birth=None,area=None,school_name=None,school_type=None,passward=None):
     if str(ctx.guild) == "None":
         if name!=None and birth!=None and area!=None and school_name!=None and school_type!=None and passward!=None:
