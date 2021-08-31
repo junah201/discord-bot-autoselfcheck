@@ -12,14 +12,15 @@ import asyncio
 import koreanbots
 from dotenv import load_dotenv
 
-
 import get_school_data
 import get_covid19_data
 
 from embed.help_embed import *
 from channels.log_channels import *
 
-JSON_FILE_NAME = os.getenv("JSON_FILE_NAME")
+load_dotenv()
+
+JSON_FILE_NAME = os.getenv('JSON_FILE_NAME')
 print(f"json_file_name : {JSON_FILE_NAME}")
 
 TOKEN = os.getenv("TOKEN")
@@ -860,7 +861,7 @@ async def 시간(ctx):
 
 @bot.command()
 async def 자가진단(ctx):
-    ctx.send(f"수동자가진단은 `{PREFIX}진단참여`을 이용해주시기 바랍니다.")
+    await ctx.send(f"수동자가진단은 `{PREFIX}진단참여`을 이용해주시기 바랍니다.")
 
 @bot.command()
 async def 진단참여(ctx):
