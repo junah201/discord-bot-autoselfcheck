@@ -1,6 +1,5 @@
 #-*- coding: UTF8-*-
 #Thank you, Danny!
-from re import I
 import discord
 from discord.ext import commands, tasks
 import datetime
