@@ -1,5 +1,6 @@
 #-*- coding: UTF8-*-
 #Thank you, Danny!
+from re import I
 import discord
 from discord.ext import commands, tasks
 import datetime
@@ -87,30 +88,38 @@ async def auto_self_check():
 
                 try:
                     data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                except Exception as ex:
-                    print("무지성 트라이 1트")
-                    print(f"{user_data[user_id]['name']}:{ex}")
-                    user = await bot.fetch_user(int(ADMIN_ID))
-                    await user.send(f"무지성 트라이 1트 : {user_data[user_id]['name']}::{ex}")
-                    try:
-                        data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                    except Exception as ex:
-                        print("무지성 트라이 2트")
-                        print(f"{user_data[user_id]['name']}:{ex}")
+                    err = False
+                except:
+                    err = True
+
+                if err == True or "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" in data['message']:
+                    print("err")
+                    i=0
+                    while True:
                         user = await bot.fetch_user(int(ADMIN_ID))
-                        await user.send(f"무지성 트라이 2트 : {user_data[user_id]['name']}::{ex}")
+                        await user.send(f"무지성 트라이 {i+1}트 : {user_data[user_id]['name']}")
+                        i+=1
                         try:
                             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                        except Exception as ex:
-                            print("무지성 트라이 3트 후 포기")
-                            print(f"{user_data[user_id]['name']}:{ex}")
-                            user = await bot.fetch_user(int(ADMIN_ID))
-                            await user.send(f"무지성 트라이 3트 : {user_data[user_id]['name']}::{ex}")
-                            data = {}
-                            data["code"]="ERROR"
-                            data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"
+                        except:
                             pass
+                        if "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" not in data['message'] or i>5:
+                            print(data)
+                            break
 
+                if "학교는 검색하였으나, 입력한 정보의 학생을 찾을 수 없습니다." in data['message']:
+                    print("학생 검색 오류인지 테스트 중")
+                    for i in range(5):
+                        user = await bot.fetch_user(int(ADMIN_ID))
+                        await user.send(f"학생 검색 오류인지 테스트 중 {i+1}트 : {user_data[user_id]['name']}")
+                        try:
+                            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                        except:
+                            pass
+                        if data['message'] == "성공적으로 자가진단을 수행하였습니다.":
+                            print(data)
+                            break
+                
                 await send_DM(data,user_id,start_minute,user_data)                         
 
                 if data["code"]=="SUCCESS":
@@ -883,36 +892,33 @@ async def 진단참여(ctx):
         print(f"수동진단참여 :[{name}]님의 자가진단 준비중")
         try:
             data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-        except Exception as ex:
-            print("무지성 트라이 1트")
-            print(f"{user_data[user_id]['name']}:{ex}")
-            user = await bot.fetch_user(int(ADMIN_ID))
-            await user.send(f"무지성 트라이 1트 : {user_data[user_id]['name']}::{ex}")
-            try:
-                data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                print("무지성 트라이 2트 성공")
-            except Exception as ex:
-                print("무지성 트라이 2트")
-                print(f"{user_data[user_id]['name']}:{ex}")
+            err = False
+        except:
+            err = True
+
+        if "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" in data['message'] or err == True:
+            print(data)
+            print("err")
+            i=0
+            while True:
                 user = await bot.fetch_user(int(ADMIN_ID))
-                await user.send(f"무지성 트라이 2트 : {user_data[user_id]['name']}::{ex}")
+                await user.send(f"무지성 트라이 {i+1}트 : {user_data[user_id]['name']}")
+                i+=1
                 try:
                     data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                    print("무지성 트라이 2트 성공")
-                except Exception as ex:
-                    print("무지성 트라이 3트 후 포기")
-                    print(f"{user_data[user_id]['name']}:{ex}")
-                    user = await bot.fetch_user(int(ADMIN_ID))
-                    await user.send(f"무지성 트라이 3트 : {user_data[user_id]['name']}::{ex}")
-                    data = {}
-                    data["code"]="ERROR"
-                    data['message']="인증서 에러 또는 기타 에러 (봇 관리자에게 문의해주세요. white201#0201)"
+                except:
                     pass
-
+                if "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" not in data['message'] or i>5:
+                    print(data)
+                    break
+        
         if data["code"]=="SUCCESS":
-            await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 완료!")
+            print("수동 자가진단 성공")
+            await ctx.send(f"[{data['regtime']}] 자가진단 완료!\n{data['message']}")
         else:
+            print(f"수동 자가진단 실패 : {data}")
             await ctx.send(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 자가진단 실패!\n{data['message']}")
+            await ctx.send(f"입력된 정보가 정상인데도 자가진단 실패가 뜬다면 재시도 하시거나 관리자(white201#0201)에게 문의 부탁드립니다.")
     else:
         await ctx.send(f"유저 데이터에 등록된 정보가 없습니다. `{PREFIX}정보등록`으로 등록해주십시오.")
         
