@@ -245,12 +245,15 @@ async def on_error(event, *args, **kwargs):
 
 @bot.event
 async def on_guild_join(guild):
+    kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
+    print(f"서버 갱신 완료 : {kb}")
     channels = guild.channels
     await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
     global help_embed
     system_channel = guild.system_channel.id
-    channel = bot.get_channel(int(system_channel))
-    await channel.send(embed = help_embed)
+    if system_channel != None:
+        channel = bot.get_channel(int(system_channel))
+        await channel.send(embed = help_embed)
     #해당 리스트에 있는 단어가 채널이름에 있을 경우 도움말 표시
     try:
         for i in channels:
@@ -375,7 +378,6 @@ async def 서버목록(ctx):
 
 @bot.command()
 async def 서버갱신(ctx):
-    await ctx.send("https://koreanbots.dev/bots/863013480709750805")
     kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
     print(f"서버 갱신 완료 : {kb}")
     await ctx.send("https://koreanbots.dev/bots/863013480709750805")
