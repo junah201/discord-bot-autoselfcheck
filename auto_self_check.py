@@ -571,7 +571,7 @@ async def 관리자전체자가진단(ctx):
                         i=0
                         while True:
                             user = await bot.fetch_user(int(ADMIN_ID))
-                            await user.send(f"무지성 트라이 {i+1}트 : {user_data[i]]['name']}")
+                            await user.send(f"무지성 트라이 {i+1}트 : {user_data[i]['name']}")
                             i+=1
                             try:
                                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
