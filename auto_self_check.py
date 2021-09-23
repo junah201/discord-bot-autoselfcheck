@@ -108,7 +108,7 @@ async def auto_self_check():
 
                 if "학교는 검색하였으나, 입력한 정보의 학생을 찾을 수 없습니다." in data['message']:
                     print("학생 검색 오류인지 테스트 중")
-                    for i in range(5):
+                    for i in range(3):
                         user = await bot.fetch_user(int(ADMIN_ID))
                         await user.send(f"학생 검색 오류인지 테스트 중 {i+1}트 : {user_data[user_id]['name']}")
                         try:
@@ -562,23 +562,37 @@ async def 관리자전체자가진단(ctx):
                     #무지성 try ON!!!!
                     try:
                         data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                    except Exception as ex:
-                        print(f"{user_data[i]['name']}:{ex}")
-                        user = await bot.fetch_user(int(ADMIN_ID))
-                        await user.send(f"{user_data[i]['name']}::{ex}")
-                        try:
-                            data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                        except Exception as ex:
-                            print(f"{user_data[i]['name']}:{ex}")
+                        err = False
+                    except:
+                        err = True
+
+                    if err == True or "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" in data['message']:
+                        print("err")
+                        i=0
+                        while True:
                             user = await bot.fetch_user(int(ADMIN_ID))
-                            await user.send(f"{user_data[i]['name']}::{ex}")
+                            await user.send(f"무지성 트라이 {i+1}트 : {user_data[i]]['name']}")
+                            i+=1
                             try:
                                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
-                            except Exception as ex:
-                                print(f"{user_data[i]['name']}:{ex}")
-                                user = await bot.fetch_user(int(ADMIN_ID))
-                                await user.send(f"{user_data[i]['name']}::{ex}")
+                            except:
                                 pass
+                            if "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" not in data['message'] or i>5:
+                                print(data)
+                                break
+
+                    if "학교는 검색하였으나, 입력한 정보의 학생을 찾을 수 없습니다." in data['message']:
+                        print("학생 검색 오류인지 테스트 중")
+                        for i in range(3):
+                            user = await bot.fetch_user(int(ADMIN_ID))
+                            await user.send(f"학생 검색 오류인지 테스트 중 {i+1}트 : {user_data[i]['name']}")
+                            try:
+                                data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
+                            except:
+                                pass
+                            if data['message'] == "성공적으로 자가진단을 수행하였습니다.":
+                                print(data)
+                                break
 
                     await send_DM(data,i,start_minute,user_data)
         else:
