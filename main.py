@@ -241,19 +241,35 @@ async def on_ready():
 async def on_error(event, *args, **kwargs):
     exc = sys.exc_info() #sys를 활용해서 에러를 확인합니다.
     user = await bot.fetch_user(int(ADMIN_ID))
+    today = datetime.datetime.today().strftime("%Y_%m_%d")
+    now = datetime.datetime.now()
+    file = "./logs/error/" + today + '.txt'
+
+    if os.path.isfile(file):
+        f = open(file, 'a', encoding='utf-8')
+        f.write(f'\n[ {now.hour}:{now.minute}:{now.second} ] {event} : {str(exc[0].__name__)} : {str(exc[1])}')
+        f.close()
+    else:
+        f = open(file, 'w', encoding='utf-8')
+        f.write(f'[ {now.hour}:{now.minute}:{now.second} ] {event} : {str(exc[0].__name__)} : {str(exc[1])}')
+        f.close()
+
     await user.send(f"에러 발생 : {event} : {str(exc[0].__name__)} : {str(exc[1])}")
 
 @bot.event
 async def on_guild_join(guild):
     kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
     print(f"서버 갱신 완료 : {kb}")
-    channels = guild.channels
     await send_log(log_server_join,f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] `{guild.member_count-1}명`이 있는 [{guild}] 서버에 자가진단 봇이 추가되었습니다.")
-    global help_embed
-    system_channel = guild.system_channel.id
-    if system_channel != None:
-        channel = bot.get_channel(int(system_channel))
-        await channel.send(embed = help_embed)
+    try:
+        channels = guild.channels
+        global help_embed
+        system_channel = guild.system_channel.id
+        if system_channel != None:
+            channel = bot.get_channel(int(system_channel))
+            await channel.send(embed = help_embed)
+    except:
+        pass
     #해당 리스트에 있는 단어가 채널이름에 있을 경우 도움말 표시
     try:
         for i in channels:
@@ -272,7 +288,7 @@ async def on_guild_remove(guild):
 async def on_command(ctx):
     today = datetime.datetime.today().strftime("%Y_%m_%d")
     now = datetime.datetime.now()
-    file = "./logs/" + today + '.txt'
+    file = "./logs/command/" + today + '.txt'
     if isinstance(ctx.channel, discord.abc.PrivateChannel) != True:
         if os.path.isfile(file):
             f = open(file, 'a', encoding='utf-8')
