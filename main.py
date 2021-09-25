@@ -270,8 +270,8 @@ async def on_guild_remove(guild):
 
 @bot.event
 async def on_command(ctx):
-    today = datetime.today().strftime("%Y_%m_%d")
-    now = datetime.now()
+    today = datetime.datetime.today().strftime("%Y_%m_%d")
+    now = datetime.datetime.now()
     file = "/logs/" + today + '.txt'
     if isinstance(ctx.channel, discord.abc.PrivateChannel) != True:
         if os.path.isfile(file):
