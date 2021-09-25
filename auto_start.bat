@@ -1,2 +1,2 @@
-python auto_self_check.py
+python main.py
 pause
