@@ -1,5 +1,6 @@
 #확장자
 .env
+logs/**/*.txt
 
 #폴더
 .vscode/

@@ -1,7 +1,7 @@
 #-*- coding: UTF8-*-
 #Thank you, Danny!
-import discord
-from discord.ext import commands, tasks
+import nextcord as discord
+from nextcord.ext import commands, tasks
 import datetime
 import hcskr
 import random
@@ -41,9 +41,6 @@ print(f"kor_token : {KOR_TOKEN}")
 bot = commands.Bot(command_prefix=PREFIX)
 #KST = datetime.timezone(datetime.timedelta(hours=9))
 
-start_minute=1
-last_day = "2021-08-31"
-
 last_notice = []
 last_personal_notice = ""
 
@@ -52,18 +49,18 @@ back_area_list = ['서울', '서울시', '서울교육청', '서울시교육청'
 back_school_type_list = ['유치원', '유','유치','초등학교', '초','초등','중학교', '중','중등','고등학교', '고','고등','특수학교', '특','특수','특별']
 school_type_list = ['유치원', '초등학교','중학교', '고등학교','특수학교']
 
-kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
-print(kb)
+try:
+    kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
+    print(kb)
+except:
+    pass
 
 @tasks.loop(seconds=60)
 async def auto_self_check():
-    global start_minute
-    global last_day
-
     print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
     #자가진단 실행 if문
     #if True:
-    if datetime.datetime.now().hour == 7 and datetime.datetime.now().minute == start_minute and last_day != datetime.datetime.now().strftime('%Y-%m-%d') and datetime.datetime.today().weekday()<5:
+    if datetime.datetime.now().hour==7 and datetime.datetime.now().minute==0 and datetime.datetime.today().weekday()<5:
         print("실행")
         await user_data_backup()
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
@@ -72,8 +69,6 @@ async def auto_self_check():
         success_user = 0
         failure_user = 0
 
-        start_minute=random.randrange(1,16)
-        last_day = datetime.datetime.now().strftime('%Y-%m-%d')
         for user_id in user_data.keys():
             if user_data[user_id]["possible"] == True:
                 name = user_data[user_id]['name']
@@ -119,7 +114,7 @@ async def auto_self_check():
                             print(data)
                             break
                 
-                await send_DM(data,user_id,start_minute,user_data)                         
+                await send_DM(data,user_id,user_data)                         
 
                 if data["code"]=="SUCCESS":
                     success_user += 1
@@ -339,7 +334,7 @@ async def send_log(channel,msg):
     channel = bot.get_channel(int(channel))
     await channel.send(msg)
 
-async def send_DM(data,user_id,start_minute,user_data):
+async def send_DM(data,user_id,user_data):
     print("자가진단 실행 후 메시지 준비 중...")
     try:
         #user는 메시지 전송용 discord.user 오브젝트
@@ -358,7 +353,7 @@ async def send_DM(data,user_id,start_minute,user_data):
         if erorr != "erorr":
             if data["code"]=="SUCCESS":
                 user_data[user_id]["failure"] = 0
-                embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.\n다음 자동자가진단은 `7시 {start_minute}분`에 실시될 예정입니다.", color=0x62c1cc)
+                embed = discord.Embed(title="자가 진단 완료", description=f"일시 : `{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`\n<:greencheck:847787187192725516>성공적으로 `{user_data[user_id]['name']}`님의 자가진단을 수행하였습니다.", color=0x62c1cc)
                 #학사일정 정보 전송을 위해 학사일정 정보가 있는지 확인 후 전송
                 if user_data[user_id]["schedule"] != None and str(user_data[user_id]["schedule"]) != "null":
                     embed.add_field(name = "오늘의 학사일정",value = f"\n일정 : `{user_data[user_id]['schedule']}`")
@@ -603,11 +598,10 @@ async def 관리자전체자가진단(ctx):
     if str(ctx.author.id) != ADMIN_ID:
         ctx.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
         return
+
     try:
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
             user_data=json.load(json_file)
-        global start_minute
-        start_minute=random.randrange(1,16)
         for i in user_data.keys():
             if user_data[i]["possible"] == True:
                 name = user_data[i]["name"]
@@ -653,7 +647,7 @@ async def 관리자전체자가진단(ctx):
                             print(data)
                             break
 
-                await send_DM(data,i,start_minute,user_data)
+                await send_DM(data,i,user_data)
 
     except Exception as ex:
         print(f"{user_data[i]['name']}:{ex}")
@@ -662,27 +656,28 @@ async def 관리자전체자가진단(ctx):
 
 @bot.command()
 async def 관리자전체공지(ctx,*,msg):
-    if str(ctx.author.id) == ADMIN_ID:
-        global last_notice
-        last_notice = []
-        with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
-            user_data=json.load(json_file)
-        for user_id in user_data.keys():
-            try:
-                user = await bot.fetch_user(user_id)
-                temp_msg = await user.send(msg)
-                last_notice.append(temp_msg)
-                print(f"{user_id}전송성공")
-            except Exception as ex:
-                user = await bot.fetch_user(int(ADMIN_ID))
-                await user.send(f'에러가 발생 했습니다 {ex}')
-                print(f'{user_id} : 에러가 발생 했습니다 {ex}')
-                print(f"{user_id}님의 공지전송이 실패하였습니다.")
-
-        await ctx.send(f"공지 전송 완료\n`{msg}`")
-    else:
+    if str(ctx.author.id) != ADMIN_ID:
         user = await bot.fetch_user(ctx.author.id)
         await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+        return
+
+    global last_notice
+    last_notice = []
+    with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
+        user_data=json.load(json_file)
+    for user_id in user_data.keys():
+        try:
+            user = await bot.fetch_user(user_id)
+            temp_msg = await user.send(msg)
+            last_notice.append(temp_msg)
+            print(f"{user_id}전송성공")
+        except Exception as ex:
+            user = await bot.fetch_user(int(ADMIN_ID))
+            await user.send(f'에러가 발생 했습니다 {ex}')
+            print(f'{user_id} : 에러가 발생 했습니다 {ex}')
+            print(f"{user_id}님의 공지전송이 실패하였습니다.")
+
+    await ctx.send(f"공지 전송 완료\n`{msg}`")
 
 @bot.command()
 async def 관리자전체공지수정(ctx,*,msg):
@@ -690,12 +685,22 @@ async def 관리자전체공지수정(ctx,*,msg):
         print("관리자전체공지 수정 시작")
         global last_notice
         for last_msg in last_notice:
-            print("관리자전체공지 수정 중")
-            await last_msg.edit(content=str(msg))
+            await last_msg.edit(content=msg)
         print("관리자전체공지 수정 끝")
     else:
-        user = await bot.fetch_user(ctx.author.id)
-        await user.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+        await ctx.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+
+@commands.is_owner()
+async def 관리자전체공지수정(ctx,*,msg):
+    if str(ctx.author.id) != ADMIN_ID:
+        await ctx.send("관리자 권한이 없어 해당 명령어를 사용할 수 없습니다.")
+        return
+
+    print("관리자전체공지 수정 시작")
+    global last_notice
+    for last_msg in last_notice:
+        await last_msg.edit(content=msg)
+    print("관리자전체공지 수정 끝")
 
 @bot.command()
 async def 관리자전체공지삭제(ctx,*,msg):
@@ -845,7 +850,7 @@ async def 어제급식(ctx,user: discord.User=None):
         embed.add_field(name="급식",value=f">>> {msg}", inline=False)
         await ctx.send(embed=embed)
     else:
-        await ctx.send(f"`{day}`의 급식 정보가 없습니다.")]
+        await ctx.send(f"`{day}`의 급식 정보가 없습니다.")
         
 
 @bot.command()
