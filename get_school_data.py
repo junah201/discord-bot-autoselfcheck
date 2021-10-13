@@ -26,7 +26,6 @@ async def get_school_code(school_name:str,area_code:str):
             pass
 
 async def get_area_code(school_area:str):
-
     Souel = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시']
     Busan = ['부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청']
     Deagu = ['대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청']
@@ -107,9 +106,10 @@ async def get_school_cafeteria(school_code, area_code,day):
                     temp_item = temp_item[1:]
                 if temp_item[-1] == "*":
                     temp_item = temp_item[:-1]
+                if temp_item[0] == "*":
+                    temp_item = temp_item[1:]
                 school_cafeteria.append(temp_item)
                 temp_item = ""
-
         return school_cafeteria
     except:
         return None
