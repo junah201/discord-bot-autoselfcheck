@@ -62,7 +62,7 @@ class admin(commands.Cog):
                         i=0
                         while True:
                             user = await self.bot.fetch_user(int(ADMIN_ID))
-                            await user.send(f"무지성 트라이 {i+1}트 : {user_data[i]['name']}")
+                            await user.send(f"무지성 트라이 {i+1}트 : {name}")
                             i+=1
                             try:
                                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
@@ -76,7 +76,7 @@ class admin(commands.Cog):
                         print("학생 검색 오류인지 테스트 중")
                         for i in range(3):
                             user = await self.bot.fetch_user(int(ADMIN_ID))
-                            await user.send(f"학생 검색 오류인지 테스트 중 {i+1}트 : {user_data[i]['name']}")
+                            await user.send(f"학생 검색 오류인지 테스트 중 {i+1}트 : {name}")
                             try:
                                 data = await hcskr.asyncSelfCheck(name,birth,area,school_name,school_type,passward)
                             except:
