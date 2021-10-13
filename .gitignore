@@ -1,5 +1,6 @@
 #확장자
 .env
+.pyc
 logs/**/*.txt
 
 #폴더
