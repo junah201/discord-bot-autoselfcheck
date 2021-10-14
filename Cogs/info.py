@@ -18,7 +18,7 @@ class info(commands.Cog):
         await ctx.send(f"{datetime.datetime.now().strftime('%Y%m%d')}")
 
     @commands.command()
-    async def 코로나(ctx):
+    async def 코로나(self,ctx):
         covid19_data = await get_covid19_data.get_covid19_decide()
         await ctx.send(covid19_data)
         with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
