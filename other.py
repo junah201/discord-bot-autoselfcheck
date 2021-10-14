@@ -43,10 +43,10 @@ async def send_DM(bot,data,user_id,user_data):
         #user는 메시지 전송용 discord.user 오브젝트
         user = await bot.fetch_user(int(user_id))
         erorr = "not erorr"
+        print(f"send_dm user : {user}")
     except:
         erorr = "erorr"
     
-    print(f"send_dm user : {user}")
     print(erorr)
     
     with open("area_code.json", "r",encoding="utf-8-sig") as json_file:
@@ -56,8 +56,7 @@ async def send_DM(bot,data,user_id,user_data):
         if erorr == "erorr":
             print("자가 진단 후 메시지 전송 실패...")
             embed = discord.Embed(title="자가 진단 후 메시지 전송 실패",description=f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 에 {user_data[user_id]['name']}(<@{user_id}>) 님의 자가진단이 실시되었습니다만 확인 메시지가 전송되지 않았습니다.\n자가진단결과 : {data['message']}", color=0x62c1cc)
-            await send_embed_log(log_auto_self_check_after_send_failure_channel,embed)
-            return
+            return await send_embed_log(log_auto_self_check_after_send_failure_channel,embed)
         #자가진단을 실패하였을 경우
         if data.get("code") != "SUCCESS":
             embed = discord.Embed(title="자가 진단 실패", description="[{}] 부로 [{}] 님의\n자가진단이 실시되었습니다만 자가진단에 실패하셨습니다.\n이름 : {}\n생년월일 : {}\n지역 : {}\n학교 이름 : {}\n학교 타입 : {}\n비밀번호 : {}**\n\n{}{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]['name'],user_data[user_id]['name'],user_data[user_id]["birth"],user_data[user_id]["area"],user_data[user_id]["school_name"],user_data[user_id]["school_type"],user_data[user_id]["passward"][:2],data["message"],end_msg), color=0x62c1cc)
@@ -107,9 +106,15 @@ async def send_DM(bot,data,user_id,user_data):
         print("자가진단 성공 후 메시지 발송 완료...")
 
     except Exception as ex:
-        print(f'에러가 발생 했습니다 {ex}')
+        print(f'에러가 발생 했습니다.\n{ex}')
         print("자가 진단 후 메시지 전송 실패...")
         try:
             await send_log(log_send_failure,f"<@{user_id}>`{user_data[user_id]['name'][0]}*{user_data[user_id]['name'][-1]}`님의 자가진단 후 메시지 전송 실패\n{data['message']}\n{ex}\n")
+            if user_data[user_id].get("failure") != None:
+                user_data[user_id]["failure"] += 1
+            else:
+                user_data[user_id]["failure"] = 1
+            with open(JSON_FILE_NAME, "w",encoding="utf-8-sig") as json_file:
+                json.dump(user_data,json_file,ensure_ascii = False, indent=4)
         except:
             pass

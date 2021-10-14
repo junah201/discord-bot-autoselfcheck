@@ -29,8 +29,13 @@ class task(commands.Cog):
             success_user = 0
             failure_user = 0
             passed_user = 0
+            count = 0
 
             for user_id in user_data.keys():
+                count+=1
+                if count%250==0:
+                    user = await self.bot.fetch_user(int(ADMIN_ID))
+                    await user.send(f"{count} 완료")
                 if user_data[user_id]["possible"] == True:
                     name = user_data[user_id]['name']
                     birth = user_data[user_id]["birth"]

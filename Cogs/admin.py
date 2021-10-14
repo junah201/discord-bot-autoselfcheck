@@ -84,6 +84,7 @@ class admin(commands.Cog):
                             if data['message'] == "성공적으로 자가진단을 수행하였습니다.":
                                 print(data)
                                 break
+                            
                     await other.send_DM(self.bot,data,i,user_data)
 
         except Exception as ex:
