@@ -6,6 +6,7 @@ logs/**/*.txt
 #폴더
 .vscode/
 .vs/
+.__pycache__
 #.logs/
 
 #파일
@@ -13,3 +14,4 @@ user_data.json
 temp_user_data.json
 config.json
 temp_config.json
+covid19_data.json
