@@ -2,12 +2,15 @@
 #Thank you, Danny!
 import nextcord as discord
 from nextcord.ext import commands
+import json
 
 import koreanbots,os
 
 from variable import *
 
 bot = commands.Bot(command_prefix=PREFIX)
+with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
+    user_data=json.load(json_file)
 game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
 bot.change_presence(status=discord.Status.online, activity=game)
 
