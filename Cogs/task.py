@@ -101,6 +101,7 @@ class task(commands.Cog):
         #if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
             print("===정보 수집 시작===")
             start = time.time()
+            count = 0
             await other.user_data_backup(self.bot)
             with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
                 user_data=json.load(json_file)
@@ -110,6 +111,10 @@ class task(commands.Cog):
                 area_code=json.load(json_file)
 
             for user_id in user_data.keys():
+                count+=1
+                if count%250==0:
+                    user = await self.bot.fetch_user(int(ADMIN_ID))
+                    await user.send(f"정보 수집 {count} 완료")
                 #기본값 설정
                 user_data[user_id]["schedule"] = None
                 user_data[user_id]["cafeteria"] = None
@@ -184,5 +189,8 @@ class task(commands.Cog):
             print(result)
             result_list = str(datetime.timedelta(seconds=sec)).split(".")
             print(result_list[0])
+            user = await self.bot.fetch_user(int(ADMIN_ID))
+            await user.send(f"정보 수집 완료 ! 소요 시간 {result_list[0]}")
+
 def setup(bot):
     bot.add_cog(task(bot))
