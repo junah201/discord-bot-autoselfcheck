@@ -118,3 +118,9 @@ async def send_DM(bot,data,user_id,user_data):
                 json.dump(user_data,json_file,ensure_ascii = False, indent=4)
         except:
             pass
+
+async def set_status(bot,channel,embed):
+    with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
+        user_data=json.load(json_file)
+    game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
+    await self.bot.change_presence(status=discord.Status.online, activity=game)
