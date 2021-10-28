@@ -9,6 +9,8 @@ import json,hcskr,datetime
 import other
 import get_school_data, get_covid19_data
 
+import time
+
 class task(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -19,7 +21,7 @@ class task(commands.Cog):
         print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
         #자가진단 실행 if문
         #if True:
-        if datetime.datetime.now().hour==7 and datetime.datetime.now().minute==0 and datetime.datetime.today().weekday()<5:
+        if datetime.datetime.now().hour==7 and datetime.datetime.now().minute==4 and datetime.datetime.today().weekday()<5:
             print("실행")
             print(1)
             await other.user_data_backup(self.bot)
@@ -95,15 +97,15 @@ class task(commands.Cog):
             await other.send_embed_log(self.bot,log_today,embed)
 
         #정보 수집 if문
-        #if True:
-        if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
+        if False:
+        #if datetime.datetime.now().hour == 6 and datetime.datetime.now().minute == 0:
             print("===정보 수집 시작===")
-            
+            start = time.time()
             await other.user_data_backup(self.bot)
             with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
                 user_data=json.load(json_file)
             #코로나19 확진자 수 수집
-            covid19_data = {f"{datetime.datetime.now().strftime('%Y년%m월%d일')}":await get_covid19_data.get_covid19_decide()}
+            covid19_data = await get_covid19_data.get_covid19_decide()
             with open("area_code.json", "r",encoding="utf-8-sig") as json_file:
                 area_code=json.load(json_file)
 
@@ -120,22 +122,24 @@ class task(commands.Cog):
                     try:
                         #학사일정 수집 후 방학 또는 개학일 때 자가진단 실행 여부 조정
                         user_data[user_id]["schedule"] = await get_school_data.get_school_schedule(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
-                        if "방학" in user_data[user_id]["schedule"]:
+                        print(user_data[user_id]["schedule"])
+                        if "방학" in str(user_data[user_id]["schedule"]):
                             #user_data[user_id]["possible"] = False
                             #user = await self.bot.fetch_user(int(user_id))
                             #await user.send(f"오늘부터 자가진단이 실시되지 않을 예정입니다.\n(사유 : 학사일정에 방학식이 확인됨)")
                             pass
-                        elif "개학" in user_data[user_id]["schedule"]:
+                        elif "개학" in str(user_data[user_id]["schedule"]):
                             user_data[user_id]["possible"] = True
                             user = await self.bot.fetch_user(int(user_id))
                             await user.send(f"오늘부터 자가진단이 실시될 예정입니다.\n(사유 : 학사일정에 개학식이 확인됨)")
                     except Exception as ex:
-                        print(f"{user_data[user_id]['name']} : {ex}")
+                        print(f"{user_data[user_id]['name']} : 학사일정 : {ex}")
 
                     try:    
                         #급식정보 수집
                         user_data[user_id]["cafeteria"] = await get_school_data.get_school_cafeteria(user_data[user_id]["school_code"],user_data[user_id]["area_code"],datetime.datetime.now().strftime('%Y%m%d'))
                     except Exception as ex:
+                        print(f"{user_data[user_id]['name']} : 급식 : {ex}")
                         user = await self.bot.fetch_user(int(ADMIN_ID))
                         await user.send(f"급식 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
 
@@ -146,11 +150,13 @@ class task(commands.Cog):
                         else:
                             user_data[user_id]["timetable"] = "No information entered"
                     except Exception as ex:
+                        print(f"{user_data[user_id]['name']} : 시간표 : {ex}")
                         user = await self.bot.fetch_user(int(ADMIN_ID))
                         await user.send(f"시간표 데이터 수집 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
 
                     try:
                         #전체 코로나 정보에서 해당 지역의 코로나 정보만 수집
+                        print(covid19_data)
                         user_data[user_id]['area_covid19_decide'] = covid19_data[area_code[user_data[user_id]["area_code"]]]
                         user_data[user_id]['all_covid19_decide'] = covid19_data['합계']
                     except Exception as ex:
@@ -164,14 +170,19 @@ class task(commands.Cog):
                                 user_data[user_id]['possible'] = False
                                 user = await self.bot.fetch_user(int(user_id))
                                 await user.send(f'5회 이상 자가진단에 실패하여, 자동자가진단이 중지 상태로 변경되었습니다.')
-
                     except Exception as ex:
                         user = await self.bot.fetch_user(int(ADMIN_ID))
                         await user.send(f"failure 측정 중 에러가 발생 했습니다 {ex} | {user_id} | {user_data[user_id]['name']}")
+
                     with open(JSON_FILE_NAME, "w",encoding="utf-8-sig") as json_file:
                         json.dump(user_data,json_file,ensure_ascii = False, indent=4)
 
             print("===정보 수집 완료===")
-
+            end = time.time()
+            sec = (end - start)
+            result = datetime.timedelta(seconds=sec)
+            print(result)
+            result_list = str(datetime.timedelta(seconds=sec)).split(".")
+            print(result_list[0])
 def setup(bot):
     bot.add_cog(task(bot))

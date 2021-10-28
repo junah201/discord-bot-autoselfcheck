@@ -11,12 +11,10 @@ bot = commands.Bot(command_prefix=PREFIX)
 for filename in os.listdir('./Cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'Cogs.{filename[:-3]}')
-    else:
-        print(f'Unable to load {filename[:-3]}')
-
+        '''
 try:
     kb = koreanbots.Koreanbots(bot, KOR_TOKEN, run_task=True)
 except:
-    pass
+    pass'''
 
 bot.run(TOKEN)

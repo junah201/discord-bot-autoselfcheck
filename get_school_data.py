@@ -155,15 +155,16 @@ async def get_school_schedule(school_code,area_code,day):
     response = requests.get(url)
     schedule_data=json.loads(response.text)
 
-    if "RESULT" not in schedule_data.keys():
-        schedule_dict = {}
-
-        for i in schedule_data["SchoolSchedule"][1]["row"]:
-            schedule_dict[i["AA_YMD"]] = i['EVENT_NM']
-        
-        if day in schedule_dict.keys():
-            return schedule_dict[day]
-        else:
-            return None
-    else:
+    if schedule_data.get("RESULT") == None:
         return None
+
+    if schedule_data["RESULT"]["CODE"] != "INFO-000":
+        return None
+    schedule_dict = {}
+    for i in schedule_data["SchoolSchedule"][1]["row"]:
+        schedule_dict[i["AA_YMD"]] = i['EVENT_NM']
+    
+    if schedule_dict.get(day) != None:
+        return schedule_dict[day]
+
+    return None
