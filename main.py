@@ -8,7 +8,11 @@ import koreanbots,os
 
 from variable import *
 
-bot = commands.Bot(command_prefix=PREFIX)
+with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
+    user_data=json.load(json_file)
+game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
+    
+bot = commands.Bot(command_prefix=PREFIX,activit=game)
 
 for filename in os.listdir('./Cogs'):
     if filename.endswith('.py'):
