@@ -18,10 +18,7 @@ class on(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):  
         print(f"{self.bot.user} 실행 완료")
-        with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
-            user_data=json.load(json_file)
-        game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
-        await self.bot.change_presence(status=discord.Status.online, activity=game)
+        await other.set_status(self.bot)
         embed = discord.Embed(title="봇 실행 완료", description=f"[{datetime.datetime.now()}] 에 [{host_name}] 에서 봇이 실행되었습니다.", color=0x62c1cc)
         await other.send_log(self.bot,log_bot_start_channel,f"`[{datetime.datetime.now()}] [{host_name}] 에서 봇이 실행되었습니다.`")
         await other.user_data_backup(self.bot)
