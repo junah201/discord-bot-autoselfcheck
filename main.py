@@ -9,7 +9,7 @@ from variable import *
 
 bot = commands.Bot(command_prefix=PREFIX)
 game = discord.Game(f" {PREFIX}명령어 | {len(user_data.keys())}명의 자가진단을 처리 ")
-await self.bot.change_presence(status=discord.Status.online, activity=game)
+bot.change_presence(status=discord.Status.online, activity=game)
 
 for filename in os.listdir('./Cogs'):
     if filename.endswith('.py'):
