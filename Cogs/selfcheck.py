@@ -39,9 +39,9 @@ class selfcheck(commands.Cog):
                 err = False
             except:
                 err = True
-            
+            print(f"result : {result}, type : {type(result)}")
             if "Cannot connect to host hcs.eduro.go.kr:443 ssl:True" in result['message'] or err == True:
-                print(result)
+                
                 print("err")
                 i=0
                 while True:
