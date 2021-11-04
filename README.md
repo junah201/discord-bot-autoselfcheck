@@ -68,6 +68,7 @@ PREFIX = 봇의 명령어 접두사
 ADMIN_ID = 봇 관리자의 디스코드 ID
 KOR_TOKEN = 한국 디스코드 리스트의 토큰
 COVID_API_KEY = 공공데이터 포털 API KEY (시도 확진자 수 API가 활용 신청이 되어있는 KEY)
+NEIS_API_KEY = 나이스 오픈데이터 API KEY
 ```
 
 ※한디리 토큰에 경우 [한디리](https://koreanbots.dev/bots/)를 이용하지 않으신다면, KOR_TOKEN이 들어가는 모든 코드를 지우셔도 됩니다.
