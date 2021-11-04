@@ -21,8 +21,10 @@ class task(commands.Cog):
         print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
         #자가진단 실행 if문
         #if True:
-        if datetime.datetime.now().hour==6 and datetime.datetime.now().minute==30 and datetime.datetime.today().weekday()<5:
+        if datetime.datetime.now().hour==7 and datetime.datetime.now().minute==0 and datetime.datetime.today().weekday()<5:
             print("실행")
+            user = await self.bot.fetch_user(int(ADMIN_ID))
+            await user.send(f"자가진단 시작")
             start = time.time()
             print(1)
             await other.user_data_backup(self.bot)
@@ -98,7 +100,7 @@ class task(commands.Cog):
             result_list = str(datetime.timedelta(seconds=sec)).split(".")
             print(result_list[0])
             user = await self.bot.fetch_user(int(ADMIN_ID))
-            await user.send(f"정보 수집 완료 ! 소요 시간 {result_list[0]}")
+            await user.send(f"자가진단 완료 ! 소요 시간 {result_list[0]}")
             #채널
             with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
                 user_data=json.load(json_file)
@@ -107,8 +109,10 @@ class task(commands.Cog):
 
         #정보 수집 if문
         #if False:
-        if datetime.datetime.now().hour == 5 and datetime.datetime.now().minute == 0:
+        if datetime.datetime.now().hour == 3 and datetime.datetime.now().minute == 30:
             print("===정보 수집 시작===")
+            user = await self.bot.fetch_user(int(ADMIN_ID))
+            await user.send(f"정보 수집 시작")
             start = time.time()
             count = 0
             await other.user_data_backup(self.bot)

@@ -13,6 +13,10 @@ async def get_covid19_decide():
     url = f"http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey={covid19_api_key}&pageNo=1&numOfRows=10&startCreateDt={day}&endCreateDt={day}"
     headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
     response = requests.get(url,headers=headers)
+    try:
+        response = requests.get(url,headers=headers)
+    except:
+        response = requests.get(url,headers=headers,verify=False)
     print(url)
     covid19_data = json.loads(json.dumps(xmltodict.parse(response.text), indent=4))
     return_data = {}

@@ -3,6 +3,7 @@ import nextcord as discord
 from nextcord.ext import commands
 import json
 import datetime
+import os
 
 from variable import *
 from embed.help_embed import *
@@ -118,7 +119,7 @@ class info(commands.Cog):
                         json.dump(user_data,json_file,ensure_ascii = False, indent=4)
                     
                 cafeteria = await get_school_data.get_school_cafeteria(user_data[user]["school_code"],user_data[user]["area_code"],day)
-
+                print(f"cafeteria : {cafeteria}")
                 if cafeteria != None:
                     embed = discord.Embed(title="급식 정보", description=f"일시 : `{day}`", color=0x62c1cc)
                     msg = ""

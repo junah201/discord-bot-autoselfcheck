@@ -1,31 +1,36 @@
 import requests
-import json
+import json, os
 import asyncio
+from dotenv import load_dotenv
+
+load_dotenv()
+neis_api_key = os.getenv('NEIS_API_KEY')
 
 async def get_school_code(school_name:str,area_code:str):
-    if False:
-        pass
-    else:
-        url = f'https://open.neis.go.kr/hub/schoolInfo?KEY=f20a483f903d4dabb871d08683910077&Type=json&pIndex=1&pSize=100&SCHUL_NM={school_name}&ATPT_OFCDC_SC_CODE={area_code}'
-        headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
-        response = requests.get(url,headers=headers)
-        school_data=json.loads(response.text)
+    url = f'https://open.neis.go.kr/hub/schoolInfo?KEY={neis_api_key}&Type=json&pIndex=1&pSize=100&SCHUL_NM={school_name}&ATPT_OFCDC_SC_CODE={area_code}'
+    print(url)
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
+    response = requests.get(url,headers=headers, verify=False)
+    school_data=json.loads(response.text)
 
-        #검색해서 나온 학교가 하나 밖에 없으면 그 학교의 코드를 반환
-        if 'schoolInfo' in school_data.keys():
-            try:
-                #학교코드
-                school_code = school_data['schoolInfo'][1]["row"][0]['SD_SCHUL_CODE']
-                return school_code
-                pass
-            except:
-                return None
-                pass
-        else:
+    #검색해서 나온 학교가 하나 밖에 없으면 그 학교의 코드를 반환
+    if 'schoolInfo' in school_data.keys():
+        try:
+            #학교코드
+            school_code = school_data['schoolInfo'][1]["row"][0]['SD_SCHUL_CODE']
+            return school_code
+            pass
+        except:
             return None
             pass
+    else:
+        return None
+        pass
 
-async def get_area_code(school_area:str):
+async def get_area_code(school_area:str==None):
+    if school_area == None:
+        return None
+
     Souel = ['서울', '서울시', '서울교육청', '서울시교육청', '서울특별시']
     Busan = ['부산', '부산광역시', '부산시', '부산교육청', '부산광역시교육청']
     Deagu = ['대구', '대구광역시', '대구시', '대구교육청', '대구광역시교육청']
@@ -44,57 +49,57 @@ async def get_area_code(school_area:str):
     Gyeongsangnam = ['경남', '경상남도', '경남교육청', '경상남도교육청']
     Jeju = ['제주', '제주도', '제주특별자치시', '제주교육청', '제주도교육청', '제주특별자치시교육청', '제주특별자치도']
 
-    school_code = ""
-
     if school_area in Souel:
-        school_code = "B10"
+        return "B10"
     elif school_area in Busan:
-        school_code = "C10"
+        return "C10"
     elif school_area in Deagu:
-        school_code = "D10"
+        return "D10"
     elif school_area in Incheon:
-        school_code = "E10"
+        return "E10"
     elif school_area in Gwangju:
-        school_code = "F10"
+        return "F10"
     elif school_area in Daejeon:
-        school_code = "G10"
+        return "G10"
     elif school_area in Ulsan:
-        school_code = "H10"
+        return "H10"
     elif school_area in Sejong:
-        school_code = "I10"
+        return "I10"
     elif school_area in Gyeonggi:
-        school_code = "J10"
+        return "J10"
     elif school_area in Gangwon:
-        school_code = "K10"
+        return "K10"
     elif school_area in Chungcheongbuk:
-        school_code = "M10"
+        return "M10"
     elif school_area in Chungcheongnam:
-        school_code = "N10"
+        return "N10"
     elif school_area in Jeollabuk:
-        school_code = "P10"
+        return "P10"
     elif school_area in Jeollanam:
-        school_code = "Q10"
+        return "Q10"
     elif school_area in Gyeongsangbuk:
-        school_code = "R10"
+        return "R10"
     elif school_area in Gyeongsangnam:
-        school_code = "S10"
+        return "S10"
     elif school_area in Jeju:
-        school_code = "T10"
+        return "T10"
     else:
-        school_code = "V10"
+        return "V10"
 
-    return school_code
+    return None
 
 async def get_school_cafeteria(school_code, area_code,day):
     try:
-        url = f'https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&MLSV_YMD={day}'
+        url = f'https://open.neis.go.kr/hub/mealServiceDietInfo?KEY={neis_api_key}&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&MLSV_YMD={day}'
         print(url)
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        except:
+            response = requests.get(url, verify=False)
         school_data=json.loads(response.text)
-
         school_cafeteria = []
         temp_item = ""
-
+        
         for i in school_data["mealServiceDietInfo"][1]["row"][0]["DDISH_NM"].split("<br/>"):
             for j in list(i):
                 if j == " " or j.isdigit() or j == ".":
@@ -121,19 +126,23 @@ async def get_school_timetable(school_code, area_code,day,school_type,school_gra
     school_type_special = ['특수학교', '특','특수','특별']
     try:
         if school_type in school_type_high:
-            url = f"https://open.neis.go.kr/hub/hisTimetable?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
+            url = f"https://open.neis.go.kr/hub/hisTimetable?KEY={neis_api_key}&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
             temp = "hisTimetable"
         elif school_type in school_type_middle:
-            url = f"https://open.neis.go.kr/hub/misTimetable?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
+            url = f"https://open.neis.go.kr/hub/misTimetable?KEY={neis_api_key}&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
             temp = "misTimetable"
         elif school_type in school_type_elementary:
-            url = f"https://open.neis.go.kr/hub/elsTimetable?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
+            url = f"https://open.neis.go.kr/hub/elsTimetable?KEY={neis_api_key}&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
             temp = "elsTimetable"
         elif school_type in school_type_special:
-            url = f"https://open.neis.go.kr/hub/spsTimetable?KEY=f20a483f903d4dabb871d08683910077&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
+            url = f"https://open.neis.go.kr/hub/spsTimetable?KEY={neis_api_key}&Type=json&ATPT_OFCDC_SC_CODE={area_code}&SD_SCHUL_CODE={school_code}&GRADE={school_grade}&CLASS_NM={school_class}&TI_FROM_YMD={day}&TI_TO_YMD={day}"
             temp = "spsTimetable"
         print(url)
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+        except:
+            response = requests.get(url, verify=False)
+        print(response)
         timetable_data=json.loads(response.text)
 
         timetable_list = [0 for i in range(len(timetable_data[temp][1]['row']))]
@@ -150,9 +159,12 @@ async def get_school_timetable(school_code, area_code,day,school_type,school_gra
         return None
 
 async def get_school_schedule(school_code,area_code,day):
-    url = f"https://open.neis.go.kr/hub/SchoolSchedule?KEY=f20a483f903d4dabb871d08683910077&Type=json&SD_SCHUL_CODE={school_code}&ATPT_OFCDC_SC_CODE={area_code}&AA_YMD={day[:-2]}"
+    url = f"https://open.neis.go.kr/hub/SchoolSchedule?KEY={neis_api_key}&Type=json&SD_SCHUL_CODE={school_code}&ATPT_OFCDC_SC_CODE={area_code}&AA_YMD={day[:-2]}"
     print(url)
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except:
+        response = requests.get(url, verify=False)
     schedule_data=json.loads(response.text)
 
     if schedule_data.get("RESULT") == None:
