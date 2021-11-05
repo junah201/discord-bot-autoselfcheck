@@ -74,7 +74,7 @@ NEIS_API_KEY = 나이스 오픈데이터 API KEY
 ※한디리 토큰에 경우 [한디리](https://koreanbots.dev/bots/)를 이용하지 않으신다면, KOR_TOKEN이 들어가는 모든 코드를 지우셔도 됩니다.
 
 ### 파일 생성
-`auto_self_check.py` 와 같은 경로에 위 env 세팅에서 `JSON_FILE_NAME`으로 지정한 파일 이름으로 파일을 생성해주세요.
+`main.py` 와 같은 경로에 위 env 세팅에서 `JSON_FILE_NAME`으로 지정한 파일 이름으로 파일을 생성해주세요.
 
 ## 기타
 ### 서포트
