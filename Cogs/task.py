@@ -1,15 +1,9 @@
 import nextcord as discord
 from nextcord.ext import commands,tasks
-
 from variable import *
 from channels.log_channels import *
-
-import json,hcskr,datetime
-
-import other
-import get_school_data, get_covid19_data
-
-import time
+import json,hcskr,datetime,time
+import get_school_data, get_covid19_data, other
 
 class task(commands.Cog):
     def __init__(self, bot):
@@ -21,12 +15,11 @@ class task(commands.Cog):
         print(f"[{datetime.datetime.now()}] 무한루프가 돌아가는 중...")
         #자가진단 실행 if문
         #if True:
-        if datetime.datetime.now().hour==7 and datetime.datetime.now().minute==0 and datetime.datetime.today().weekday()<5:
+        if datetime.datetime.now().hour==6 and datetime.datetime.now().minute==50 and datetime.datetime.today().weekday()<5:
             print("실행")
             user = await self.bot.fetch_user(int(ADMIN_ID))
             await user.send(f"자가진단 시작")
             start = time.time()
-            print(1)
             await other.user_data_backup(self.bot)
             with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
                 user_data=json.load(json_file)

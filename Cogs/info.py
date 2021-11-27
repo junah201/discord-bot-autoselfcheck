@@ -21,14 +21,25 @@ class info(commands.Cog):
     @commands.command()
     async def 코로나(self,ctx):
         covid19_data = await get_covid19_data.get_covid19_decide()
-        await ctx.send(covid19_data)
-        with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
-            user_data=json.load(json_file)
-        with open("area_code.json", "r",encoding="utf-8-sig") as json_file:
-            area_code=json.load(json_file)
-        
-        await ctx.send(f"{area_code[user_data[str(ctx.author.id)]['area_code']]} : {covid19_data[area_code[user_data[str(ctx.author.id)]['area_code']]]}")
+        msg = ""
+        for area in ["합계","서울","부산","대구","인천","광주","대전","울산","세종","경기","강원","충북","충남","전북","전남","경북","경남","제주","검역"]:
+            msg += f"\n> {area} : {covid19_data[area]}"
+        embed = discord.Embed(title="코로나 확진자",description=f"{msg}{end_msg}", color=0x62c1cc)
+        await ctx.send(embed=embed)
     
+    @commands.command()
+    async def 확진자(self,ctx):
+        covid19_data = await get_covid19_data.get_covid19_decide()
+        msg = ""
+        for area in ["합계","서울","부산","대구","인천","광주","대전","울산","세종","경기","강원","충북","충남","전북","전남","경북","경남","제주","검역"]:
+            msg += f"\n> {area} : {covid19_data[area]}"
+        embed = discord.Embed(title="코로나 확진자",description=f"{msg}{end_msg}", color=0x62c1cc)
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def 확찐자(self,ctx):
+        await ctx.send("그건 바로 너! 다이어트 하세요!")
+
     @commands.command()
     async def 학사일정(self,ctx, day=None,user: discord.User=None):
         if day == None:

@@ -1,5 +1,6 @@
 import requests
 import json, os
+import aiohttp
 import asyncio
 from variable import *
 from dotenv import load_dotenv

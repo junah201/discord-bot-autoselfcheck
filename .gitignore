@@ -1,6 +1,6 @@
 #확장자
-.env
-.pyc
+*.env
+*.pyc
 logs/**/*.txt
 
 #폴더
@@ -15,3 +15,7 @@ temp_user_data.json
 config.json
 temp_config.json
 covid19_data.json
+test.py
+__pycache__/get_covid19_data.cpython-38.pyc
+__pycache__/get_covid19_data.cpython-38.pyc
+__pycache__/get_covid19_data.cpython-38.pyc

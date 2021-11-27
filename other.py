@@ -102,7 +102,8 @@ async def send_DM(bot,data,user_id,user_data):
         print("자가진단 성공 후 메시지 발송 완료...")
         #최종 전송 및 로그 전송
         await user.send(embed=embed)
-        await send_log(bot,log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]['name']))
+        #최적화를 위해 삭제
+        #await send_log(bot,log_auto_self_check_success_channel,"[{}]`{}`님의 자가진단 완료".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),user_data[user_id]['name']))
         print("자가진단 성공 후 메시지 발송 완료...")
 
     except Exception as ex:
@@ -119,6 +120,7 @@ async def send_DM(bot,data,user_id,user_data):
         except:
             pass
 
+#
 async def set_status(bot):
     with open(JSON_FILE_NAME, "r",encoding="utf-8-sig") as json_file:
         user_data=json.load(json_file)
