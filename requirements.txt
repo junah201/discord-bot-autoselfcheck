@@ -1,5 +1,4 @@
-﻿nextcord==2.0.0a3
-koreanbots==1.1.1
+﻿koreanbots==1.1.1
 requests==2.26.0
 xmltodict==0.12.0
 asyncio==3.4.3
