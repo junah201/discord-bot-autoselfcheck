@@ -1,6 +1,6 @@
 import get_covid19_data
-import nextcord as discord
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 import json, hcskr
 import datetime
 

@@ -1,8 +1,8 @@
 #-*- coding: UTF8-*-
 #Thank you, Danny!
 
-import nextcord as discord
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 import json,koreanbots,os 
 from variable import *
 
